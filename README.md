@@ -1,4 +1,4 @@
-A platform for checking test tasks in 1C for a customer from BIO Technologies. In this repository, a beta version of the web application is being developed for subsequent operation in the release instance.
+A platform for checking test tasks in 1C for a customer from BIA Technologies. In this repository, a beta version of the web application is being developed for subsequent operation in the release instance.
 
 <b>The Development team:</b>
 <ul>
