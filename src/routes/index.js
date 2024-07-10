@@ -49,6 +49,11 @@ const router = createBrowserRouter(
         element={<Register />}
         loader={async () => await isAuthenticated()}
       />
+      <Route
+        path="/testhome"
+        element={<UserHome />}
+        loader={async () => await isAuthenticated()}
+      />
     </Route>
   )
 );
