@@ -27,7 +27,7 @@ const router = createBrowserRouter(
           element={<UserHome />}
           loader={async () => await handleProtected()}
         />
-        <Route path="/userprofile" element={<UserProfile />} /> 
+       
         <Route path="/useresults/:taskNumber" element={<UserResult />} />
         <Route path="/usertasks/:taskNumber" element={<UserTask />} />
         <Route path="/adminhome" element={<AdminHome />} />
@@ -54,6 +54,7 @@ const router = createBrowserRouter(
         element={<UserHome />}
         loader={async () => await isAuthenticated()}
       />
+       <Route path="/userprofile" element={<UserProfile />} /> 
     </Route>
   )
 );

@@ -37,6 +37,14 @@
             .actions {
                 display: flex;
                 margin-top: 30px;
+                .buttonProfile {
+                    padding: 15px 30px;
+                    background: #141416;
+                    border-radius: 12px;
+                    text-transform: uppercase;
+                    text-decoration: none;
+                    color: #fff;
+                }
                 .buttonRegister {
                     margin-right: 20px;
                     padding: 15px 30px;
@@ -60,48 +68,6 @@
                 width: 761px;
                 height: 515px;
             }
-        }
-    }
-}
-footer {
-    background-color: #141416;
-    padding: 30px 90px;
-    position: relative;
-    .about {
-        max-width: 1440px;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        gap: 30px;
-        justify-content: space-between;
-
-        img {
-            max-height: 50px; // Пример максимальной высоты логотипа
-        }
-
-        nav {
-            ul {
-                display: flex;
-                gap: 20px;
-                list-style: none;
-                padding: 0;
-                margin: 0;
-
-                li {
-                    a {
-                        color: #fff;
-                        text-decoration: none;
-                    }
-                }
-            }
-        }
-        &::after {
-            content: "";
-            width: 1339px;
-            border: 1px solid rgb(129, 129, 129);
-            opacity: 0.25;
-            position: absolute;
-            top: 100px;
         }
     }
 }
