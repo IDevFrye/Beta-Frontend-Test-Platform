@@ -1,15 +1,26 @@
 import React, { useState } from "react";
 import HeaderMain from "../../../components/HeaderMain";
-import styles from "./UserProfile.module.scss";
 import Footer from "../../../components/Footer";
+import styles from "./UserProfile.module.scss";
 import Avatar from "../../../assets/avatar.png";
 import { Link } from "react-router-dom";
+import FileUpload from "../../../components/FileUpload";
+import EditInput from "../../../components/EditInput";
+
 const UserProfile = () => {
   const [isAuth, setIsAuth] = useState(true);
   const [activeTab, setActiveTab] = useState("profile");
+  const [profileImage, setProfileImage] = useState(Avatar);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
+  };
+  const handleProfileImageSubmit = (file) => {
+    if (file) {
+      const newProfileImage = URL.createObjectURL(file);
+      setProfileImage(newProfileImage);
+      // Call your backend API endpoint to save the new profile image
+    }
   };
   return (
     <>
@@ -17,7 +28,7 @@ const UserProfile = () => {
         <HeaderMain isAuth={isAuth} />
         <main>
           <section className={styles.person}>
-            <img src={Avatar} alt="Person's Avatar" />
+            <img src={profileImage} alt="Person's Avatar" />
             {/*MUST ADD FETCHED DATA*/}
             <h1>Коба Алексей Юрьевич</h1>
             {/*MUST ADD FETCHED DATA*/}
@@ -66,7 +77,7 @@ const UserProfile = () => {
                       <div className={styles.taskNumber}>
                         {/*MUST ADD FETCHED DATA*/}
                         <h2>Задание 3</h2>
-                        <Link to="/usertasks/:taskNumber">Подробнее ></Link>
+                        <Link to="/usertasks/:taskNumber">Подробнее ></Link> {/*add USERTASK NUMBER FROM BACKEND! */}
                       </div>
                       <div className={styles.result}>
                         {/*MUST ADD FETCHED DATA*/}
@@ -94,25 +105,29 @@ const UserProfile = () => {
                       </div>
                       <div className={styles.defects}>
                         {/*MUST ADD FETCHED DATA*/}
-                        <p>Дефекти</p>
+                        <p>Дефекты</p>
                         <h2>26</h2>
                       </div>
                     </div>
                   </div>
+                  
                 </>
               ) : (
                 <div className={styles.edit}>
                   <h2>Фото профиля</h2>
-                  
+                  <FileUpload onSubmit={handleProfileImageSubmit}/>
+                  <EditInput />
                 </div>
               )}
             </div>
           </section>
         </main>
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };
 
 export default UserProfile;
+
+//add color for each mark ex: 7/10 - yellow, 10/10 - green

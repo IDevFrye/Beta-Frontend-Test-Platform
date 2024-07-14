@@ -29,7 +29,7 @@ const router = createBrowserRouter(
         />
        
         <Route path="/useresults/:taskNumber" element={<UserResult />} />
-        <Route path="/usertasks/:taskNumber" element={<UserTask />} />
+        {/* <Route path="/usertasks/:taskNumber" element={<UserTask />} /> */}
         <Route path="/adminhome" element={<AdminHome />} />
         <Route path="/admin/bdresults" element={<BDResults />} />
         <Route
@@ -55,6 +55,7 @@ const router = createBrowserRouter(
         loader={async () => await isAuthenticated()}
       />
        <Route path="/userprofile" element={<UserProfile />} /> 
+       <Route path="/usertasks/:taskNumber" element={<UserTask />} />
     </Route>
   )
 );
