@@ -1,11 +1,11 @@
 .container {
     max-width: 1440px;
-    margin: 0 auto;
+    margin: 0 auto 80px auto;
     padding: 0 20px;
     main {
         margin-top: 50px;
         display: flex;
-        gap: 80px;
+        justify-content: space-between;
         .person {
             position: relative;
             &::before {
@@ -36,6 +36,7 @@
                 justify-content: space-between;
                 position: relative;
                 margin-top: 40px;
+                gap: 10px;
                 &::before {
                     content: "";
                     position: absolute;
@@ -62,6 +63,7 @@
         }
         .info {
             max-width: 700px;
+            margin: 0 auto;
             .tabs {
                 display: flex;
                 justify-content: space-between;

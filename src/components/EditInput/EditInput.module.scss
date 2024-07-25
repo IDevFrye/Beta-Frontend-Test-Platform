@@ -1,0 +1,85 @@
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 700px;
+  .inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+
+    label {
+      font-size: 20px;
+      color: #000;
+      font-weight: 500;
+    }
+
+    .inputWrapper {
+      display: flex;
+      align-items: center;
+      position: relative;
+
+      input {
+        box-sizing: border-box;
+        border: 1.5px solid rgb(0, 0, 0);
+        border-radius: 11.53px;
+        padding: 10px;
+        background: rgb(249, 249, 249);
+        flex-grow: 1;
+      }
+
+      .editIcon {
+        position: absolute;
+        font-size: 20px;
+        right: 10px;
+        cursor: pointer;
+        color: #9596a6;
+        background: transparent;
+        padding: 10px;
+        transition: opacity 0.9s;
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+
+  .inputsRow {
+    display: flex;
+    width: 100%;
+
+    .inputs {
+      flex: 1;
+
+      &:not(:last-child) {
+        margin-right: 15px;
+      }
+    }
+  }
+
+  .btnContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+
+    .btn {
+      padding: 20px 300px;
+      color: #fff;
+      font-size: 1rem;
+      letter-spacing: 0.15rem;
+      transition: all 0.3s;
+      font-weight: 500;
+      border-radius: 11.99px;
+      background: rgb(0, 0, 0);
+      cursor: pointer;
+    }
+
+    .saveMessage {
+      margin-top: 10px;
+      color: #14a760;
+    }
+  }
+}

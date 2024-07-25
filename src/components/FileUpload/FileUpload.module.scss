@@ -1,0 +1,61 @@
+.fileUploadContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dropzone {
+    width: 400px;
+    height: 430px;
+    border-radius: 30.74px;
+
+    box-shadow:
+        0px 81.98px 81.98px -61.49px rgba(15, 15, 15, 0.1),
+        0px -81.98px 80px 0px rgba(0, 0, 0, 0.05);
+    background: rgb(252, 252, 253);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.iconContainer {
+    font-size: 50px;
+    color: #000;
+    margin-bottom: 20px;
+}
+
+button {
+    border: none;
+    background-color: #141416;
+    color: white;
+    padding: 10px 50px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+    &:hover {
+        background-color: #141416b9;
+    }
+}
+
+p {
+    font-size: 14px;
+    color: #888;
+    margin: 0;
+}
+
+.dropzone.active {
+    box-shadow: 0px 0px 20px 5px rgba(0, 123, 255, 0.5);
+}
+
+.preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

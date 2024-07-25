@@ -1,0 +1,182 @@
+$red: #D22630;
+
+.console {
+    display: flex;
+    flex-direction: column;
+    gap:45px;
+    font-size: 26px;
+    .textAreaContainer {
+        position: relative;
+        width: 800px; /* Ensure the container takes the full width */
+        height: 90%;
+        .form {
+                font-size: 20px;
+        
+                input {
+                    border-color: #1f1e1e;
+                    background-color: #fdebeb;
+                    font-size: 18px;
+                    font-family: "Open Sans";
+                    transition: border-color 0.9s;
+        
+                    &:hover {
+                        border-color: #ff0000;
+                    }
+        
+                }
+            }
+        .customTextArea {
+            width: 100%;
+            height: 90%;
+            padding: 50px 40px;
+            border: none;
+            border-radius: 5px; /* Add border-radius for rounded corners */
+            background: transparent; /* Make the textarea background transparent */
+            resize: none; /* Disable textarea resizing */
+            font-family: Arial, sans-serif; /* Adjust font family as needed */
+            font-size: 24px; /* Adjust font size as needed */
+            font-weight: 400;
+            font-family: "Open Sans";
+            font-size: 24px;
+            /* Add any other textarea styles here */
+        }
+        .svgBackground {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Ensure SVG doesn't interfere with textarea interactions */
+            z-index: -1; /* Move the SVG behind the textarea */
+            /* Add any other styles needed for the SVG background */
+        }
+    }
+    .actions {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 50px;
+        .btnSave {
+            // border-radius: 29px;
+            // padding: 3px 3px;
+            // width: 297px;
+            // height: 54px;
+            // background: linear-gradient(38deg, #d9d9d9 0%, #ffacac 25%, #f1b1b1 50%, #dad5d5 75%, #adaaaa 100%);
+            // font-family: "Open Sans";
+            // font-weight: bold;
+            // font-size: 30px;
+            // text-transform: capitalize;
+            // text-align: center;
+            // color: #1f1e1e;\
+            display: inline-block;
+            padding: .75rem 1.25rem;
+            border-radius: 10rem;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: .15rem;
+            transition: all .3s;
+            position: relative;
+            overflow: hidden;
+            font-family: "Open Sans";
+            font-weight: bold;
+            z-index: 1;
+        
+            &:after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #000000;
+                border-radius: 10rem;
+                z-index: -2;
+            }
+        
+            &:before {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0%;
+                height: 100%;
+                background-color: darken(#ff0000, 15%);
+                transition: all .3s;
+                border-radius: 10rem;
+                z-index: -1;
+            }
+        
+            &:hover {
+                color: #fff;
+        
+                &:before {
+                    width: 100%;
+                }
+            }
+        }
+        .btnSubmit {
+            display: inline-block;
+                padding: .75rem 1.25rem;
+                border-radius: 10rem;
+                color: #fff;
+                text-transform: uppercase;
+                font-size: 1rem;
+                letter-spacing: .15rem;
+                transition: all .3s;
+                position: relative;
+                overflow: hidden;
+                font-family: "Open Sans";
+                font-weight: bold;
+                z-index: 1;
+            
+                &:after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: #000000;
+                    border-radius: 10rem;
+                    z-index: -2;
+                }
+            
+                &:before {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 0%;
+                    height: 100%;
+                    background-color: darken(#ff0000, 15%);
+                    transition: all .3s;
+                    border-radius: 10rem;
+                    z-index: -1;
+                }
+            
+                &:hover {
+                    color: #fff;
+            
+                    &:before {
+                        width: 100%;
+                    }
+                }
+        }
+    }
+        
+}
+.successMessage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.okButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}

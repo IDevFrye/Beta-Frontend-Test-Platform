@@ -1,12 +1,19 @@
 import React from "react";
 import logo from "../../assets/Header_Logo.png";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./HeaderMain.module.scss";
-const HeaderMain = ({ isAuth }) => {
+import { logout, selectIsAuth } from "../../redux/slices/auth";
+const HeaderMain = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const logOut = () => {
-    alert("You've been logged out");
-    navigate("/login");
+  const isAuth = useSelector(selectIsAuth);
+
+  const onClickLogout = () => {
+    if (window.confirm("Вы точно хотите выйти?")) {
+      dispatch(logout());
+      navigate("/login");
+    }
   };
   return (
     <header>
@@ -25,7 +32,7 @@ const HeaderMain = ({ isAuth }) => {
         </ul>
       </nav>
       {isAuth ? (
-        <button onClick={logOut} className={styles.button}>
+        <button onClick={onClickLogout} className={styles.button}>
           ВЫЙТИ
         </button>
       ) : (
