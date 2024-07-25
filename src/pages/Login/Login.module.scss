@@ -1,18 +1,21 @@
 .login {
     position: relative;
-    max-width: 1600px;
+    width: 1900px;
     margin: 0 auto;
+    display:flex;
     .container {
         margin: 0px auto;
-        padding: 50px 50px 0 50px;
-
+        padding: 50px 50px 0 250px;
+        width: 60%;
+        
         .parts {
             display: flex;
             justify-content: space-between;
             position: relative;
+            // width: 50%;
             main {
                 form {
-                    margin-top: 50px;
+                        margin-top: 79px;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
@@ -77,17 +80,15 @@
         }
     }
     .intro {
-        position: absolute;
-        top: 0;
-        right: 0;
         height: 100vh;
-        width: 663px;
+        width: 40%;
         background: #141416;
         img {
-            width: 341.07px;
-            height: 332.35px;
-            margin-top: 150px;
-            margin-left: 150px;
+            width: 441.07px;
+            height: 432.35px;
+                margin-top: 150px;
+                    margin-left: 145px;
+            
         }
         h1 {
             margin: 0;
@@ -99,7 +100,7 @@
             text-align: center;
         }
         p {
-            margin: 15px 0 0 150px;
+            margin: 15px 0 0 180px;
             padding: 0;
             color: rgb(109, 109, 109);
             font-size: 20px;

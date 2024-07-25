@@ -1,0 +1,323 @@
+.container {
+    max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 20px;
+}
+
+.mainContent {
+    flex: 1;
+    padding: 20px;
+    margin: 0 0 40px 0;
+
+    h1 {
+        color: rgb(0, 0, 0);
+            font-family: Montserrat;
+            font-size: 75px;
+            font-weight: 600;
+            line-height: 120%;
+            letter-spacing: 1px;
+            text-align: left;
+            margin-top: 10px;
+    }
+}
+
+.table {
+    display: flex;
+    flex-direction: column;
+}
+
+.tableHeader,
+.tableRow {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    align-items: center;
+    padding: 10px 0;
+    justify-items: center;
+    color: rgb(147, 152, 154);
+    font-family: Montserrat;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 130%;
+    letter-spacing: 1%;
+    text-align: left;
+}
+.first {
+    justify-self: left;
+    display:flex;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+    
+}
+
+.ava {
+    background-image: url("../../../assets/Main_Logo.png");
+    height: 72px;
+    width: 72px;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-color: black;
+    border: 3.5px solid rgb(255, 255, 255);
+    border-radius: 1750.91px;
+}
+
+.tableHeader {
+    
+    border-bottom: 0px solid #000;
+}
+
+.tableBody {
+    max-height: 380px;
+    /* Устанавливаем максимальную высоту для тела таблицы кандидатов */
+    overflow-y: auto;
+    /* Добавляем вертикальный скролл */
+}
+
+.tableRow {
+    border-bottom: 1px solid #ddd;
+
+    &:hover {
+        background-color: #f8e3e3;
+    }
+}
+
+.name {
+    color: rgb(20, 20, 22);
+        font-family: Montserrat;
+        font-size: 24.51px;
+        font-weight: 500;
+        line-height: 140%;
+        letter-spacing: 0px;
+        text-align: left;
+        margin: 13px;
+        
+}
+.count {
+    color: rgb(20, 20, 22);
+        font-family: Montserrat;
+        font-size: 24.51px;
+        font-weight: 600;
+        line-height: 140%;
+        letter-spacing: 0px;
+        text-align: left;
+}
+.average {
+    color: rgb(16, 195, 82);
+        font-family: Montserrat;
+        font-size: 24.51px;
+        font-weight: 500;
+        line-height: 130%;
+        letter-spacing: 1%;
+        text-align: left;
+}
+.assignButton {
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 12px;
+    background: rgb(0, 0, 0);
+    width: 60px;
+    height: 60px;
+    color: rgb(255, 255, 255);
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 36px;
+    letter-spacing: 1%;
+    text-align: center;
+    padding:12px;
+    text-transform: uppercase;
+}
+
+.assignButton:hover {
+    background-color: rgb(226, 51, 51);
+    color: rgb(255, 255, 255);
+    transition: .3s ease-out;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modalInput {
+    border-radius: 14.88px;
+    background: rgb(237, 237, 237);
+    border: none;
+    width: 595.9px;
+    height: 57px;
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 15.71px;
+    font-weight: 500;
+    line-height: 117.5%;
+    letter-spacing: -2%;
+    text-align: left;
+    padding: 20px;
+    &::placeholder{
+        color: rgb(194, 195, 203);
+        font-family: Montserrat;
+        font-size: 15.71px;
+        font-weight: 500;
+        line-height: 117.5%;
+        letter-spacing: -2%;
+        text-align: left;
+    }
+}
+
+.modalContent {
+    border-radius: 41px;
+    background: rgb(255, 255, 255);
+    padding: 33px 80px;
+    width: 50%;
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.modalHeader h2 {
+    margin: 0;
+}
+
+.closeButton {
+    cursor: pointer;
+    font-size: 24px;
+    box-sizing: border-box;
+    border: 2px solid rgb(226, 51, 51);
+    border-radius: 16.17px;
+    background: rgb(255, 255, 255);
+    color: rgb(226, 51, 51);
+    font-family: Inter;
+    font-weight: 400;
+    line-height: 24.26px;
+    letter-spacing: 0%;
+    text-align: left;
+    text-transform: uppercase;
+    padding: 10px 13px;
+    margin-left: 10px;
+}
+
+.mainHR {
+    width: 100px;
+    float:left;
+    margin:0;
+}
+
+.tableModal {
+    display: grid;
+    grid-template-columns: 0.2fr 0.35fr 2fr;
+    align-items: center;
+    color: rgb(26, 32, 44);
+    font-family: Montserrat;
+    font-size: 22.39px;
+    font-weight: 600;
+    line-height: 150%;
+    letter-spacing: 0.25px;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.tableBodyM {
+    max-height: 270px;
+        /* Устанавливаем максимальную высоту для списка задач */
+        overflow-y: auto;
+}
+
+.taskList {
+    
+    display:flex;
+    flex-flow: column;
+}
+
+.taskItem {
+    display: grid;
+    grid-template-columns: 0.2fr 0.3fr 2fr;
+    align-items: center;
+}
+
+hr {
+    opacity: 40%;
+}
+
+.taskItem span {
+    margin-left: 10px;
+}
+
+.taskItem i {
+    font-size: 25px;
+    cursor: pointer;
+    color: rgb(237, 237, 237);
+}
+
+.taskItem .selected i{
+    color: rgb(226, 51, 51);
+}
+
+.taskID{
+    color: rgb(20, 20, 22);
+    font-family: Montserrat;
+    font-size: 26.11px;
+    font-weight: 600;
+    line-height: 140%;
+    letter-spacing: 0px;
+    text-align: left;
+}
+
+.taskText {
+    color: rgb(1, 1, 1);
+    font-family: Montserrat;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 130%;
+    letter-spacing: 1%;
+    text-align: left;
+}
+
+.modalBottom {
+    display:flex;
+    justify-content: right;
+    align-items: center;
+    margin-top: 40px;
+}
+
+button {
+    box-sizing: border-box;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 16.17px;
+    background: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    padding: 10px 20px;
+    cursor: pointer;
+    color: rgb(0, 0, 0);
+    font-family: Inter;
+    font-size: 16.17px;
+    font-weight: 600;
+    line-height: 24.26px;
+    letter-spacing: 0%;
+    text-align: left;
+    text-transform: uppercase;
+    margin-top: 0px;
+}
+
+button:hover {
+    background-color: #000000;
+    color: white;
+    transition: .5s ease-out;
+}
+
+.closeButton:hover {
+    background-color: rgb(226, 51, 51);
+    color: white;
+    transition: .5s ease-out;
+}

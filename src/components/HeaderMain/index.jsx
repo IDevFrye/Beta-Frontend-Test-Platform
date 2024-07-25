@@ -15,6 +15,7 @@ const HeaderMain = () => {
       navigate("/login");
     }
   };
+  
   return (
     <header>
       <img src={logo} alt="BIA Logo" />
@@ -24,22 +25,16 @@ const HeaderMain = () => {
             <Link to="/">Главная</Link>
           </li>
           <li>
-            <a href="#">Наш сайт</a>
+            <a href="https://bia-tech.ru/?utm_referrer=https%3A%2F%2Fwww.google.com%2F">Наш сайт</a>
           </li>
           <li>
-            <a href="#">Поддержка</a>
+            <a href="mailto:VCP@mail.ru&body=...&subject=[ОЭ'2024]{{ url + userId }}">Поддержка</a>
           </li>
         </ul>
       </nav>
-      {isAuth ? (
-        <button onClick={onClickLogout} className={styles.button}>
-          ВЫЙТИ
-        </button>
-      ) : (
-        <Link to="/login" className={styles.button}>
-          ВОЙТИ
-        </Link>
-      )}
+      <Link to="/login" className={styles.button}>
+        ВОЙТИ
+      </Link>
     </header>
   );
 };

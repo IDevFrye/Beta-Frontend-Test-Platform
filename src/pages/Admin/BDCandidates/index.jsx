@@ -1,9 +1,175 @@
-import React from 'react'
-
+import React, { useState } from "react";
+import HeaderAdmin from "../../../components/HeaderAdmin";
+import Footer from "../../../components/Footer";
+import styles from "./BDCandidates.module.scss";
+import ava from "../../../assets/Main_Logo.png";
 const BDCandidates = () => {
-  return (
-    <div>BDCandidates</div>
-  )
-}
+  const [candidates, setCandidates] = useState([
+    {
+      id: 1,
+      avatar: ava,
+      name: "Коба Алексей Юрьевич",
+      taskCount: 5,
+      averageScore: 10,
+    },
+    {
+      id: 2,
+      avatar: ava,
+      name: "Мамонова Алина Сергеевна",
+      taskCount: 5,
+      averageScore: 10,
+    },
+    {
+      id: 3,
+      avatar: ava,
+      name: "Мамонова Алина Сергеевна",
+      taskCount: 5,
+      averageScore: 10,
+    },
+    {
+      id: 4,
+      avatar: ava,
+      name: "Мамонова Алина Сергеевна",
+      taskCount: 5,
+      averageScore: 10,
+    },
+    {
+      id: 5,
+      avatar: ava,
+      name: "Мамонова Алина Сергеевна",
+      taskCount: 5,
+      averageScore: 10,
+    },
+    {
+      id: 6,
+      avatar: ava,
+      name: "Мамонова Алина Сергеевна",
+      taskCount: 5,
+      averageScore: 10,
+    },
+    {
+      id: 7,
+      avatar: ava,
+      name: "Мамонова Алина Сергеевна",
+      taskCount: 5,
+      averageScore: 10,
+    },
+    // Добавьте больше данных по аналогии
+  ]);
+  const [tasks, setTasks] = useState([
+    { id: 100, text: "Получить массив подстрок из строки по заданному разделителю" },
+    { id: 101, text: "Преобразовать таблицу значений в массив строки" },
+    { id: 102, text: "Написать функцию, которая соберет строку из элементов массива" },
+    { id: 103, text: "Написать функцию, которая соберет строку из элементов массива" },
+    { id: 104, text: "Написать функцию, которая соберет строку из элементов массива" },
+    { id: 105, text: "Написать функцию, которая соберет строку из элементов массива" },
+    { id: 106, text: "Написать функцию, которая соберет строку из элементов массива" },
+    { id: 107, text: "Написать функцию, которая соберет строку из элементов массива" },// Добавьте больше задач по аналогии
+  ]);
+  const [selectedTasks, setSelectedTasks] = useState([]);
+  const [filterText, setFilterText] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentCandidateId, setCurrentCandidateId] = useState(null);
 
-export default BDCandidates
+  const openModal = (candidateId) => {
+    setCurrentCandidateId(candidateId);
+    setModalOpen(true);
+  };
+
+  const toggleTaskSelection = (taskId) => {
+    setSelectedTasks((prevSelectedTasks) =>
+      prevSelectedTasks.includes(taskId)
+        ? prevSelectedTasks.filter((id) => id !== taskId)
+        : [...prevSelectedTasks, taskId]
+    );
+  };
+
+  const saveAssignments = () => {
+    // Здесь должен быть API вызов для сохранения данных
+    setModalOpen(false);
+    setSelectedTasks([]);
+  };
+
+  return (
+    <div className={styles.container}>
+      <HeaderAdmin />
+      <main className={styles.mainContent}>
+        <hr className={styles.mainHR}></hr>
+        <h1>Кандидаты</h1>
+        <div className={styles.table}>
+          <div className={styles.tableHeader}>
+            <span className={styles.first}>ФИО</span>
+            <span>Задания</span>
+            <span>Средняя оценка</span>
+            <span>Назначить</span>
+          </div>
+          <div className={styles.tableBody}>
+            {candidates.map((candidate) => (
+              <div key={candidate.id} className={styles.tableRow}>
+                <span className={styles.first}>
+                  <div className={styles.ava}></div>
+                  <span className={styles.name}>{candidate.name}</span>
+                </span>
+                <span className={styles.count}>{candidate.taskCount}</span>
+                <span className={styles.average}>{candidate.averageScore}</span>
+                <span className={styles.assignButton} onClick={() => openModal(candidate.id)}>+</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </main>
+      <Footer />
+
+      {modalOpen && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <div className={styles.modalHeader}>
+              <h2>Задания</h2>
+              
+              <input className={styles.modalInput}
+              type="text"
+              placeholder="Поиск по содержанию"
+              value={filterText}
+              onChange={(e) => setFilterText(e.target.value)}
+              />
+              
+            </div>
+            
+            <div className={styles.taskList}>
+              <div className={styles.tableModal}>
+                <span className={styles.first}></span>
+                <span>Номер</span>
+                <span>Текст задания</span>
+              </div>
+              <div className={styles.tableBodyM}>
+                {tasks
+                  .filter((task) => task.text.toLowerCase().includes(filterText.toLowerCase()))
+                  .map((task) => (
+                    <div>
+                      <div key={task.id} className={styles.taskItem}>
+                        <span
+                          className={selectedTasks.includes(task.id) ? styles.selected : ""}
+                          onClick={() => toggleTaskSelection(task.id)}
+                        >
+                          {selectedTasks.includes(task.id) ? <i class="fa-solid fa-circle-check"></i> : <i class="fa-solid fa-circle-check"></i>}
+                        </span>
+                        <span className={styles.taskID}>{task.id}</span>
+                        <span className={styles.taskText}>{task.text}</span>
+                      </div>
+                      <hr></hr>
+                    </div>
+                  ))}
+                </div>
+            </div>
+            <div className={styles.modalBottom}>
+              <button onClick={saveAssignments}>Сохранить</button>
+              <span className={styles.closeButton} onClick={() => setModalOpen(false)}>×</span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default BDCandidates;

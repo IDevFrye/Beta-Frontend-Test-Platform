@@ -1,3 +1,4 @@
+// Register/index.jsx
 import React from "react";
 import styles from "./Register.module.scss";
 import { Link, Navigate } from "react-router-dom";
@@ -5,22 +6,14 @@ import logo from "../../assets/Header_Logo.png";
 import AuthLogo from "../../assets/Auth_Logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import {
-  fetchRegister,
-  selectIsAuth,
-  selectUserRole,
-} from "../../redux/slices/auth";
+import { fetchRegister, selectIsAuth, selectUserRole } from "../../redux/slices/auth";
+
 const Register = () => {
+  const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
   const role = useSelector(selectUserRole);
-  const dispatch = useDispatch();
 
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors, isValid },
-  } = useForm({
+  const { register, handleSubmit, setError, formState: { errors, isValid } } = useForm({
     defaultValues: {
       surname: "",
       name: "",
@@ -34,7 +27,8 @@ const Register = () => {
   const onSubmit = async (values) => {
     const data = await dispatch(fetchRegister(values));
     if (!data.payload) {
-      return alert("Не удалось зарегистрироваться");
+      alert("Не удалось зарегистрироваться");
+      return;
     }
     if ("token" in data.payload) {
       window.localStorage.setItem("token", data.payload.token);
@@ -42,8 +36,9 @@ const Register = () => {
   };
 
   if (isAuth) {
-    return role === "admin" ? <Navigate to="/admin" /> : <Navigate to="/" />;
+    return role === "admin" ? <Navigate to="/adminhome" /> : <Navigate to="/userhome" />;
   }
+
   return (
     <div className={styles.register}>
       <div className={styles.container}>
@@ -55,43 +50,29 @@ const Register = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <label>Регистрация</label>
               <input
-                error={Boolean(errors.fullName?.message)}
-                helperText={errors.fullName?.message}
                 {...register("surname", { required: "Укажите фамилию" })}
                 placeholder="Фамилия"
               />
               <input
-                error={Boolean(errors.fullName?.message)}
-                helperText={errors.fullName?.message}
                 {...register("name", { required: "Укажите имя" })}
                 placeholder="Имя"
               />
               <input
-                error={Boolean(errors.fullName?.message)}
-                helperText={errors.fullName?.message}
                 {...register("patronymic", { required: "Укажите отчество" })}
                 placeholder="Отчество"
               />
               <input
-                placeholder="Почта"
-                label="E-Mail"
-                error={Boolean(errors.email?.message)}
-                helperText={errors.email?.message}
                 {...register("email", { required: "Укажите почту" })}
-                type="Email"
+                type="email"
+                placeholder="Почта"
               />
               <input
-                className={styles.field}
-                label="Пароль"
-                error={Boolean(errors.password?.message)}
-                helperText={errors.password?.message}
                 {...register("password", { required: "Укажите пароль" })}
-                fullWidth
                 type="password"
                 placeholder="Пароль"
               />
               <button disabled={!isValid} type="submit">
-              Подтвердить
+                Подтвердить
               </button>
               <Link to="/login">Войти</Link>
             </form>
@@ -108,5 +89,3 @@ const Register = () => {
 };
 
 export default Register;
-
-//add "Пользователь с такой почтой уже существует"

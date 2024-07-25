@@ -1,0 +1,88 @@
+.container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 20px;
+    main {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 30px;
+        flex-wrap: wrap;
+        height: 615px;
+        .info {
+            width: 40%;
+            h1 {
+                margin: 0;
+                font-size: 75px;
+                font-weight: 600;
+                line-height: 120%;
+                letter-spacing: 1px;
+                text-align: left;
+                color: #141416;
+                position: relative;
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: -6px;
+                    left: 6px;
+                    border: 1px solid rgb(32, 31, 31);
+                    opacity: 0.2;
+                    display: block;
+                    width: 195px;
+                }
+            }
+            p {
+                margin: 15px 0 0 0;
+                color: rgb(103, 103, 103);
+                font-family: Inter;
+                font-size: 18px;
+                font-weight: 400;
+                line-height: 28px;
+                letter-spacing: 0px;
+                text-align: justify;
+            }
+            .actions {
+                display: flex;
+                margin-top: 30px;
+                .buttonProfile {
+                    padding: 15px 30px;
+                    background: #141416;
+                    border-radius: 12px;
+                    text-transform: uppercase;
+                    text-decoration: none;
+                    color: #fff;
+                }
+                .buttonRegister {
+                    margin-right: 20px;
+                    padding: 15px 30px;
+                    background: #141416;
+                    border-radius: 12px;
+                    text-transform: uppercase;
+                    text-decoration: none;
+                    color: rgb(255, 255, 255);
+                    font-family: Montserrat;
+                    font-size: 16.27px;
+                    font-weight: 500;
+                    line-height: 24px;
+                    letter-spacing: 1%;
+                    text-align: left;
+                    text-transform: uppercase;
+                }
+                .buttonLogin {
+                    padding: 17px 30px;
+                    text-transform: uppercase;
+                    text-decoration: none;
+                    color: #000;
+                    font-family: Montserrat;
+                    border: 1.5px solid rgb(0, 0, 0);
+                    border-radius: 12px;
+                }
+            }
+            
+        }
+        img {
+            width: 641px;
+            height: 515px;
+        }
+    }
+}

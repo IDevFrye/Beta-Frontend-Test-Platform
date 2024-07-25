@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import HeaderMain from "../../../components/HeaderMain";
+import HeaderUser from "../../../components/HeaderUser";
 import Footer from "../../../components/Footer";
 import styles from "./UserProfile.module.scss";
 import Avatar from "../../../assets/avatar.png";
@@ -32,7 +32,7 @@ const UserProfile = () => {
   return (
     <>
       <div className={styles.container}>
-        <HeaderMain />
+        <HeaderUser />
         <main>
           <section className={styles.person}>
             <img src={profileImage} alt="Person's Avatar" />
@@ -85,7 +85,7 @@ const UserProfile = () => {
                         {/*MUST ADD FETCHED DATA*/}
                         <h2>Задание 3</h2>
                         <Link to="/usertasks/:taskNumber">
-                          Подробнее >
+                          Подробнее 
                         </Link>{" "}
                         {/*add USERTASK NUMBER FROM BACKEND! */}
                       </div>

@@ -1,3 +1,4 @@
+// Helpers.js
 import { redirect } from "react-router-dom";
 
 export const isAuthenticated = async () => {
@@ -5,5 +6,6 @@ export const isAuthenticated = async () => {
   if (token) throw redirect("/");
   return null;
 };
+
 
 
