@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./UserHome.module.scss";
 import HeaderMain from "../../../components/HeaderMain";
 import MainLogo from "../../../assets/Main_Logo.png";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Footer from "../../../components/Footer";
+import { useSelector } from "react-redux";
+import { selectIsAuth } from "../../../redux/slices/auth";
 const UserHome = () => {
-  const [isAuth, setIsAuth] = useState(true);
-
-  // console.log(isAuth);
+  const isAuth = useSelector(selectIsAuth);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAuth) {
+      navigate("/login");
+    }
+  }, [isAuth, navigate]);
+  console.log(isAuth);
   return (
     <>
       <div className={styles.container}>

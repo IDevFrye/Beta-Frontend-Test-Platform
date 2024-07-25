@@ -3,15 +3,22 @@ import HeaderMain from "../../../components/HeaderMain";
 import Footer from "../../../components/Footer";
 import styles from "./UserProfile.module.scss";
 import Avatar from "../../../assets/avatar.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectIsAuth } from "../../../redux/slices/auth";
 import FileUpload from "../../../components/FileUpload";
 import EditInput from "../../../components/EditInput";
 
 const UserProfile = () => {
-  const [isAuth, setIsAuth] = useState(true);
+  const isAuth = useSelector(selectIsAuth);
+  const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState("profile");
   const [profileImage, setProfileImage] = useState(Avatar);
-
+  if (!isAuth) {
+    navigate("/login");
+  }
+  
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
@@ -25,7 +32,7 @@ const UserProfile = () => {
   return (
     <>
       <div className={styles.container}>
-        <HeaderMain isAuth={isAuth} />
+        <HeaderMain />
         <main>
           <section className={styles.person}>
             <img src={profileImage} alt="Person's Avatar" />
@@ -77,7 +84,10 @@ const UserProfile = () => {
                       <div className={styles.taskNumber}>
                         {/*MUST ADD FETCHED DATA*/}
                         <h2>Задание 3</h2>
-                        <Link to="/usertasks/:taskNumber">Подробнее ></Link> {/*add USERTASK NUMBER FROM BACKEND! */}
+                        <Link to="/usertasks/:taskNumber">
+                          Подробнее >
+                        </Link>{" "}
+                        {/*add USERTASK NUMBER FROM BACKEND! */}
                       </div>
                       <div className={styles.result}>
                         {/*MUST ADD FETCHED DATA*/}
@@ -110,12 +120,11 @@ const UserProfile = () => {
                       </div>
                     </div>
                   </div>
-                  
                 </>
               ) : (
                 <div className={styles.edit}>
                   <h2>Фото профиля</h2>
-                  <FileUpload onSubmit={handleProfileImageSubmit}/>
+                  <FileUpload onSubmit={handleProfileImageSubmit} />
                   <EditInput />
                 </div>
               )}
