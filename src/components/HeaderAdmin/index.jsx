@@ -34,7 +34,7 @@ const HeaderMain = () => {
           <li className={isActive("/admin/bdtasks") ? styles.active : ""}>
             <Link to="/admin/bdtasks">Задания</Link>
           </li>
-          <li className={isActive("/admin/bdresults") ? styles.active : ""}>
+          <li className={isActive("/admin/bdresults") || isActive("/admin/bdresult") ? styles.active : ""}>
             <Link to="/admin/bdresults">Проверка</Link>
           </li>
         </ul>

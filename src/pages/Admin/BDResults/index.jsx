@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import HeaderAdmin from "../../../components/HeaderAdmin";
 import Footer from "../../../components/Footer";
 import styles from "./BDResults.module.scss";
@@ -248,7 +249,9 @@ const BDResults = () => {
                 <span className={styles.date}>{result.date}</span>
                 <span className={styles.taskNumber}>{result.taskNumber}</span>
                 <span className={styles.score}>{result.score}</span>
-                <span className={styles.detailsButton}><i class="fa-solid fa-chevron-right"></i></span>
+                <Link to="/admin/bdresult" className={styles.detailsButton}>
+                  <i class="fa-solid fa-chevron-right"></i>
+                </Link>
               </div>
             ))}
           </div>

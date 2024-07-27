@@ -26,7 +26,7 @@ const router = createBrowserRouter(
       <Route path="adminhome" element={<AdminHome />} />
       <Route path="admin/bdcandidates" element={<BDCandidates />} />
       <Route path="admin/bdresults" element={<BDResults />} />
-      <Route path="admin/bdresult/:userId/:taskNumber" element={<BDResult />} />
+      <Route path="admin/bdresult" element={<BDResult />} />
       <Route path="admin/bdtasks" element={<BDTasks />} />
     </Route>
   )

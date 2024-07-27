@@ -22,6 +22,12 @@ header {
                     color: #606060;
                 }
             }
+            li:hover {
+                a {
+                    font-weight: 700;
+                    color: rgb(226, 51, 51);
+                }
+            }
         }
         
     }

@@ -1,0 +1,166 @@
+.bdResultPage {
+    font-family: 'Montserrat', sans-serif;
+    color: #1A202C;
+    max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 20px;
+
+    .container {
+        display: flex;
+        padding: 20px;
+        
+    }
+
+    .leftSection {
+        width: 30%;
+        padding: 20px;
+        hr {
+            width: 100px;
+            margin: 0;
+        }
+
+        h1 {
+            color: rgb(0, 0, 0);
+            font-family: Montserrat;
+            font-size: 75px;
+            font-weight: 600;
+            line-height: 120%;
+            letter-spacing: 1px;
+            text-align: left;
+            margin-bottom: 20px;
+            margin-top: 0;
+        }
+
+        .taskInfo {
+            margin-bottom: 40px;
+            span {
+                margin-bottom: 10px;
+                font-family: Montserrat;
+                font-size: 20px;
+                font-weight: 500;
+                line-height: 140%;
+                letter-spacing: 0px;
+                text-align: left;   
+            }
+            p {
+                // margin-bottom: 10px;
+                font-family: Montserrat;
+                font-size: 20px;
+                font-weight: 500;
+                line-height: 140%;
+                letter-spacing: 0px;
+                text-align: left;
+            }
+        }
+
+        .autoCheckResults {
+            margin-bottom: 20px;
+
+            .result {
+                display: flex;
+                justify-content: space-between;
+                margin: 5px 0;
+
+                p {
+                    margin: 0;
+                }
+            }
+        }
+
+        .scoreSection {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+
+            input {
+                width: 50px;
+                text-align: center;
+            }
+
+            button {
+                margin-top: 10px;
+                padding: 5px 10px;
+                border: none;
+                background-color: #1A202C;
+                color: #fff;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+        }
+
+        .downloadLink {
+            display: block;
+            margin-top: 20px;
+            color: #000;
+            text-decoration: underline;
+        }
+    }
+
+    .rightSection {
+        width: 70%;
+        padding: 20px;
+
+        .codeDisplay {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .commentsSection {
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+
+            .commentInput {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+
+                input {
+                    flex: 1;
+                    padding: 10px;
+                    margin-right: 10px;
+                    border: 1px solid #ddd;
+                    border-radius: 5px;
+                }
+
+                button {
+                    padding: 10px 20px;
+                    border: none;
+                    background-color: #1A202C;
+                    color: #fff;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+            }
+
+            .comments .comment {
+                margin-bottom: 20px;
+
+                &.admin {
+                    text-align: left;
+                }
+
+                &.user {
+                    text-align: right;
+                }
+
+                .commentAuthor {
+                    font-weight: bold;
+                }
+
+                .commentTime {
+                    font-size: 0.8em;
+                    color: #aaa;
+                }
+
+                .commentText {
+                    margin-top: 5px;
+                }
+            }
+        }
+    }
+}
