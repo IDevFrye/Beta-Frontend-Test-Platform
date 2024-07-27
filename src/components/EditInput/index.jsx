@@ -8,13 +8,13 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 const EditInput = () => {
   const dispatch = useDispatch();
-  const isAuth = useSelector(selectIsAuth);
+  // const isAuth = useSelector(selectIsAuth);
   const userData = useSelector((state) => state.auth.data);
 
   useEffect(() => {
-    dispatch(fetchAuthMe());
+    // dispatch(fetchAuthMe());
   }, []);
-  console.log(fetchAuthMe());
+  // console.log(fetchAuthMe());
   const data = [
     { label: "Фамилия", stateKey: "surname" },
     { label: "Имя", stateKey: "name" },

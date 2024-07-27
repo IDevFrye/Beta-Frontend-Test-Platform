@@ -5,12 +5,12 @@ import styles from "./BDTasks.module.scss";
 
 const BDTasks = () => {
   const [tasks, setTasks] = useState([
-    { id: 100, text: "Получить массив подстрок из строки по заданному разделителю" },
-    { id: 101, text: "Преобразовать таблицу значений в массив строки" },
-    { id: 102, text: "Написать функцию, которая соберет строку из элементов массива" },
-    { id: 103, text: "Преобразовать таблицу значений в массив строки" },
-    { id: 104, text: "Преобразовать таблицу значений в определитель матрицы" },
-    { id: 105, text: "Преобразовать таблицу значений в строку собственных значений матрицы" },
+    { id: "100", text: "Получить массив подстрок из строки по заданному разделителю" },
+    { id: "101", text: "Преобразовать таблицу значений в массив строки" },
+    { id: "102", text: "Написать функцию, которая соберет строку из элементов массива" },
+    { id: "103", text: "Преобразовать таблицу значений в массив строки" },
+    { id: "104", text: "Преобразовать таблицу значений в определитель матрицы" },
+    { id: "105", text: "Преобразовать таблицу значений в строку собственных значений матрицы" },
   ]);
   const [modalOpen, setModalOpen] = useState(false);
   const [filterText, setFilterText] = useState("");
@@ -26,18 +26,22 @@ const BDTasks = () => {
 
   const addTask = () => setNewTask({ id: "", text: "", isNew: true });
   const editTask = (task) => setEditableTask({ ...task });
-  
+
   const saveTask = (task) => {
     if (task.isNew) {
       setTasks([...tasks, { id: task.id, text: task.text }]);
       setNewTask(null);
     } else {
-      setTasks(tasks.map(t => (t.id === task.id ? task : t)));
+      setTasks(tasks.map(t => (t.id === task.id ? { ...task, isNew: undefined } : t)));
       setEditableTask(null);
     }
   };
 
   const deleteTask = (task) => setTasks(tasks.filter(t => t.id !== task.id));
+
+  const filteredTasks = tasks.filter((task) =>
+    task.text.toLowerCase().includes(filterText.toLowerCase())
+  );
 
   return (
     <div className={styles.container}>
@@ -51,8 +55,8 @@ const BDTasks = () => {
             <span>Текст задания</span>
           </div>
           <div className={styles.tableBody}>
-            {tasks.map((task, index) => (
-              <div key={index} className={styles.tableRow}>
+            {tasks.map((task) => (
+              <div key={task.id} className={styles.tableRow}>
                 <span className={styles.first}>{task.id}</span>
                 <span>{task.text}</span>
               </div>
@@ -83,22 +87,30 @@ const BDTasks = () => {
                 <span>Текст задания</span>
               </div>
               <div className={styles.tableBodyM}>
-                {tasks
-                  .filter((task) => task.text.toLowerCase().includes(filterText.toLowerCase()))
-                  .map((task, index) => (
-                    <div key={index} className={styles.taskItem}>
+                {filteredTasks.length === 0 ? (
+                  <div className={styles.noResultsContainer}>
+                    <div className={styles.noResults}>—</div>
+                    <div className={styles.noResults}>Ничего не найдено</div>
+                  </div>
+                ) : (
+                  filteredTasks.map((task) => (
+                    <div key={task.id} className={styles.taskItem}>
                       {editableTask && editableTask.id === task.id ? (
                         <>
                           <input
                             type="text"
                             value={editableTask.id}
-                            onChange={(e) => setEditableTask({ ...editableTask, id: e.target.value })}
+                            onChange={(e) =>
+                              setEditableTask({ ...editableTask, id: e.target.value })
+                            }
                             className={styles.editInput}
                           />
                           <input
                             type="text"
                             value={editableTask.text}
-                            onChange={(e) => setEditableTask({ ...editableTask, text: e.target.value })}
+                            onChange={(e) =>
+                              setEditableTask({ ...editableTask, text: e.target.value })
+                            }
                             className={styles.editInput}
                           />
                           <div className={styles.taskItemCheck}>
@@ -118,7 +130,8 @@ const BDTasks = () => {
                         </>
                       )}
                     </div>
-                  ))}
+                  ))
+                )}
                 {newTask && (
                   <div className={styles.taskItem}>
                     <input

@@ -3,6 +3,7 @@ import HeaderAdmin from "../../../components/HeaderAdmin";
 import Footer from "../../../components/Footer";
 import styles from "./BDCandidates.module.scss";
 import ava from "../../../assets/Main_Logo.png";
+
 const BDCandidates = () => {
   const [candidates, setCandidates] = useState([
     {
@@ -20,35 +21,28 @@ const BDCandidates = () => {
       averageScore: 10,
     },
     {
-      id: 3,
+      id: 2,
       avatar: ava,
       name: "Мамонова Алина Сергеевна",
       taskCount: 5,
       averageScore: 10,
     },
     {
-      id: 4,
+      id: 2,
       avatar: ava,
       name: "Мамонова Алина Сергеевна",
       taskCount: 5,
       averageScore: 10,
     },
     {
-      id: 5,
+      id: 2,
       avatar: ava,
       name: "Мамонова Алина Сергеевна",
       taskCount: 5,
       averageScore: 10,
     },
     {
-      id: 6,
-      avatar: ava,
-      name: "Мамонова Алина Сергеевна",
-      taskCount: 5,
-      averageScore: 10,
-    },
-    {
-      id: 7,
+      id: 2,
       avatar: ava,
       name: "Мамонова Алина Сергеевна",
       taskCount: 5,
@@ -64,7 +58,8 @@ const BDCandidates = () => {
     { id: 104, text: "Написать функцию, которая соберет строку из элементов массива" },
     { id: 105, text: "Написать функцию, которая соберет строку из элементов массива" },
     { id: 106, text: "Написать функцию, которая соберет строку из элементов массива" },
-    { id: 107, text: "Написать функцию, которая соберет строку из элементов массива" },// Добавьте больше задач по аналогии
+    { id: 1077, text: "Написать функцию, которая соберет строку из элементов массива" },
+    // Добавьте больше задач по аналогии
   ]);
   const [selectedTasks, setSelectedTasks] = useState([]);
   const [filterText, setFilterText] = useState("");
@@ -89,6 +84,8 @@ const BDCandidates = () => {
     setModalOpen(false);
     setSelectedTasks([]);
   };
+
+  const filteredTasks = tasks.filter((task) => task.text.toLowerCase().includes(filterText.toLowerCase()));
 
   return (
     <div className={styles.container}>
@@ -125,16 +122,15 @@ const BDCandidates = () => {
           <div className={styles.modalContent}>
             <div className={styles.modalHeader}>
               <h2>Задания</h2>
-              
-              <input className={styles.modalInput}
-              type="text"
-              placeholder="Поиск по содержанию"
-              value={filterText}
-              onChange={(e) => setFilterText(e.target.value)}
+              <input
+                className={styles.modalInput}
+                type="text"
+                placeholder="Поиск по содержанию"
+                value={filterText}
+                onChange={(e) => setFilterText(e.target.value)}
               />
-              
             </div>
-            
+
             <div className={styles.taskList}>
               <div className={styles.tableModal}>
                 <span className={styles.first}></span>
@@ -142,24 +138,33 @@ const BDCandidates = () => {
                 <span>Текст задания</span>
               </div>
               <div className={styles.tableBodyM}>
-                {tasks
-                  .filter((task) => task.text.toLowerCase().includes(filterText.toLowerCase()))
-                  .map((task) => (
-                    <div>
-                      <div key={task.id} className={styles.taskItem}>
+                {filteredTasks.length > 0 ? (
+                  filteredTasks.map((task) => (
+                    <div key={task.id}>
+                      <div className={styles.taskItem}>
                         <span
                           className={selectedTasks.includes(task.id) ? styles.selected : ""}
                           onClick={() => toggleTaskSelection(task.id)}
                         >
-                          {selectedTasks.includes(task.id) ? <i class="fa-solid fa-circle-check"></i> : <i class="fa-solid fa-circle-check"></i>}
+                          {selectedTasks.includes(task.id) ? (
+                            <i className="fa-solid fa-circle-check"></i>
+                          ) : (
+                            <i className="fa-solid fa-circle"></i>
+                          )}
                         </span>
                         <span className={styles.taskID}>{task.id}</span>
                         <span className={styles.taskText}>{task.text}</span>
                       </div>
-                      <hr></hr>
+                      <hr />
                     </div>
-                  ))}
-                </div>
+                  ))
+                ) : (
+                  <div className={styles.noResultsContainer}>
+                    <div className={styles.noResults}>—</div>
+                    <div className={styles.noResults}>Ничего не найдено</div>
+                  </div>
+                )}
+              </div>
             </div>
             <div className={styles.modalBottom}>
               <button onClick={saveAssignments}>Сохранить</button>

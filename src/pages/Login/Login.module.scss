@@ -10,8 +10,11 @@
         
         .parts {
             display: flex;
+            width: 680px;
             justify-content: space-between;
             position: relative;
+            gap: 240px;
+            flex-direction: column;
             // width: 50%;
             main {
                 form {
@@ -75,6 +78,39 @@
                         box-shadow: 5px 10px 50px 0px rgba(0, 0, 0, 0.1);
                         background: rgb(255, 255, 255);
                     }
+                    a:hover {
+                        color: #f5f5f5;
+                        background: rgb(0, 0, 0);
+                        transition: .2s ease-out;
+                    }
+                }
+            }
+            .footauth {
+                display: flex;
+                
+                justify-content: space-between;
+                .policy {
+                    color: rgb(170, 170, 170);
+                    font-family: Montserrat;
+                    font-size: 16px;
+                    font-weight: 500;
+                    line-height: 150%;
+                    letter-spacing: 0.2px;
+                    text-align: left;
+                    text-decoration: none;
+                }
+                .policy:hover {
+                    border-bottom: .5px solid;
+                }
+
+                .copy {
+                    color: rgb(170, 170, 170);
+                    font-family: Montserrat;
+                    font-size: 16px;
+                    font-weight: 500;
+                    line-height: 150%;
+                    letter-spacing: 0.2px;
+                    text-align: right;
                 }
             }
         }

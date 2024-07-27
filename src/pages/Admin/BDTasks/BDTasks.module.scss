@@ -7,7 +7,7 @@
 .mainContent {
     flex: 1;
     padding: 20px;
-    margin: 21px 0 162px 0;
+    margin: 0 0 50px 0;
 
     h1 {
         color: rgb(0, 0, 0);
@@ -127,6 +127,15 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    h2 {
+        color: rgb(0, 0, 0);
+        font-family: Montserrat;
+        font-size: 36px;
+        font-weight: 600;
+        line-height: 120%;
+        letter-spacing: 1px;
+        text-align: left;
+    }
 }
 
 .modalInput {
@@ -208,20 +217,48 @@
 
     .taskItemID {
         display: block;
+        color: rgb(20, 20, 22);
+        font-family: Montserrat;
+        font-size: 26.11px;
+        font-weight: 500;
+        line-height: 140%;
+        letter-spacing: 0px;
+        text-align: left;
+        padding-left: 20px;
     }
 
     .taskItemTEXT {
         display: block;
+        color: rgb(1, 1, 1);
+        font-family: Montserrat;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 130%;
+        letter-spacing: 1%;
+        text-align: left;
+        margin-left: 20px;
     }
 
     input[type="text"].editInput {
         border: none;
         background: transparent;
         border-bottom: 1px solid #000;
-        width: 80%;
+        width: 40%;
         font-size: 16px;
         margin: 0;
         padding: 5px;
+        margin-left: 10px;
+    }
+
+    input[type="text"].editInput:nth-child(2) {
+        border: none;
+        background: transparent;
+        border-bottom: 1px solid #000;
+        width: 95%;
+        font-size: 16px;
+        margin: 0;
+        padding: 5px;
+        margin-left: 10px;
     }
 
     .taskItemPencil {
@@ -340,4 +377,20 @@
             border: none;
         }
     }
+}
+
+.noResultsContainer {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 133px;
+    margin-left: 30px;
+    margin-top: 10px;
+}
+
+.noResults {
+    text-align: left;
+    font-family: Montserrat;
+    font-size: 16px;
+    color: rgb(147, 152, 154);
+
 }

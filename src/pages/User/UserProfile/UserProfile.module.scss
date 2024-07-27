@@ -7,6 +7,7 @@
         margin-top: 50px;
         display: flex;
         justify-content: space-between;
+        margin-bottom: 190px;
         .person {
             position: relative;
             &::before {
@@ -148,7 +149,7 @@
                         }
                         .result {
                             h2 {
-                                color: rgb(245, 158, 11);
+                                color: rgb(185, 185, 185);
                                 margin: 0;
                                 font-size: 18px;
                                 font-weight: 600;
@@ -254,6 +255,82 @@
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+.mark:nth-child(1) {
+    .data {
+        .result {
+            h2 {
+                color: rgb(240, 247, 150);
+                font-family: Inter;
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 22px;
+                letter-spacing: 0%;
+                text-align: left;
+            }
+
+            h3 {
+                color: rgb(0, 0, 0);
+                font-family: Montserrat;
+                font-size: 16.04px;
+                font-weight: 500;
+                line-height: 24px;
+                letter-spacing: 0%;
+                text-align: right;
+            }
+        }
+    }
+}
+.mark:nth-child(2) {
+    .data {
+        .result {
+            h2 {
+                color: rgb(185, 185, 185);
+                font-family: Inter;
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 22px;
+                letter-spacing: 0%;
+                text-align: left;
+            }
+            h3 {
+                color: rgb(0, 0, 0);
+                font-family: Montserrat;
+                font-size: 16.04px;
+                font-weight: 500;
+                line-height: 24px;
+                letter-spacing: 0%;
+                text-align: right;
+            }
+        }
+    }
+}
+
+.mark:nth-child(3) {
+    .data {
+        .result {
+            h2 {
+                color: rgb(241, 0, 0);
+                font-family: Inter;
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 22px;
+                letter-spacing: 0%;
+                text-align: left;
+            }
+
+            h3 {
+                color: rgb(226, 51, 51);
+                font-family: Montserrat;
+                font-size: 16.04px;
+                font-weight: 500;
+                line-height: 24px;
+                letter-spacing: 0%;
+                text-align: right;
             }
         }
     }

@@ -76,6 +76,10 @@
                     text-align: left;
                     text-transform: uppercase;
                 }
+                .buttonProfile:hover {
+                    background-color: rgb(226, 51, 51);
+                        transition: .2s ease-out;
+                }
             }
 
         }

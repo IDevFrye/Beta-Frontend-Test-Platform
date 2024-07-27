@@ -77,6 +77,10 @@ const Register = () => {
               <Link to="/login">Войти</Link>
             </form>
           </main>
+          <div className={styles.footauth}>
+            <a href="#" className={styles.policy}>Политика конфиденциальности</a>
+            <span className={styles.copy}>Copyright 2024</span>
+          </div>
         </div>
       </div>
       <div className={styles.intro}>

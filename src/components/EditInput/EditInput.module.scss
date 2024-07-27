@@ -57,6 +57,10 @@ form {
         margin-right: 15px;
       }
     }
+    .inputs:first-child>.inputWrapper>input {
+      background-color: #ebebeb;
+      color: rgb(145, 143, 143);
+    }
   }
 
   .btnContainer {
@@ -75,6 +79,12 @@ form {
       border-radius: 11.99px;
       background: rgb(0, 0, 0);
       cursor: pointer;
+    }
+
+    .btn:hover {
+      color: #000000;
+      background: rgb(255, 255, 255);
+      transition: .2s ease-out;
     }
 
     .saveMessage {

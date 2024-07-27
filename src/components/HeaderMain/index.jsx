@@ -21,7 +21,7 @@ const HeaderMain = () => {
       <img src={logo} alt="BIA Logo" />
       <nav>
         <ul>
-          <li>
+          <li className={styles.cur}>
             <Link to="/">Главная</Link>
           </li>
           <li>

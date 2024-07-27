@@ -1,4 +1,4 @@
-header {
+.header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -24,10 +24,22 @@ header {
                     color: #606060;
                 }
             }
+
             li:hover {
-                a{
+                a {
                     font-weight: 700;
                     color: rgb(226, 51, 51);
+                }
+            }
+
+            .active {
+                a {
+                    color: rgb(226, 51, 51);
+                    font-family: Inter;
+                    font-size: 17.83px;
+                    font-weight: 700;
+                    line-height: 26.74px;
+                    text-transform: uppercase;
                 }
             }
         }
@@ -47,6 +59,7 @@ header {
         cursor: pointer;
         text-decoration: none;
     }
+
     .button:hover {
         background-color: rgb(226, 51, 51);
         transition: .2s ease-out;
