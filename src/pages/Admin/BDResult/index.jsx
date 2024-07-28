@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import DOMPurify from 'dompurify';
 import HeaderAdmin from '../../../components/HeaderAdmin';
 import Footer from '../../../components/Footer';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import styles from './BDResult.module.scss';
 
 const BDResult = () => {
@@ -13,6 +12,7 @@ const BDResult = () => {
     { id: 1, user: "Admin", time: "17:47", text: "Очень понравилось Ваша работа, замечаний не имею. Оценка - 10/10" },
     { id: 2, user: "Сергей", time: "18:12", text: "Спасибо за предоставленную возможность и обратную связь!" }
   ]);
+  const [highlightedCode, setHighlightedCode] = useState("");
 
   const handleScoreChange = (e) => {
     setScore(e.target.value);
@@ -25,7 +25,7 @@ const BDResult = () => {
   const handleAddComment = () => {
     const newCommentObj = { 
       id: comments.length + 1, 
-      user: "Сергей", 
+      user: "Admin", 
       time: new Date().toLocaleTimeString().slice(0, 5), 
       text: newComment 
     };
@@ -33,7 +33,77 @@ const BDResult = () => {
     setNewComment("");
   };
 
-  const scoreBackgroundColor = score === "-" ? "gray" : score >= 8 ? "green" : score >= 5 ? "yellow" : score >= 0 ? "red" : "gray";
+  const highlightCode = (code) => {
+  // Замена знаков < и > на их HTML-эквиваленты
+  code = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  const patterns = {
+    // Подсветка строк
+    
+    // Подсветка скобок, знаков равно, точки с запятой, минуса, и символов <>
+    '(\\(|\\)|=|;|\\-|&lt;|&gt;|&lt;&gt;|,)': '<span style="color: red;">$1</span>',
+    // Подсветка цифр
+    '(\\b[0-9]+\\b)': '<span style="color: black;">$1</span>',
+    // Подсветка ключевых слов
+    '(Функция|КонецФункции|Попытка|Исключение|КонецПопытки|Возврат|Если|Тогда|КонецЕсли|Новый|Экспорт|Ложь|Истина|Для|Каждого| Из |Цикл|КонецЦикла| Знач | По |Для|\\?)': '<span style="color: red;">$1</span>',
+    '(\\"\\")': '<span style="color: black;">$1</span>',
+    
+  };
+
+  for (const pattern in patterns) {
+    const regex = new RegExp(pattern, 'g');
+    code = code.replace(regex, patterns[pattern]);
+  }
+
+  // Найти оставшийся текст и обернуть его в синий цвет
+  code = code.replace(/(<span style="[^>]*>[^<]*<\/span>|[^<]+)/g, (match) => {
+    if (match.startsWith('<span')) {
+      return match; // Сохраняем уже подсвеченные части
+    } else {
+      return `<span style="color: blue;">${match}</span>`; // Подсвечиваем оставшийся текст
+    }
+  });
+
+  // Возвращаем знаки < и > обратно
+  code = code.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+
+  return code;
+};
+
+  const scoreBackgroundColor = score === "-" ? "rgb(196, 196, 196)" : score >= 8 ? "rgb(120, 222, 126)" : score >= 5 ? "rgb(255, 225, 132)" : score >= 0 ? "rgb(226, 51, 51)" : "rgb(196, 196, 196)";
+
+  const code = `Функция ТаблицаЗначенийВМассив(ТаблицаЗначений) Экспорт
+	
+	Результат = Новый Массив();
+	СтруктураСтрокой = "";
+	НужнаЗапятая = Ложь;
+	
+	Для Каждого Колонка Из ТаблицаЗначений.Колонки Цикл
+		
+		Если НужнаЗапятая Тогда
+			СтруктураСтрокой = СтруктураСтрокой + ",";
+		КонецЕсли;
+		
+		СтруктураСтрокой = СтруктураСтрокой + Колонка.Имя;
+		НужнаЗапятая = Истина;
+		
+	КонецЦикла;
+	
+	Для Каждого Строка Из ТаблицаЗначений Цикл
+		НоваяСтрока = Новый Структура(СтруктураСтрокой);
+		ЗаполнитьЗначенияСвойств(НоваяСтрока, Строка);
+		Результат.Добавить(НоваяСтрока);
+		
+	КонецЦикла;
+	
+	Возврат Результат;
+
+КонецФункции`;
+
+  useEffect(() => {
+    const sanitizedCode = DOMPurify.sanitize(highlightCode(code), { ADD_ATTR: ['style'] });
+    setHighlightedCode(sanitizedCode);
+  }, []);
 
   return (
     <div className={styles.bdResultPage}>
@@ -49,59 +119,55 @@ const BDResult = () => {
             <p>Отправлено: 22.05.2024/12:10</p>
           </div>
           <div className={styles.autoCheckResults}>
-            <div className={styles.result}>
-              <p>Корректность</p>
-              <p>100%</p>
+            <div className={styles.resultMain}>
+              <p><i className="fa-solid fa-circle-check"></i>Корректность</p>
+              <span>100%</span>
             </div>
-            <div className={styles.result}>
-              <p>Ошибки</p>
-              <p>0</p>
-            </div>
-            <div className={styles.result}>
-              <p>Уязвимости</p>
-              <p>0</p>
-            </div>
-            <div className={styles.result}>
-              <p>Дефекты</p>
-              <p>14</p>
+            <div className={styles.resultSec}>
+              <div className={styles.result}>
+                <p><i className="fa-solid fa-bug"></i>Ошибки</p>
+                <span>0</span>
+              </div>
+              <div className={styles.result}>
+                <p><i className="fa-solid fa-shield-halved"></i>Уязвимости</p>
+                <span>0</span>
+              </div>
+              <div className={styles.result}>
+                <p><i className="fa-solid fa-gear"></i>Дефекты</p>
+                <span>14</span>
+              </div>
             </div>
           </div>
-          <div className={styles.scoreSection} style={{ backgroundColor: scoreBackgroundColor }}>
-            {isEditing ? (
-              <input type="text" value={score} onChange={handleScoreChange} />
-            ) : (
-              <p>{score}/10</p>
-            )}
-            <button onClick={() => setIsEditing(!isEditing)}>
-              {isEditing ? "Сохранить" : "Изменить оценку"}
-            </button>
+          <div className={styles.scoreSection} >
+            <div className={styles.scoreSectionText} style={{ backgroundColor: scoreBackgroundColor }}>
+              {isEditing ? (
+                <div className={styles.editingScore}>
+                  <input type="text" value={score} onChange={handleScoreChange}/>
+                  <span>/10</span>
+                </div>
+              ) : (
+                <p>{score}/10</p>
+              )}
+            </div>
+            <div className={styles.scoreSectionButton}>
+              {isEditing ? (
+                <div className={styles.editingScoreButton}>
+                  <button onClick={handleSaveScore}>
+                    Сохранить
+                  </button>
+                </div>
+              ) : (
+                <button onClick={() => setIsEditing(!isEditing)}>
+                  Изменить оценку
+                </button>
+              )}
+            </div>
           </div>
           <a href="/download/report" className={styles.downloadLink}>Скачать отчет анализа решения</a>
         </div>
         <div className={styles.rightSection}>
           <div className={styles.codeDisplay}>
-            <SyntaxHighlighter language="1c" style={oneLight}>
-              {`Функция ТаблицаЗначенийВМассив (ТаблицаЗначений) Экспорт
-Результат = Новый Массив();
-СтруктураСтроки = "";
-НужнаЗапятая = Ложь;
-
-Для Каждого Колонка Из ТаблицаЗначений.Колонки Цикл
-    Если НужнаЗапятая Тогда
-        СтруктураСтроки = СтруктураСтроки + ",";
-    КонецЕсли;
-    
-    СтруктураСтроки = СтруктураСтроки + Колонка.Имя;
-    НужнаЗапятая = Истина;
-КонецЦикла;
-
-Для Каждого Строка Из ТаблицаЗначений Цикл
-    НоваяСтрока = Новый Структура(СтруктураСтроки);
-    ЗаполнитьЗначенияСвойств(НоваяСтрока, Строка);
-    Результат.Добавить(НоваяСтрока);
-КонецЦикла;
-КонецФункции;`}
-            </SyntaxHighlighter>
+            <pre><code dangerouslySetInnerHTML={{ __html: highlightedCode }}></code></pre>
           </div>
           <div className={styles.commentsSection}>
             <div className={styles.commentInput}>
@@ -111,14 +177,14 @@ const BDResult = () => {
                 value={newComment} 
                 onChange={(e) => setNewComment(e.target.value)} 
               />
-              <button onClick={handleAddComment}><i class="fa-solid fa-paper-plane"></i></button>
+              <button onClick={handleAddComment}><i className="fa-solid fa-paper-plane"></i></button>
             </div>
             <div className={styles.comments}>
               {comments.map(comment => (
                 <div className={`${styles.comment} ${comment.user === "Admin" ? styles.admin : styles.user}`} key={comment.id}>
                   <p className={styles.commentAuthor}>{comment.user === "Admin" ? "Admin" : comment.user}</p>
-                  <p className={styles.commentTime}>{comment.time}</p>
                   <p className={styles.commentText}>{comment.text}</p>
+                  <p className={styles.commentTime}>{comment.time}</p>
                 </div>
               ))}
             </div>
