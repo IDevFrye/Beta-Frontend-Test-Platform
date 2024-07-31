@@ -25,7 +25,7 @@ const HeaderMain = () => {
             <Link to="/">Главная</Link>
           </li>
           <li>
-            <a href="https://bia-tech.ru/?utm_referrer=https%3A%2F%2Fwww.google.com%2F">Наш сайт</a>
+            <a target="_blank" href="https://bia-tech.ru/?utm_referrer=https%3A%2F%2Fwww.google.com%2F">Наш сайт</a>
           </li>
           <li>
             <a href="mailto:VCP@mail.ru&body=...&subject=[ОЭ'2024]{{ url + userId }}">Поддержка</a>

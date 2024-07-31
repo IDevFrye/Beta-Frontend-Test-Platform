@@ -27,7 +27,7 @@ const HeaderUser = () => {
           <li className={isActive("/userhome") ? styles.active : ""}>
             <Link to="/userhome">Главная</Link>
           </li>
-          <li className={isActive("/userprofile") ? styles.active : ""}>
+          <li className={isActive("/userprofile") ||isActive("/usertask")||isActive("/userresult") ? styles.active : ""}>
             <Link to="/userprofile">Профиль</Link>
           </li>
           <li>

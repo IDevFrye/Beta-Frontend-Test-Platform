@@ -21,8 +21,8 @@ const router = createBrowserRouter(
       <Route path="register" element={<Register />} />
       <Route path="userhome" element={<UserHome />} />
       <Route path="userprofile" element={<UserProfile />} />
-      <Route path="userresults" element={<UserResult />} />
-      <Route path="usertasks/:taskNumber" element={<UserTask />} />
+      <Route path="userresult" element={<UserResult />} />
+      <Route path="usertask" element={<UserTask />} />
       <Route path="adminhome" element={<AdminHome />} />
       <Route path="admin/bdcandidates" element={<BDCandidates />} />
       <Route path="admin/bdresults" element={<BDResults />} />

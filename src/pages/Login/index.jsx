@@ -59,7 +59,7 @@ const Login = () => {
               <button disabled={!isValid} type="submit">
                 Войти
               </button>
-              <Link to="/register">Регистрация</Link>
+              <Link to="/register" className={styles.reg}>Регистрация</Link>
             </form>
           </main>
           <div className={styles.footauth}>
