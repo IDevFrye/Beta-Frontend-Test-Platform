@@ -22,6 +22,20 @@ const AdminHome = () => {
               кандидаты
             </Link>
           </div>
+          <div className={styles.stats}>
+            <div>
+              <h2>19</h2>
+              <p>Кандидатов</p>
+            </div>
+            <div>
+              <h2>15</h2>
+              <p>Заданий на проверке</p>
+            </div>
+            <div>
+              <h2>60</h2>
+              <p>Заданий в базе</p>
+            </div>
+          </div>
         </div>
         <img src={MainLogo} alt="Main User Page Logo" />
       </main>

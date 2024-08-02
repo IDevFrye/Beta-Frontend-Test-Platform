@@ -114,10 +114,15 @@ const UserResult = () => {
           <hr></hr>
           <h1>Решение</h1>
           <div className={styles.taskInfo}>
-            <span>Задание №100</span><br></br>
-            <span>Сергеев Антон Игоревич</span>
-            <p>Выдано: 19.05.2024/14:00</p>
-            <p>Отправлено: 19.05.2024/15:00</p>
+            <div className={styles.userText}>
+              <span>Сергеев Антон Игоревич</span>
+              <p>Выдано: 19.05.2024/14:00</p>
+              <p>Отправлено: 22.05.2024/12:10</p>
+            </div>
+            <div className={styles.taskTextBlock}>
+              <span><i class="fa-solid fa-bookmark"></i>Задание №100</span><br></br>
+              <span className={styles.taskText}>Преобразовать таблицу значений в массив строки</span><br></br>
+            </div>
           </div>
           <div className={styles.autoCheckResults}>
             <div className={styles.resultMain}>

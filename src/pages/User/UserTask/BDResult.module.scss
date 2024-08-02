@@ -35,7 +35,7 @@
         }
 
         .taskInfo {
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             span {
                 margin-bottom: 10px;
                 font-family: Montserrat;
@@ -48,13 +48,45 @@
             p {
                 // margin-bottom: 10px;
                 font-family: Montserrat;
-                font-size: 18px;
+                font-size: 16px;
                 font-weight: 500;
                 line-height: 140%;
                 letter-spacing: 0px;
                 text-align: left;
+                color: #b4b4b4;
             }
-        }
+
+            .taskTextBlock {
+                border: 3px solid rgb(255, 183, 183);
+                border-radius: 0px 0px 17px 17px;
+                border-top: none;
+                background: rgb(255, 233, 233);
+                padding: 10px 28px;
+
+                i {
+                    margin-right: 10px;
+                    font-size: 24px;
+                    color: rgb(226, 51, 51);
+                }
+            }
+
+            .taskText {
+                font-family: Montserrat;
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 140%;
+                letter-spacing: 0px;
+                text-align: left;
+                color: #6d6b6b;
+            }
+
+            .userText {
+                border: 3px solid rgb(209, 209, 209);
+                border-radius: 17px 17px 0px 0px;
+                background: rgb(245, 244, 244);
+                padding: 10px 28px;
+            }
+}
 
         .autoCheckResults {
             margin-bottom: 20px;

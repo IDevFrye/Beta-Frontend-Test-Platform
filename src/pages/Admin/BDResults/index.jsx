@@ -152,85 +152,86 @@ const BDResults = () => {
         <div className={styles.header}>
           <h1>База решений</h1>
         </div>
-        <div className={styles.buttonContainer}>
-          <button className={`${styles.clearButton} ${!isFilterOpen ? styles.closed : ""}`} onClick={clearFilters}>
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-          <button className={`${styles.filterButton} ${isFilterOpen ? styles.active : ""} `} onClick={toggleFilter}>
-            <i class="fa-solid fa-sliders"></i>Настройка
-          </button>
-        </div>
-        {isFilterOpen && (
-          <div className={styles.filterPanel}>
-            <div className={styles.firstPart}>
-              <div className={styles.firstSubPart}>
-                <label>
-                  С
-                  <input
-                    type="date"
-                    name="from"
-                    value={filterDates.from}
-                    onChange={handleDateChange}
-                    disabled={filterLastWeek || filterLastMonth}
-                  />
-                </label>
-                <label>
-                  ПО
-                  <input
-                    type="date"
-                    name="to"
-                    value={filterDates.to}
-                    onChange={handleDateChange}
-                    disabled={filterLastWeek || filterLastMonth}
-                  />
-                </label>
-              </div>
-              <div className={styles.secondSubPart}>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="lastWeek"
-                    checked={filterLastWeek}
-                    onChange={handleCheckboxChange}
-                  />
-                  Последняя неделя
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="lastMonth"
-                    checked={filterLastMonth}
-                    onChange={handleCheckboxChange}
-                  />
-                  Последний месяц
-                </label>
-              </div>
-            </div>
-            <div className={styles.firstPart}>
-              <label>
-                Номер задания:
-                <input
-                  type="text"
-                  name="taskNumber"
-                  value={filterTaskNumber}
-                  onChange={handleFilterChange}
-                  placeholder='Введите номер'
-                />
-              </label>
-              <label>
-                ФИО кандидата:
-                <input
-                  type="text"
-                  name="name"
-                  value={filterName}
-                  onChange={handleFilterChange}
-                  placeholder='Введите ФИО'
-                />
-              </label>
-            </div>
+        <div className={styles.filterContainer}>
+          <div className={styles.buttonContainer}>
+            <button className={`${styles.clearButton} ${!isFilterOpen ? styles.closed : ""}`} onClick={clearFilters}>
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+            <button className={`${styles.filterButton} ${isFilterOpen ? styles.active : ""} `} onClick={toggleFilter}>
+              <i class="fa-solid fa-sliders"></i>Настройка
+            </button>
           </div>
-        )}
-
+          {isFilterOpen && (
+            <div className={styles.filterPanel}>
+              <div className={styles.firstPart}>
+                <div className={styles.firstSubPart}>
+                  <label>
+                    С
+                    <input
+                      type="date"
+                      name="from"
+                      value={filterDates.from}
+                      onChange={handleDateChange}
+                      disabled={filterLastWeek || filterLastMonth}
+                    />
+                  </label>
+                  <label>
+                    ПО
+                    <input
+                      type="date"
+                      name="to"
+                      value={filterDates.to}
+                      onChange={handleDateChange}
+                      disabled={filterLastWeek || filterLastMonth}
+                    />
+                  </label>
+                </div>
+                <div className={styles.secondSubPart}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="lastWeek"
+                      checked={filterLastWeek}
+                      onChange={handleCheckboxChange}
+                    />
+                    Последняя неделя
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="lastMonth"
+                      checked={filterLastMonth}
+                      onChange={handleCheckboxChange}
+                    />
+                    Последний месяц
+                  </label>
+                </div>
+              </div>
+              <div className={styles.firstPart}>
+                <label>
+                  Номер задания:
+                  <input
+                    type="text"
+                    name="taskNumber"
+                    value={filterTaskNumber}
+                    onChange={handleFilterChange}
+                    placeholder='Введите номер'
+                  />
+                </label>
+                <label>
+                  ФИО кандидата:
+                  <input
+                    type="text"
+                    name="name"
+                    value={filterName}
+                    onChange={handleFilterChange}
+                    placeholder='Введите ФИО'
+                  />
+                </label>
+              </div>
+            </div>
+          )}
+        </div>
         <div className={styles.table}>
           <div className={styles.tableHeader}>
             <span className={styles.first}>ФИО</span>
@@ -239,22 +240,32 @@ const BDResults = () => {
             <span>Оценка</span>
             <span>Подробнее</span>
           </div>
-          <div className={styles.tableBody}>
-            {filteredResults.map((result) => (
-              <div key={result.id} className={styles.tableRow}>
-                <span className={styles.first}>
-                  <div className={styles.ava}></div>
-                  <span className={styles.name}>{result.name}</span>
-                </span>
-                <span className={styles.date}>{result.date}</span>
-                <span className={styles.taskNumber}>{result.taskNumber}</span>
-                <span className={styles.score}>{result.score}</span>
-                <Link to="/admin/bdresult" className={styles.detailsButton}>
-                  <i class="fa-solid fa-chevron-right"></i>
-                </Link>
+          {filteredResults.length > 0 ? (
+            <div className={styles.tableBody}>
+              {filteredResults.map((result) => (
+                <div key={result.id} className={styles.tableRow}>
+                  <span className={styles.first}>
+                    <div className={styles.ava}></div>
+                    <span className={styles.name}>{result.name}</span>
+                  </span>
+                  <span className={styles.date}>{result.date}</span>
+                  <span className={styles.taskNumber}>{result.taskNumber}</span>
+                  <span className={styles.score}>{result.score}</span>
+                  <Link to="/admin/bdresult" className={styles.detailsButton}>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </Link>
+                </div>
+              ))} 
+            </div>
+          ) : (
+            <div className={styles.noResultsContainer}>
+                <div className={styles.noResults}>—</div>
+                <div className={styles.noResults}>—</div>
+                <div className={styles.noResults}>—</div>
+                <div className={styles.noResults}>—</div>
+                <div className={styles.noResults}>Ничего не найдено</div>
               </div>
-            ))}
-          </div>
+          )}
         </div>
       </main>
       <Footer />

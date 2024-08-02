@@ -85,7 +85,7 @@ const UserProfile = () => {
                         {/*MUST ADD FETCHED DATA*/}
                         <h2>Задание 101</h2>
                         <Link to="/userresult">
-                          Подробнее 
+                          Подробнее <i class="fa-solid fa-angle-right"></i>
                         </Link>{" "}
                         {/*add USERTASK NUMBER FROM BACKEND! */}
                       </div>
@@ -126,7 +126,7 @@ const UserProfile = () => {
                         {/*MUST ADD FETCHED DATA*/}
                         <h2>Задание 103</h2>
                         <Link to="/userresult">
-                          Подробнее 
+                          Подробнее <i class="fa-solid fa-angle-right"></i>
                         </Link>{" "}
                         {/*add USERTASK NUMBER FROM BACKEND! */}
                       </div>
@@ -166,8 +166,8 @@ const UserProfile = () => {
                       <div className={styles.taskNumber}>
                         {/*MUST ADD FETCHED DATA*/}
                         <h2>Задание 121</h2>
-                        <Link to="/usertask">
-                          Подробнее 
+                        <Link to="/usertask" className={styles.taskNumberLink}>
+                          Подробнее <i class="fa-solid fa-angle-right"></i>
                         </Link>{" "}
                         {/*add USERTASK NUMBER FROM BACKEND! */}
                       </div>

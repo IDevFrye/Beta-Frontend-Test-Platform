@@ -145,6 +145,10 @@
                                 font-size: 12px;
                                 line-height: 18px;
                                 text-decoration: none;
+                                &:hover {
+                                    color: black;
+                                    font-weight: 600;
+                                }
                             }
                         }
                         .result {
@@ -251,6 +255,18 @@
                                 font-weight: 500;
                                 line-height: 22px;
                                 text-align: center;
+                            }
+                        }
+                    }
+                    &:hover {
+                        box-shadow: 8.78px 5.52px 54.15px 0px rgba(241, 0, 0, 0.25);
+                        background: #fff2f2;
+                        transition: .5s ease-out;
+                        .taskNumber {
+                            h2 {
+                                font-size: 26px;
+                                color: rgba(241, 0, 0, 0.5);
+                                transition: .2s ease-out;
                             }
                         }
                     }
