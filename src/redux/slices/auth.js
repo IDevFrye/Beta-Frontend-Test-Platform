@@ -29,6 +29,7 @@ const authSlice = createSlice({
         logout: (state) => {
             state.data = null;
             localStorage.removeItem("token");
+            localStorage.removeItem("role"); // Удаление роли из хранилища
         }
     },
     extraReducers: {
@@ -72,6 +73,8 @@ const authSlice = createSlice({
 });
 
 export const selectIsAuth = (state) => Boolean(state.auth.data);
-export const selectUserRole = (state) => state.auth.data?.role || 'user';
+export const selectUserRole = (state) => state.auth.data?.role || null;
+
 export const authReducer = authSlice.reducer;
+
 export const { logout } = authSlice.actions;

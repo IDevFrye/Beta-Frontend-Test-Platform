@@ -1,4 +1,3 @@
-// Register/index.jsx
 import React from "react";
 import styles from "./Register.module.scss";
 import { Link, Navigate } from "react-router-dom";
@@ -13,7 +12,7 @@ const Register = () => {
   const isAuth = useSelector(selectIsAuth);
   const role = useSelector(selectUserRole);
 
-  const { register, handleSubmit, setError, formState: { errors, isValid } } = useForm({
+  const { register, handleSubmit, formState: { errors, isValid } } = useForm({
     defaultValues: {
       surname: "",
       name: "",
@@ -25,15 +24,28 @@ const Register = () => {
   });
 
   const onSubmit = async (values) => {
+  console.log("Отправляемые данные:", values); // Логирование отправляемых данных
+  try {
     const data = await dispatch(fetchRegister(values));
     if (!data.payload) {
       alert("Не удалось зарегистрироваться");
       return;
     }
-    if ("token" in data.payload) {
+
+    if ('token' in data.payload) {
       window.localStorage.setItem("token", data.payload.token);
+      window.localStorage.setItem("role", data.payload.role);
     }
-  };
+  } catch (error) {
+    if (error.response && error.response.data) {
+      console.error("Ошибка сервера:", error.response.data);
+      alert(error.response.data.message || "Ошибка регистрации");
+    } else {
+      console.error("Ошибка:", error);
+      alert("Произошла ошибка: " + error.message);
+    }
+  }
+};
 
   if (isAuth) {
     return role === "admin" ? <Navigate to="/adminhome" /> : <Navigate to="/userhome" />;
@@ -58,7 +70,7 @@ const Register = () => {
                 placeholder="Имя"
               />
               <input
-                {...register("patronymic", { required: "Укажите отчество" })}
+                {...register("patro", { required: "Укажите отчество" })}
                 placeholder="Отчество"
               />
               <input

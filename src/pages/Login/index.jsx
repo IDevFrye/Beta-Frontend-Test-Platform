@@ -1,4 +1,3 @@
-// Login/index.jsx
 import React from "react";
 import styles from "./Login.module.scss";
 import { Link, Navigate } from "react-router-dom";
@@ -12,8 +11,8 @@ const Login = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
   const role = useSelector(selectUserRole);
-  
-  const { register, handleSubmit, setError, formState: { errors, isValid } } = useForm({
+
+  const { register, handleSubmit, formState: { errors, isValid } } = useForm({
     defaultValues: {
       email: "",
       password: "",
@@ -22,13 +21,25 @@ const Login = () => {
   });
 
   const onSubmit = async (values) => {
-    const data = await dispatch(fetchAuth(values));
-    if (!data.payload) {
-      alert("Не удалось авторизоваться");
-      return;
-    }
-    if ("token" in data.payload) {
-      window.localStorage.setItem("token", data.payload.token);
+    try {
+      const data = await dispatch(fetchAuth(values));
+      if (!data.payload) {
+        alert("Не удалось авторизоваться");
+        return;
+      }
+
+      if ('token' in data.payload) {
+        window.localStorage.setItem("token", data.payload.token);
+        window.localStorage.setItem("role", data.payload.role); // Сохранение роли пользователя
+      }
+    } catch (error) {
+      if (error.response && error.response.data) {
+        // Если сервер вернул ошибку валидации
+        alert(error.response.data.message);
+      } else {
+        // Другие ошибки
+        alert("Произошла ошибка: " + error.message);
+      }
     }
   };
 
