@@ -4,6 +4,7 @@ import HeaderUser from '../../../components/HeaderUser';
 import { Link} from "react-router-dom";
 import Footer from '../../../components/Footer';
 import styles from './BDResult.module.scss';
+import BSLConsole from '../../../components/BSLConsole';
 
 const UserTask = () => {
   const [score, setScore] = useState("-");
@@ -155,7 +156,7 @@ const UserTask = () => {
         </div>
         <div className={styles.rightSection}>
           <div className={styles.codeDisplay}>
-            <pre><code dangerouslySetInnerHTML={{ __html: highlightedCode }}></code></pre>
+            {/* <BSLConsole userId={userId} taskNumber={taskNumber}/> */}
           </div>
           <div className={styles.commentsSection}>
             <div className={styles.commentInput}>

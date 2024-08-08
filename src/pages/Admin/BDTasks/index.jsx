@@ -1,21 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HeaderAdmin from "../../../components/HeaderAdmin";
 import Footer from "../../../components/Footer";
+import axios from "../../../axios"; // Импортируем axios для работы с запросами
 import styles from "./BDTasks.module.scss";
 
 const BDTasks = () => {
-  const [tasks, setTasks] = useState([
-    { id: "100", text: "Получить массив подстрок из строки по заданному разделителю" },
-    { id: "101", text: "Преобразовать таблицу значений в массив строки" },
-    { id: "102", text: "Написать функцию, которая соберет строку из элементов массива" },
-    { id: "103", text: "Преобразовать таблицу значений в массив строки" },
-    { id: "104", text: "Преобразовать таблицу значений в определитель матрицы" },
-    { id: "105", text: "Преобразовать таблицу значений в строку собственных значений матрицы" },
-  ]);
+  const [tasks, setTasks] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [filterText, setFilterText] = useState("");
   const [editableTask, setEditableTask] = useState(null);
   const [newTask, setNewTask] = useState(null);
+
+  useEffect(() => {
+    // Загрузка задач при загрузке компонента
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get("/admin-get-bd-tasks");
+        setTasks(response.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке задач:", error);
+      }
+    };
+    fetchTasks();
+  }, []);
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => {
@@ -24,23 +31,39 @@ const BDTasks = () => {
     setNewTask(null);
   };
 
-  const addTask = () => setNewTask({ id: "", text: "", isNew: true });
+  const addTask = () => setNewTask({ taskNumber: "", taskText: "", isNew: true });
   const editTask = (task) => setEditableTask({ ...task });
 
-  const saveTask = (task) => {
-    if (task.isNew) {
-      setTasks([...tasks, { id: task.id, text: task.text }]);
-      setNewTask(null);
-    } else {
-      setTasks(tasks.map(t => (t.id === task.id ? { ...task, isNew: undefined } : t)));
-      setEditableTask(null);
+  const saveTask = async (task) => {
+    try {
+      if (task.isNew) {
+        // Добавление новой задачи через POST-запрос
+        const response = await axios.post(`/admin-post-task-add/${task.taskNumber}`, {
+          taskText: task.taskText,
+        });
+        setTasks([...tasks, response.data]);
+        setNewTask(null);
+      } else {
+        await axios.patch(`/admin-patch-task-edit/${task.taskNumber}`, { taskText: task.taskText });
+        setTasks(tasks.map(t => (t.taskNumber === task.taskNumber ? { ...task, isNew: undefined } : t)));
+        setEditableTask(null);
+      }
+    } catch (error) {
+      console.error("Ошибка при сохранении задачи:", error);
     }
   };
 
-  const deleteTask = (task) => setTasks(tasks.filter(t => t.id !== task.id));
+  const deleteTask = async (task) => {
+    try {
+      await axios.delete(`/admin-delete-task/${task.taskNumber}`);
+      setTasks(tasks.filter(t => t.taskNumber !== task.taskNumber));
+    } catch (error) {
+      console.error("Ошибка при удалении задачи:", error);
+    }
+  };
 
   const filteredTasks = tasks.filter((task) =>
-    task.text.toLowerCase().includes(filterText.toLowerCase())
+    task.taskText.toLowerCase().includes(filterText.toLowerCase())
   );
 
   return (
@@ -56,9 +79,9 @@ const BDTasks = () => {
           </div>
           <div className={styles.tableBody}>
             {tasks.map((task) => (
-              <div key={task.id} className={styles.tableRow}>
-                <span className={styles.first}>{task.id}</span>
-                <span>{task.text}</span>
+              <div key={task.taskNumber} className={styles.tableRow}>
+                <span className={styles.first}>{task.taskNumber}</span>
+                <span>{task.taskText}</span>
               </div>
             ))}
           </div>
@@ -94,22 +117,22 @@ const BDTasks = () => {
                   </div>
                 ) : (
                   filteredTasks.map((task) => (
-                    <div key={task.id} className={styles.taskItem}>
-                      {editableTask && editableTask.id === task.id ? (
+                    <div key={task.taskNumber} className={styles.taskItem}>
+                      {editableTask && editableTask.taskNumber === task.taskNumber ? (
                         <>
                           <input
                             type="text"
-                            value={editableTask.id}
+                            value={editableTask.taskNumber}
                             onChange={(e) =>
-                              setEditableTask({ ...editableTask, id: e.target.value })
+                              setEditableTask({ ...editableTask, taskNumber: e.target.value })
                             }
                             className={styles.editInput}
                           />
                           <input
                             type="text"
-                            value={editableTask.text}
+                            value={editableTask.taskText}
                             onChange={(e) =>
-                              setEditableTask({ ...editableTask, text: e.target.value })
+                              setEditableTask({ ...editableTask, taskText: e.target.value })
                             }
                             className={styles.editInput}
                           />
@@ -119,8 +142,8 @@ const BDTasks = () => {
                         </>
                       ) : (
                         <>
-                          <span className={styles.taskItemID}>{task.id}</span>
-                          <span className={styles.taskItemTEXT}>{task.text}</span>
+                          <span className={styles.taskItemID}>{task.taskNumber}</span>
+                          <span className={styles.taskItemTEXT}>{task.taskText}</span>
                           <div className={styles.taskItemPencil}>
                             <i className="fa fa-pencil" onClick={() => editTask(task)}></i>
                           </div>
@@ -136,14 +159,14 @@ const BDTasks = () => {
                   <div className={styles.taskItem}>
                     <input
                       type="text"
-                      value={newTask.id}
-                      onChange={(e) => setNewTask({ ...newTask, id: e.target.value })}
+                      value={newTask.taskNumber}
+                      onChange={(e) => setNewTask({ ...newTask, taskNumber: e.target.value })}
                       className={styles.editInput}
                     />
                     <input
                       type="text"
-                      value={newTask.text}
-                      onChange={(e) => setNewTask({ ...newTask, text: e.target.value })}
+                      value={newTask.taskText}
+                      onChange={(e) => setNewTask({ ...newTask, taskText: e.target.value })}
                       className={styles.editInput}
                     />
                     <div className={styles.taskItemCheck}>

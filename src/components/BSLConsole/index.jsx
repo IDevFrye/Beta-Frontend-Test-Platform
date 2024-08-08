@@ -2,37 +2,31 @@ import React, { useState, useRef, useEffect } from "react";
 import styles from "./BSLConsole.module.scss";
 import axios from 'axios';
 
-const BSLConsole = ({ userId, taskNumber, onSubmitSuccess }) => {
+const BSLConsole = ({ userId, taskNumber }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const iframeRef = useRef(null);
 
   useEffect(() => {
-    const fetchCodeText = async () => {
-      try {
-        const response = await axios.get(`/user-taskk/${userId}/${taskNumber}`);
-        const codeText = response.data.codeText;
-        console.log(codeText);
-        const iframeWindow = iframeRef.current.contentWindow;
-        iframeWindow.postMessage({ type: 'setCode', codeText }, 'http://localhost:4000/');
-      } catch (error) {
-        console.error("Ошибка при загрузке кода:", error);
-      }
-    };
+    // const fetchCodeText = async () => {
+    //   try {
+    //     const response = await axios.get(`/user-task/${userId}/${taskNumber}`);
+    //     const codeText = response.data.codeText;
+    //     console.log(codeText);
+    //     const iframeWindow = iframeRef.current.contentWindow;
+    //     iframeWindow.postMessage({ type: 'setCode', codeText }, 'http://localhost:4000/');
+    //   } catch (error) {
+    //     console.error("Ошибка при загрузке кода:", error);
+    //   }
+    // };
 
-    fetchCodeText();
+    // fetchCodeText();
 
     const handleMessage = (event) => {
       const { type, text } = event.data;
       if (type === 'save') {
-        axios.patch(`/user-task-save/${userId}/${taskNumber}`, { codeText: text })
-          .then(response => {
-            console.log("Текст успешно отправлен:", response.data);
-          })
-          .catch(error => {
-            console.error("Ошибка при отправке текста:", error);
-          });
+        
       } else if (type === 'submit') {
-        axios.patch(`/user-task-send/${userId}/${taskNumber}`, { codeText: text })
+        axios.patch(`/user-patch-task-load/${userId}/${taskNumber}`, { codeText: text })
           .then(response => {
             console.log("Решение успешно отправлено:", response.data);
             localStorage.setItem('response', response.data);
