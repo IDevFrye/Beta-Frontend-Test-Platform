@@ -222,9 +222,9 @@
 
 }
 
-.tableRow:hover {
-    background-color: #f8e3e3;
-}
+// .tableRow:hover {
+//     background-color: #f8e3e3;
+// }
 
 .tableBody {
 
@@ -271,6 +271,35 @@
     border-radius: 1750.91px;
     margin-right: 10px;
 }
+.deletedTaskNumber {
+    color: rgb(226, 51, 51) !important;
+}
+.red {
+    color: rgb(226, 51, 51) !important;
+}
+
+.yellow {
+    color: rgb(255, 225, 133) !important;
+}
+
+.green {
+    color: rgb(16, 195, 82) !important;
+}
+
+.gray {
+    color: rgb(196, 196, 196) !important;
+}
+
+.highlightedRow {
+    background-color: rgba(248, 202, 202, 0.3); 
+}
+.score {
+    font-weight: bold; 
+}
+.displayNone {
+    display: none;
+}
+
 
 .detailsButton {
     cursor: pointer;

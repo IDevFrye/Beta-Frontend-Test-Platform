@@ -1,78 +1,40 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "../../../axios";
 import HeaderAdmin from "../../../components/HeaderAdmin";
 import Footer from "../../../components/Footer";
 import styles from "./BDResults.module.scss";
 import ava from "../../../assets/Main_Logo.png";
 
 const BDResults = () => {
-  const [results, setResults] = useState([
-    {
-      id: 1,
-      avatar: ava,
-      name: "Коба Алексей Юрьевич",
-      date: "2024-05-23/14:36",
-      taskNumber: 1,
-      score: 7,
-    },
-    {
-      id: 2,
-      avatar: ava,
-      name: "Мамонова Алина Сергеевна",
-      date: "2024-06-11/15:00",
-      taskNumber: 2,
-      score: 8,
-    },
-    {
-      id: 3,
-      avatar: ava,
-      name: "Мамонова Алина Сергеевна",
-      date: "2024-06-22/15:00",
-      taskNumber: 3,
-      score: 8,
-    },
-    {
-      id: 4,
-      avatar: ava,
-      name: "Мамонова Алина Сергеевна",
-      date: "2024-06-23/15:00",
-      taskNumber: 4,
-      score: 8,
-    },
-    {
-      id: 5,
-      avatar: ava,
-      name: "Мамонова Алина Сергеевна",
-      date: "2024-07-05/15:00",
-      taskNumber: 5,
-      score: 8,
-    },
-    {
-      id: 6,
-      avatar: ava,
-      name: "Мамонова Алина Сергеевна",
-      date: "2024-07-10/15:00",
-      taskNumber: 6,
-      score: 8,
-    },
-    {
-      id: 7,
-      avatar: ava,
-      name: "Мамонова Алина Сергеевна",
-      date: "2024-07-24/15:00",
-      taskNumber: 7,
-      score: 8,
-    },
-    // Добавьте больше данных по аналогии
-  ]);
-
-  const [filteredResults, setFilteredResults] = useState(results);
+  const [results, setResults] = useState([]);
+  const [filteredResults, setFilteredResults] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterDates, setFilterDates] = useState({ from: "", to: "" });
   const [filterLastWeek, setFilterLastWeek] = useState(false);
   const [filterLastMonth, setFilterLastMonth] = useState(false);
   const [filterTaskNumber, setFilterTaskNumber] = useState("");
   const [filterName, setFilterName] = useState("");
+
+  useEffect(() => {
+    axios.get("/admin-get-solutions")
+      .then((response) => {
+        const data = response.data;
+        const transformedResults = data.flatMap((candidate) =>
+          candidate.tasks.map((task) => ({
+            id: `${candidate.name}-${task.taskNumber || Date.now()}`, 
+            avatar: candidate.avatarUrl || ava,
+            name: `${candidate.name} ${candidate.surname} ${candidate.patro}`,
+            date: formatDate(task.firstUpdate),
+            taskNumber: task.taskNumber || "Unknown", 
+            score: task.mark,
+          }))
+        );
+        setResults(transformedResults);
+        setFilteredResults(transformedResults);
+      })
+      .catch((error) => console.error("Error fetching solutions:", error));
+  }, []);
 
   useEffect(() => {
     applyFilters();
@@ -144,6 +106,21 @@ const BDResults = () => {
     setFilteredResults(filtered);
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toISOString().slice(0, 10); // Формат YYYY-MM-DD
+    const formattedTime = date.toTimeString().slice(0, 5); // Формат HH:MM
+    return `${formattedDate}/${formattedTime}`;
+  };
+
+  const getScoreColor = (score) => {
+  if (score === -1) return `${styles.gray} ${styles.score}`;
+  if (score >= 0 && score <= 4) return `${styles.red} ${styles.score}`;
+  if (score >= 5 && score <= 7) return `${styles.yellow} ${styles.score}`;
+  return `${styles.green} ${styles.score}`;
+};
+
+
   return (
     <div className={styles.container}>
       <HeaderAdmin />
@@ -155,10 +132,10 @@ const BDResults = () => {
         <div className={styles.filterContainer}>
           <div className={styles.buttonContainer}>
             <button className={`${styles.clearButton} ${!isFilterOpen ? styles.closed : ""}`} onClick={clearFilters}>
-              <i class="fa-solid fa-xmark"></i>
+              <i className="fa-solid fa-xmark"></i>
             </button>
-            <button className={`${styles.filterButton} ${isFilterOpen ? styles.active : ""} `} onClick={toggleFilter}>
-              <i class="fa-solid fa-sliders"></i>Настройка
+            <button className={`${styles.filterButton} ${isFilterOpen ? styles.active : ""}`} onClick={toggleFilter}>
+              <i className="fa-solid fa-sliders"></i> Настройка
             </button>
           </div>
           {isFilterOpen && (
@@ -215,7 +192,7 @@ const BDResults = () => {
                     name="taskNumber"
                     value={filterTaskNumber}
                     onChange={handleFilterChange}
-                    placeholder='Введите номер'
+                    placeholder="Введите номер"
                   />
                 </label>
                 <label>
@@ -225,7 +202,7 @@ const BDResults = () => {
                     name="name"
                     value={filterName}
                     onChange={handleFilterChange}
-                    placeholder='Введите ФИО'
+                    placeholder="Введите ФИО"
                   />
                 </label>
               </div>
@@ -243,19 +220,26 @@ const BDResults = () => {
           {filteredResults.length > 0 ? (
             <div className={styles.tableBody}>
               {filteredResults.map((result) => (
-                <div key={result.id} className={styles.tableRow}>
+                <div
+                  key={result.id}
+                  className={`${styles.tableRow} ${result.taskNumber === "Удалено" ? styles.highlightedRow : ""}`} // Подсветка строки
+                >
                   <span className={styles.first}>
-                    <div className={styles.ava}></div>
+                    <div className={styles.ava} style={{ backgroundImage: `url(${result.avatar})` }}></div>
                     <span className={styles.name}>{result.name}</span>
                   </span>
                   <span className={styles.date}>{result.date}</span>
-                  <span className={styles.taskNumber}>{result.taskNumber}</span>
-                  <span className={styles.score}>{result.score}</span>
-                  <Link to="/admin/bdresult" className={styles.detailsButton}>
-                    <i class="fa-solid fa-chevron-right"></i>
+                  <span className={(result.taskNumber === "Удалено") ? `${styles.deletedTaskNumber}` : `${styles.taskNumber}`}>
+                    {result.taskNumber === "Unknown" ? "Удалено" : result.taskNumber}
+                  </span>
+                  <span className={getScoreColor(result.score)}>
+                    {result.score === -1 ? "—" : result.score}
+                  </span>
+                  <Link className={` ${result.taskNumber === "Удалено" ? styles.displayNone : styles.detailsButton}`} to={`/admin/bdresult/${result.taskNumber}`}>
+                    <i className="fa-solid fa-chevron-right"></i>
                   </Link>
                 </div>
-              ))} 
+              ))}
             </div>
           ) : (
             <div className={styles.noResultsContainer}>
