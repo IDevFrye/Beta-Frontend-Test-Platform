@@ -1,42 +1,18 @@
 import React, { useState, useEffect } from "react";
+import axios from '../../axios'; // Убедитесь, что этот путь правильный
 import { jwtDecode } from "jwt-decode";
 import styles from "./EditInput.module.scss";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchAuthMe, selectIsAuth } from "../../redux/slices/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 const EditInput = () => {
-  const dispatch = useDispatch();
-  // const isAuth = useSelector(selectIsAuth);
-  const userData = useSelector((state) => state.auth.data);
-
-  useEffect(() => {
-    // dispatch(fetchAuthMe());
-  }, []);
-  // console.log(fetchAuthMe());
-  const data = [
-    { label: "Фамилия", stateKey: "surname" },
-    { label: "Имя", stateKey: "name" },
-    { label: "Отчество", stateKey: "patronymic" },
-    { label: "E-mail", stateKey: "email" },
-    { label: "Пароль", stateKey: "password" },
-  ];
-
-  const initialState = {
-    surname: "Иванов",
-    name: "Иван",
-    patronymic: "Иванович",
-    email: "ivan.ivanov@example.com",
+  const [formData, setFormData] = useState({
+    surname: "",
+    name: "",
+    patronymic: "",
+    email: "",
     password: "",
-  };
-  useEffect(() => {
-    if (userData) {
-      console.log(userData); // Log the userData to see what's inside
-      // ...update formData with userData
-    }
-  }, [userData]);
-  const [formData, setFormData] = useState(initialState);
+  });
   const [isEditing, setIsEditing] = useState(false);
   const [userId, setUserId] = useState(null);
   const [editedField, setEditedField] = useState(null);
@@ -46,41 +22,35 @@ const EditInput = () => {
     const token = localStorage.getItem("token");
     if (token) {
       const decodedToken = jwtDecode(token);
-      const userId = decodedToken._id;
-      setUserId(userId);
+      setUserId(decodedToken._id);
 
-      // Load user data from backend if available
+      // Получение данных пользователя
       const loadUserData = async () => {
         try {
-          const response = await fetch(`/user/${userId}`, {
+          const response = await axios.get(`/user-get-fullname/${decodedToken._id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
+          console.log(response); // Логгируем ответ от сервера
 
-          if (!response.ok) {
-            throw new Error("Ошибка загрузки данных пользователя");
-          }
+          const userData = response.data; // Извлекаем данные из ответа
+          console.log(userData); // Логгируем JSON-данные
 
-          const userData = await response.json();
+          // Обновление состояния formData
           setFormData({
-            surname: userData.surname || "Иванов",
-            name: userData.name || "Иван",
-            patronymic: userData.patronymic || "Иванович",
-            email: userData.email || "ivan.ivanov@example.com",
+            surname: userData.surname || "",
+            name: userData.name || "",
+            patronymic: userData.patro || "",  // учитываем, что патроним может быть "patro"
+            email: userData.email || "",
             password: "",
           });
         } catch (error) {
-          console.error(error);
+          console.error("Ошибка при загрузке данных пользователя:", error);
         }
       };
 
       loadUserData();
-    }
-
-    const savedData = JSON.parse(localStorage.getItem("formData"));
-    if (savedData) {
-      setFormData(savedData);
     }
   }, []);
 
@@ -96,47 +66,55 @@ const EditInput = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!userId) return;
+
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(`/user/${userId}`, {
-        method: "PUT",
+      const response = await axios.patch(`/user-patch-profile-data/${userId}`, {
+        surname: formData.surname,
+        name: formData.name,
+        patro: formData.patronymic,
+        password: formData.password || undefined,
+      }, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
+      if (response.status === 200) {
+        setIsEditing(false);
+        setEditedField(null);
+        setSaveMessage("Изменения сохранены");
+        setTimeout(() => setSaveMessage(""), 3000);
+      } else {
         throw new Error("Ошибка обновления данных пользователя");
       }
-
-      setIsEditing(false);
-      setEditedField(null);
-      setSaveMessage("Изменения сохранены");
-      setTimeout(() => setSaveMessage(""), 3000);
     } catch (error) {
-      console.error(error);
+      console.error("Ошибка при обновлении данных пользователя:", error);
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      {data.slice(0, 3).map(({ label, stateKey }) => (
+      {["surname", "name", "patronymic"].map((stateKey) => (
         <div key={stateKey} className={styles.inputs}>
-          <label>{label}</label>
+          <label>{stateKey === 'surname' ? "Фамилия" : stateKey === 'name' ? "Имя" : "Отчество"}</label>
           <div className={styles.inputWrapper}>
             <input
               type="text"
               value={formData[stateKey]}
               onChange={(e) => handleInputChange(e, stateKey)}
-              disabled={editedField !== stateKey}
-              style={{ boxSizing: "border-box" }}
+              disabled={editedField !== stateKey && editedField !== null} // Поле редактируется только если на него кликнули
+              className={editedField === stateKey ? styles.active : ''} // Добавляем класс для активного состояния
+              placeholder={stateKey === 'surname' ? "Введите фамилию" :
+                          stateKey === 'name' ? "Введите имя" :
+                          "Введите отчество"}
             />
             <FontAwesomeIcon
               icon={faPenToSquare}
-              className={styles.editIcon}
+              className={`${styles.editIcon} ${editedField === stateKey ? styles.activeIcon : ''}`}
               onClick={() => handleEditClick(stateKey)}
             />
           </div>
@@ -144,29 +122,36 @@ const EditInput = () => {
       ))}
 
       <div className={styles.inputsRow}>
-        {data.slice(3, 5).map(({ label, stateKey }) => (
-          <div key={stateKey} className={styles.inputs}>
-            <label>{label}</label>
-            <div className={styles.inputWrapper}>
-              <input
-                type={stateKey === "email" ? "email" : "password"}
-                value={formData[stateKey]}
-                onChange={(e) => handleInputChange(e, stateKey)}
-                disabled={stateKey === "email" || editedField !== stateKey}
-                style={{ boxSizing: "border-box" }}
-              />
-              {stateKey === "email" ? (
-                ""
-              ) : (
-                <FontAwesomeIcon
-                  icon={faPenToSquare}
-                  className={styles.editIcon}
-                  onClick={() => handleEditClick(stateKey)}
-                />
-              )}
-            </div>
+        <div className={styles.inputs}>
+          <label>Email</label>
+          <div className={styles.inputWrapper}>
+            <input
+              type="email"
+              value={formData.email}
+              disabled
+              placeholder="Введите ваш email"
+            />
           </div>
-        ))}
+        </div>
+
+        <div className={styles.inputs}>
+          <label>Пароль</label>
+          <div className={styles.inputWrapper}>
+            <input
+              type="password"
+              value={formData.password}
+              onChange={(e) => handleInputChange(e, "password")}
+              disabled={editedField !== "password" && editedField !== null}
+              className={editedField === "password" ? styles.active : ''}
+              placeholder="Введите новый пароль"
+            />
+            <FontAwesomeIcon
+              icon={faPenToSquare}
+              className={`${styles.editIcon} ${editedField === "password" ? styles.activeIcon : ''}`}
+              onClick={() => handleEditClick("password")}
+            />
+          </div>
+        </div>
       </div>
 
       <div className={styles.btnContainer}>
@@ -180,5 +165,3 @@ const EditInput = () => {
 };
 
 export default EditInput;
-
-//add Получать уведомления!

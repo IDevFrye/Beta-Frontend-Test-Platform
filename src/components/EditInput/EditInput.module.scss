@@ -4,6 +4,7 @@ form {
   align-items: center;
   gap: 20px;
   width: 700px;
+
   .inputs {
     display: flex;
     flex-direction: column;
@@ -26,8 +27,20 @@ form {
         border: 1.5px solid rgb(0, 0, 0);
         border-radius: 11.53px;
         padding: 10px;
-        background: rgb(249, 249, 249);
+        background: #ebebeb;
+        /* Серый фон для неактивных полей */
+        color: rgb(145, 143, 143);
+        /* Цвет текста для неактивных полей */
         flex-grow: 1;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        /* Переход для фона и цвета текста */
+      }
+
+      input.active {
+        background: rgb(249, 249, 249);
+        /* Светлый фон для активных полей */
+        color: rgb(0, 0, 0);
+        /* Цвет текста для активных полей */
       }
 
       .editIcon {
@@ -38,10 +51,18 @@ form {
         color: #9596a6;
         background: transparent;
         padding: 10px;
-        transition: opacity 0.9s;
+        transition: color 0.3s ease;
+        /* Переход для цвета иконки */
+
         &:hover {
-          opacity: 0.8;
+          color: #000000;
+          /* Черный цвет иконки при наведении */
         }
+      }
+
+      .editIcon.activeIcon {
+        color: #000000;
+        /* Черный цвет иконки, когда поле активно */
       }
     }
   }
@@ -56,10 +77,6 @@ form {
       &:not(:last-child) {
         margin-right: 15px;
       }
-    }
-    .inputs:first-child>.inputWrapper>input {
-      background-color: #ebebeb;
-      color: rgb(145, 143, 143);
     }
   }
 
