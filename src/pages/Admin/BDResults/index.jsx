@@ -15,6 +15,7 @@ const BDResults = () => {
   const [filterLastMonth, setFilterLastMonth] = useState(false);
   const [filterTaskNumber, setFilterTaskNumber] = useState("");
   const [filterName, setFilterName] = useState("");
+  const [filterStatus, setFilterStatus] = useState(""); // Новое состояние для фильтрации по статусу
 
   useEffect(() => {
     axios.get("/admin-get-solutions")
@@ -28,8 +29,10 @@ const BDResults = () => {
             date: formatDate(task.firstUpdate),
             taskNumber: task.taskNumber || "Unknown", 
             score: task.mark,
+            status: task.status,
           }))
         );
+        console.log(transformedResults);
         setResults(transformedResults);
         setFilteredResults(transformedResults);
       })
@@ -38,7 +41,7 @@ const BDResults = () => {
 
   useEffect(() => {
     applyFilters();
-  }, [filterDates, filterLastWeek, filterLastMonth, filterTaskNumber, filterName]);
+  }, [filterDates, filterLastWeek, filterLastMonth, filterTaskNumber, filterName, filterStatus]);
 
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
@@ -50,6 +53,7 @@ const BDResults = () => {
     setFilterLastMonth(false);
     setFilterTaskNumber("");
     setFilterName("");
+    setFilterStatus(""); // Сброс фильтра по статусу
   };
 
   const handleDateChange = (e) => {
@@ -83,6 +87,7 @@ const BDResults = () => {
     const { name, value } = e.target;
     if (name === "taskNumber") setFilterTaskNumber(value);
     if (name === "name") setFilterName(value);
+    if (name === "status") setFilterStatus(value); // Обработка изменения статуса
   };
 
   const applyFilters = () => {
@@ -103,13 +108,17 @@ const BDResults = () => {
       filtered = filtered.filter((result) => result.name.toLowerCase().includes(filterName.toLowerCase()));
     }
 
+    if (filterStatus) {
+      filtered = filtered.filter((result) => result.status === filterStatus);
+    }
+
     setFilteredResults(filtered);
   };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const formattedDate = date.toISOString().slice(0, 10); // Формат YYYY-MM-DD
-    const formattedTime = date.toTimeString().slice(0, 5); // Формат HH:MM
+    const formattedDate = date.toISOString().slice(0, 10); 
+    const formattedTime = date.toTimeString().slice(0, 5); 
     return `${formattedDate}/${formattedTime}`;
   };
 
@@ -143,7 +152,7 @@ const BDResults = () => {
               <div className={styles.firstPart}>
                 <div className={styles.firstSubPart}>
                   <label>
-                    С
+                    с
                     <input
                       type="date"
                       name="from"
@@ -153,7 +162,7 @@ const BDResults = () => {
                     />
                   </label>
                   <label>
-                    ПО
+                    по
                     <input
                       type="date"
                       name="to"
@@ -205,51 +214,70 @@ const BDResults = () => {
                     placeholder="Введите ФИО"
                   />
                 </label>
+                <label>
+                  Статус:
+                  <select
+                    name="status"
+                    value={filterStatus}
+                    onChange={handleFilterChange}
+                  >
+                    <option value="">Все</option>
+                    <option value="assigned">Назначено</option>
+                    <option value="checking">На проверке</option>
+                    <option value="checked">Проверено</option>
+                  </select>
+                </label>
               </div>
             </div>
           )}
         </div>
         <div className={styles.table}>
           <div className={styles.tableHeader}>
-            <span className={styles.first}>ФИО</span>
-            <span>Дата отправки</span>
-            <span>Задание</span>
-            <span>Оценка</span>
-            <span>Подробнее</span>
-          </div>
-          {filteredResults.length > 0 ? (
-            <div className={styles.tableBody}>
-              {filteredResults.map((result) => (
-                <div
-                  key={result.id}
-                  className={`${styles.tableRow} ${result.taskNumber === "Удалено" ? styles.highlightedRow : ""}`} // Подсветка строки
-                >
-                  <span className={styles.first}>
+    <span className={styles.first}>ФИО</span>
+    <span>Дата отправки</span>
+    <span>Статус</span>
+    <span>Задание</span>
+    <span>Оценка</span>
+    <span>Подробнее</span>
+</div>
+{filteredResults.length > 0 ? (
+    <div className={styles.tableBody}>
+        {filteredResults.map((result) => (
+            <div
+                key={result.id}
+                className={`${styles.tableRow} ${result.taskNumber === "Удалено" ? styles.highlightedRow : ""}`} 
+            >
+                <span className={styles.first}>
                     <div className={styles.ava} style={{ backgroundImage: `url(${result.avatar})` }}></div>
                     <span className={styles.name}>{result.name}</span>
-                  </span>
-                  <span className={styles.date}>{result.date}</span>
-                  <span className={(result.taskNumber === "Удалено") ? `${styles.deletedTaskNumber}` : `${styles.taskNumber}`}>
+                </span>
+                <span className={styles.date}>{result.date}</span>
+                <span className={result.status === "assigned" ? styles.status : (result.status === "checking" ? styles.checking : styles.checked)}>
+                  {result.status === "assigned" ? "Назначено" : (result.status === "checking" ? "На проверке" : "Проверено")}
+                </span>
+                <span className={(result.taskNumber === "Удалено") ? `${styles.deletedTaskNumber}` : `${styles.taskNumber}`}>
                     {result.taskNumber === "Unknown" ? "Удалено" : result.taskNumber}
-                  </span>
-                  <span className={getScoreColor(result.score)}>
+                </span>
+                <span className={getScoreColor(result.score)}>
                     {result.score === -1 ? "—" : result.score}
-                  </span>
-                  <Link className={` ${result.taskNumber === "Удалено" ? styles.displayNone : styles.detailsButton}`} to={`/admin/bdresult/${result.taskNumber}`}>
+                </span>
+                
+                <Link className={` ${result.taskNumber === "Удалено" ? styles.displayNone : styles.detailsButton}`} to={`/admin/bdresult/${result.taskNumber}`}>
                     <i className="fa-solid fa-chevron-right"></i>
-                  </Link>
-                </div>
-              ))}
+                </Link>
             </div>
-          ) : (
-            <div className={styles.noResultsContainer}>
-                <div className={styles.noResults}>—</div>
-                <div className={styles.noResults}>—</div>
-                <div className={styles.noResults}>—</div>
-                <div className={styles.noResults}>—</div>
-                <div className={styles.noResults}>Ничего не найдено</div>
-              </div>
-          )}
+        ))}
+    </div>
+) : (
+    <div className={styles.noResultsContainer}>
+        <div className={styles.noResults}>—</div>
+        <div className={styles.noResults}>—</div>
+        <div className={styles.noResults}>—</div>
+        <div className={styles.noResults}>—</div>
+        <div className={styles.noResults}>Ничего не найдено</div>
+    </div>
+)}
+
         </div>
       </main>
       <Footer />
