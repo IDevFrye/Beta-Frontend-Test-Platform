@@ -114,29 +114,32 @@ const BDResult = () => {
   };
 
   const handleAddComment = () => {
-    if (!newComment.trim()) return;
+  if (!newComment.trim()) return;
 
-    const comment = {
-      id: `admin-${comments.length + 1}`,
-      user: "Admin",
-      role: "admin",
-      time: new Date().toLocaleTimeString().slice(0, 5),
-      text: newComment
-    };
-
-    setComments([...comments, comment]);
-    setNewComment("");
-
-    axios.post(`/admin-post-new-comment/${taskNumber}`, {
-      name, surname, patro, commentText: newComment
-    })
-    .then(response => {
-      console.log("Комментарий успешно добавлен", response.data);
-    })
-    .catch(error => {
-      console.error("Ошибка при добавлении комментария:", error);
-    });
+  const comment = {
+    id: `admin-${comments.length + 1}`,
+    user: "Admin",
+    role: "admin",
+    time: new Date().toLocaleTimeString().slice(0, 5),
+    text: newComment,
+    timestamp: new Date()
   };
+
+  const updatedComments = [...comments, comment].sort((a, b) => a.timestamp - b.timestamp);
+  setComments(updatedComments);
+  setNewComment("");
+
+  axios.post(`/admin-post-new-comment/${taskNumber}`, {
+    name, surname, patro, commentText: newComment
+  })
+  .then(response => {
+    console.log("Комментарий успешно добавлен", response.data);
+  })
+  .catch(error => {
+    console.error("Ошибка при добавлении комментария:", error);
+  });
+};
+
 
 
   const downloadReport = () => {
