@@ -265,12 +265,14 @@
             margin-top: 8px;
             color: rgb(185, 185, 185);
             font-family: Montserrat;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 500;
             line-height: 140%;
             letter-spacing: 0px;
             text-align: center;
             text-decoration: none;
+            border: none;
+            background: none;
         }
         .downloadLink:hover {
             color: rgb(104, 103, 103);
@@ -351,7 +353,10 @@
                     transition: .3s ease-out;
                 }
             }
-
+            .comments {
+                display:flex;
+                flex-flow:column;
+            }
             .comments .comment {
                 margin-bottom: 20px;
                 border: 3px solid rgb(223, 223, 223);
@@ -361,12 +366,15 @@
                 max-width: 402px;
 
                 &.admin {
-                    text-align: left;
+                    text-align: right;
+                    align-self: flex-end;
+                    width: 402px;
                 }
 
                 &.user {
-                    text-align: right;
-                    margin-left: 415px;
+                    text-align: left;
+                    align-self: flex-start;
+                    width: 402px;
                 }
 
                 .commentAuthor {

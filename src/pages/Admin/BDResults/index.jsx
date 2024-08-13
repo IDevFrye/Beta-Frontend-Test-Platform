@@ -30,6 +30,9 @@ const BDResults = () => {
             taskNumber: task.taskNumber || "Unknown", 
             score: task.mark,
             status: task.status,
+            nam: candidate.name,
+            surname: candidate.surname,
+            patro: candidate.patro,
           }))
         );
         console.log(transformedResults);
@@ -262,9 +265,12 @@ const BDResults = () => {
                     {result.score === -1 ? "—" : result.score}
                 </span>
                 
-                <Link className={` ${result.taskNumber === "Удалено" ? styles.displayNone : styles.detailsButton}`} to={`/admin/bdresult/${result.taskNumber}`}>
+                <Link 
+                    className={` ${result.taskNumber === "Удалено" || result.status === "assigned" ? styles.displayNoneB : styles.detailsButton}`}
+                    to={`/admin/bdresult/${result.taskNumber}?name=${encodeURIComponent(result.nam)}&surname=${encodeURIComponent(result.surname)}&patro=${encodeURIComponent(result.patro)}`}
+                  >
                     <i className="fa-solid fa-chevron-right"></i>
-                </Link>
+                  </Link>
             </div>
         ))}
     </div>
