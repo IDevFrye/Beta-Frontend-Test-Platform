@@ -19,6 +19,7 @@ const UserTask = () => {
     // Получаем информацию о задаче и комментарии
     axios.get(`/user-get-task-info/${user_id}/${taskNumber}`)
       .then(response => {
+        console.log('Данные о задаче:', response.data);
         setTaskInfo(response.data);
         // Объединяем и сортируем комментарии по времени
         const allComments = [
@@ -35,16 +36,18 @@ const UserTask = () => {
             type: 'admin'
           }))
         ].sort((a, b) => new Date(a.time) - new Date(b.time));
+        console.log('Комментарии:', allComments);
         setComments(allComments);
       })
-      .catch(error => console.error(error));
+      .catch(error => console.error('Ошибка при получении информации о задаче:', error));
 
     // Проверяем статус задачи (выполнена/не выполнена)
     axios.get(`/user-task-getDone/${user_id}/${taskNumber}`)
       .then(response => {
+        console.log('Статус выполнения задачи:', response.data);
         setIsSubmitted(response.data);
       })
-      .catch(error => console.error(error));
+      .catch(error => console.error('Ошибка при проверке статуса задачи:', error));
   }, [taskNumber, user_id]);
 
   const handleAddComment = () => {
