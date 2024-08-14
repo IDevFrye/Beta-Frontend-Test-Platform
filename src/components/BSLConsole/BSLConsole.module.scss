@@ -180,3 +180,28 @@ $red: #D22630;
     font-size: 16px;
     cursor: pointer;
 }
+
+.sendSolution {
+
+    margin-top: 0px;
+    border: 3px solid rgb(223, 223, 223);
+    border-radius: 21px;
+    background: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    font-family: Montserrat;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 140%;
+    letter-spacing: 0px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 750px;
+
+    &:hover {
+        background: rgb(255, 255, 255);
+        color: rgb(0, 0, 0);
+        transition: .3s ease-out;
+    }
+}

@@ -1,128 +1,92 @@
 import React, { useState, useEffect } from 'react';
 import DOMPurify from 'dompurify';
 import HeaderUser from '../../../components/HeaderUser';
-import { Link} from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Footer from '../../../components/Footer';
 import styles from './BDResult.module.scss';
 import BSLConsole from '../../../components/BSLConsole';
+import axios from "../../../axios";
 
 const UserTask = () => {
-  const [score, setScore] = useState("-");
-  const [isEditing, setIsEditing] = useState(false);
+  const [taskInfo, setTaskInfo] = useState(null);
+  const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
-  const [comments, setComments] = useState([
-    { id: 1, user: "Admin", time: "17:47", text: "Очень понравилось Ваша работа, замечаний не имею. Оценка - 10/10" },
-    { id: 2, user: "Сергей", time: "18:12", text: "Спасибо за предоставленную возможность и обратную связь!" }
-  ]);
-  const [highlightedCode, setHighlightedCode] = useState("");
-
-  const handleScoreChange = (e) => {
-    setScore(e.target.value);
-  };
-
-  const handleSaveScore = () => {
-    setIsEditing(false);
-  };
-
-  const handleAddComment = () => {
-    const newCommentObj = { 
-      id: comments.length + 1, 
-      user: "Сергей", 
-      time: new Date().toLocaleTimeString().slice(0, 5), 
-      text: newComment 
-    };
-    setComments([...comments, newCommentObj]);
-    setNewComment("");
-  };
-
-  const highlightCode = (code) => {
-  // Замена знаков < и > на их HTML-эквиваленты
-  code = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-  const patterns = {
-    // Подсветка строк
-    
-    // Подсветка скобок, знаков равно, точки с запятой, минуса, и символов <>
-    '(\\(|\\)|=|;|\\-|&lt;|&gt;|&lt;&gt;|,)': '<span style="color: red;">$1</span>',
-    // Подсветка цифр
-    '(\\b[0-9]+\\b)': '<span style="color: black;">$1</span>',
-    // Подсветка ключевых слов
-    '(Функция|КонецФункции|Попытка|Исключение|КонецПопытки|Возврат|Если|Тогда|КонецЕсли|Новый|Экспорт|Ложь|Истина|Для|Каждого| Из |Цикл|КонецЦикла| Знач | По |Для|\\?)': '<span style="color: red;">$1</span>',
-    '(\\"\\")': '<span style="color: black;">$1</span>',
-    
-  };
-
-  for (const pattern in patterns) {
-    const regex = new RegExp(pattern, 'g');
-    code = code.replace(regex, patterns[pattern]);
-  }
-
-  // Найти оставшийся текст и обернуть его в синий цвет
-  code = code.replace(/(<span style="[^>]*>[^<]*<\/span>|[^<]+)/g, (match) => {
-    if (match.startsWith('<span')) {
-      return match; // Сохраняем уже подсвеченные части
-    } else {
-      return `<span style="color: blue;">${match}</span>`; // Подсвечиваем оставшийся текст
-    }
-  });
-
-  // Возвращаем знаки < и > обратно
-  code = code.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-
-  return code;
-};
-
-  const scoreBackgroundColor = score === "-" ? "rgb(196, 196, 196)" : score >= 8 ? "rgb(120, 222, 126)" : score >= 5 ? "rgb(255, 225, 132)" : score >= 0 ? "rgb(226, 51, 51)" : "rgb(196, 196, 196)";
-
-  const code = `Функция ТаблицаЗначенийВМассив(ТаблицаЗначений) Экспорт
-	
-	Результат = Новый Массив();
-	СтруктураСтрокой = "";
-	НужнаЗапятая = Ложь;
-	
-	Для Каждого Колонка Из ТаблицаЗначений.Колонки Цикл
-		
-		Если НужнаЗапятая Тогда
-			СтруктураСтрокой = СтруктураСтрокой + ",";
-		КонецЕсли;
-		
-		СтруктураСтрокой = СтруктураСтрокой + Колонка.Имя;
-		НужнаЗапятая = Истина;
-		
-	КонецЦикла;
-	
-	Для Каждого Строка Из ТаблицаЗначений Цикл
-		НоваяСтрока = Новый Структура(СтруктураСтрокой);
-		ЗаполнитьЗначенияСвойств(НоваяСтрока, Строка);
-		Результат.Добавить(НоваяСтрока);
-		
-	КонецЦикла;
-	
-	Возврат Результат;
-
-КонецФункции`;
+  const [isSubmitted, setIsSubmitted] = useState(0);
+  const { user_id, taskNumber } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const sanitizedCode = DOMPurify.sanitize(highlightCode(code), { ADD_ATTR: ['style'] });
-    setHighlightedCode(sanitizedCode);
-  }, []);
+    // Получаем информацию о задаче и комментарии
+    axios.get(`/user-get-task-info/${user_id}/${taskNumber}`)
+      .then(response => {
+        setTaskInfo(response.data);
+        // Объединяем и сортируем комментарии по времени
+        const allComments = [
+          ...response.data.commentUser.map(comment => ({
+            user: `${response.data.surname} ${response.data.name}`,
+            time: new Date(comment.timestamp).toLocaleTimeString().slice(0, 5),
+            text: comment.message,
+            type: 'user'
+          })),
+          ...response.data.commentAdmin.map(comment => ({
+            user: "Admin",
+            time: new Date(comment.timestamp).toLocaleTimeString().slice(0, 5),
+            text: comment.message,
+            type: 'admin'
+          }))
+        ].sort((a, b) => new Date(a.time) - new Date(b.time));
+        setComments(allComments);
+      })
+      .catch(error => console.error(error));
+
+    // Проверяем статус задачи (выполнена/не выполнена)
+    axios.get(`/user-task-getDone/${user_id}/${taskNumber}`)
+      .then(response => {
+        setIsSubmitted(response.data);
+      })
+      .catch(error => console.error(error));
+  }, [taskNumber, user_id]);
+
+  const handleAddComment = () => {
+    if (newComment.trim()) {
+      axios.post(`/user-post-new-comment/${user_id}/${taskNumber}`, { commentText: newComment })
+        .then(response => {
+          setComments([...comments, {
+            user: `${taskInfo.surname} ${taskInfo.name}`,
+            time: new Date().toLocaleTimeString().slice(0, 5),
+            text: newComment,
+            type: 'user'
+          }]);
+          setNewComment("");
+        })
+        .catch(error => console.error("Ошибка при отправке комментария:", error));
+    }
+  };
+
+  const handleFinish = () => {
+    navigate("/userprofile");
+  };
+
+  if (!taskInfo) {
+    return <div>Загрузка...</div>;
+  }
 
   return (
     <div className={styles.bdResultPage}>
       <HeaderUser />
       <div className={styles.container}>
         <div className={styles.leftSection}>
-          <hr></hr>
+          <hr />
           <h1>Решение</h1>
           <div className={styles.taskInfo}>
             <div className={styles.userText}>
-              <span>Сергеев Антон Игоревич</span>
-              <p>Выдано: 19.05.2024/14:00</p>
-              <p>Отправлено: 22.05.2024/12:10</p>
+              <span>{`${taskInfo.surname} ${taskInfo.name} ${taskInfo.patronymic}`}</span>
+              <p>Выдано: {new Date(taskInfo.updatedAt).toLocaleString()}</p>
+              <p>Отправлено: —</p>
             </div>
             <div className={styles.taskTextBlock}>
-              <span><i class="fa-solid fa-bookmark"></i>Задание №100</span><br></br>
-              <span className={styles.taskText}>Преобразовать таблицу значений в массив строки</span><br></br>
+              <span><i className="fa-solid fa-bookmark"></i>Задание №{taskNumber}</span><br />
+              <span className={styles.taskText}>{taskInfo.taskText}</span><br />
             </div>
           </div>
           <div className={styles.autoCheckResults}>
@@ -135,28 +99,25 @@ const UserTask = () => {
                 <p><i className="fa-solid fa-bug"></i>Ошибки</p>
                 <span>—</span>
               </div>
-              <div className={styles.result}>
-                <p><i className="fa-solid fa-shield-halved"></i>Уязвимости</p>
-                <span>—</span>
-              </div>
-              <div className={styles.result}>
-                <p><i className="fa-solid fa-gear"></i>Дефекты</p>
-                <span>—</span>
-              </div>
             </div>
           </div>
-          <div className={styles.scoreSection} >
-            <div className={styles.scoreSectionText} style={{ backgroundColor: scoreBackgroundColor }}>
-                <p>{score}/10</p>
+          <div className={styles.scoreSection}>
+            <div className={styles.scoreSectionText}>
+                <p>—/10</p>
             </div>
           </div>
-          <Link to="/userhome" className={styles.sendSolution}>
-              Отправить решение
-          </Link>
         </div>
         <div className={styles.rightSection}>
-          <div className={styles.codeDisplay}>
-            {/* <BSLConsole userId={userId} taskNumber={taskNumber}/> */}
+          <div className={styles.codeDisplayM}>
+          {isSubmitted === 0 ? (
+              <BSLConsole userId={user_id} taskNumber={taskNumber} />
+          ) : (
+            <div className={styles.codeComplete}>
+              <p>Решение успешно отправлено!</p>
+              <button onClick={handleFinish}>Завершить</button>
+            </div>
+            )
+          }
           </div>
           <div className={styles.commentsSection}>
             <div className={styles.commentInput}>
@@ -169,9 +130,12 @@ const UserTask = () => {
               <button onClick={handleAddComment}><i className="fa-solid fa-paper-plane"></i></button>
             </div>
             <div className={styles.comments}>
-              {comments.map(comment => (
-                <div className={`${styles.comment} ${comment.user === "Admin" ? styles.admin : styles.user}`} key={comment.id}>
-                  <p className={styles.commentAuthor}>{comment.user === "Admin" ? "Admin" : comment.user}</p>
+              {comments.map((comment, index) => (
+                <div 
+                  className={`${styles.comment} ${comment.type === 'admin' ? styles.admin : styles.user}`} 
+                  key={index}
+                >
+                  <p className={styles.commentAuthor}>{comment.user}</p>
                   <p className={styles.commentText}>{comment.text}</p>
                   <p className={styles.commentTime}>{comment.time}</p>
                 </div>

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./BSLConsole.module.scss";
-import axios from 'axios';
+import axios from '../../axios';
 
 const BSLConsole = ({ userId, taskNumber }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -23,10 +23,8 @@ const BSLConsole = ({ userId, taskNumber }) => {
 
     const handleMessage = (event) => {
       const { type, text } = event.data;
-      if (type === 'save') {
-        
-      } else if (type === 'submit') {
-        axios.patch(`/user-patch-task-load/${userId}/${taskNumber}`, { codeText: text })
+      if (type === 'submit') {
+        axios.patch(`/user-patch-task-load/${userId}/${taskNumber}`, { code: text })
           .then(response => {
             console.log("Решение успешно отправлено:", response.data);
             localStorage.setItem('response', response.data);
@@ -44,31 +42,28 @@ const BSLConsole = ({ userId, taskNumber }) => {
     };
   }, [userId, taskNumber]);
 
-  const handleClick = () => {
-    const iframeWindow = iframeRef.current.contentWindow;
-    iframeWindow.postMessage({ type: 'getText', action: 'save' }, 'http://localhost:4000/');
-  };
-
   const handleClickSubmit = () => {
     const iframeWindow = iframeRef.current.contentWindow;
     iframeWindow.postMessage({ type: 'getText', action: 'submit' }, 'http://localhost:4000/');
   };
 
   return (
-    <div>
-      <iframe
-        ref={iframeRef}
-        src="http://localhost:4000/"
-        title="External Content"
-        width="855px"
-        height="420px"
-      ></iframe>
-      <br /><br />
-      <div className={styles.actions}>
-        <button className={styles.btnSave} onClick={handleClick}>Сохранить</button>
-        <button className={styles.btnSubmit} onClick={handleClickSubmit}>Отправить решение</button>
+    <form className={styles.console}>
+      <div className={styles.textAreaContainer}>
+        <div>
+          <iframe
+            ref={iframeRef}
+            src="http://localhost:4000/"
+            title="Eternal Content"
+            width="750px"
+            height="470px"
+          ></iframe>
+          <div className={styles.actions}>
+            <button className={styles.sendSolution} onClick={handleClickSubmit}>Отправить решение</button>
+          </div>
+        </div>
       </div>
-    </div>
+    </form>
   );
 };
 

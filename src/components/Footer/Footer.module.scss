@@ -67,11 +67,19 @@ footer {
                 a{
                     text-decoration: none;
                     color: #535353;
+                    svg {
+                        color: #535353;
+                    }
                 }
                 a:hover {
                     color: #ffffff;
                     transition: .5s ease-out;
+                    svg {
+                        filter: brightness(0) invert(1);
+                        transition: .5s ease-out;
+                    }
                 }
+                
             }
         }
     }

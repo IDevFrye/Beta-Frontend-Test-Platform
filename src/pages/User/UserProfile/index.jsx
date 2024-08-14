@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HeaderUser from "../../../components/HeaderUser";
+import axios from "../../../axios";
+import { jwtDecode } from "jwt-decode";
+import moment from "moment";
 import Footer from "../../../components/Footer";
 import styles from "./UserProfile.module.scss";
-import Avatar from "../../../assets/avatar.png";
+// import Avatar from "../../../assets/avatar.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 // import { selectIsAuth } from "../../../redux/slices/auth";
@@ -14,212 +17,168 @@ const UserProfile = () => {
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState("profile");
-  const [profileImage, setProfileImage] = useState(Avatar);
+  const [userId, setUserId] = useState(null);
+  const [profileData, setProfileData] = useState(null);
   // if (!isAuth) {
   //   navigate("/login");
   // }
-  
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken._id;
+      setUserId(userId);
+      fetchUserProfile(userId);
+    } else {
+      navigate("/login");
+    }
+  }, [navigate]);
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-  const handleProfileImageSubmit = (file) => {
-    if (file) {
-      const newProfileImage = URL.createObjectURL(file);
-      setProfileImage(newProfileImage);
-      // Call your backend API endpoint to save the new profile image
+
+  const fetchUserProfile = async (userId) => {
+    try {
+      const response = await axios.get(`/user-get-profile/${userId}`);
+      setProfileData(response.data);
+    } catch (error) {
+      console.error("Ошибка при получении данных профиля:", error);
     }
   };
-  return (
+
+  const getScoreColor = (score) => {
+    if (score === -1 || score === "—") return `${styles.gray} ${styles.score}`;
+    if (score >= 0 && score <= 4) return `${styles.red} ${styles.score}`;
+    if (score >= 5 && score <= 7) return `${styles.yellow} ${styles.score}`;
+    return `${styles.green} ${styles.score}`;
+  };
+
+  const formatTimeAgo = (updatedAt) => {
+    const duration = moment.duration(moment().diff(moment(updatedAt)));
+    if (duration.asMinutes() < 60) return `${Math.floor(duration.asMinutes())} minutes ago`;
+    if (duration.asHours() < 24) return `${Math.floor(duration.asHours())} hours ago`;
+    return `${Math.floor(duration.asDays())} days ago`;
+  };
+  // const handleProfileImageSubmit = (file) => {
+  //   if (file) {
+  //     const newProfileImage = URL.createObjectURL(file);
+  //     setProfileImage(newProfileImage);
+  //     // Call your backend API endpoint to save the new profile image
+  //   }
+  // };
+    return (
     <>
       <div className={styles.container}>
         <HeaderUser />
         <main>
-          <section className={styles.person}>
-            <img src={profileImage} alt="Person's Avatar" />
-            {/*MUST ADD FETCHED DATA*/}
-            <h1>Коба Алексей Юрьевич</h1>
-            {/*MUST ADD FETCHED DATA*/}
-            <div className={styles.achievements}>
-              <div className={styles.rating}>
-                {/*MUST ADD FETCHED DATA*/}
-                <h2>8,5</h2>
-                <p>Средняя оценка</p>
-              </div>
-              <div className={styles.appointed}>
-                {/*MUST ADD FETCHED DATA*/}
-                <h2>4</h2>
-                <p>Заданий назначено</p>
-              </div>
-              <div className={styles.testing}>
-                {/*MUST ADD FETCHED DATA*/}
-                <h2>1</h2>
-                <p>Заданий на проверке</p>
-              </div>
-            </div>
-          </section>
-          <section className={styles.info}>
-            <div className={styles.tabs}>
-              <button
-                className={`${styles.tab} ${
-                  activeTab === "profile" ? styles.active : ""
-                }`}
-                onClick={() => handleTabClick("profile")}
-              >
-                Профиль
-              </button>
-              <button
-                className={`${styles.tab} ${
-                  activeTab === "edit" ? styles.active : ""
-                }`}
-                onClick={() => handleTabClick("edit")}
-              >
-                Редактирование
-              </button>
-            </div>
-            <div className={styles.content}>
-              {activeTab === "profile" ? (
-                <>
-                  <div className={styles.mark}>
-                    <div className={styles.data}>
-                      <div className={styles.taskNumber}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <h2>Задание 101</h2>
-                        <Link to="/userresult">
-                          Подробнее <i class="fa-solid fa-angle-right"></i>
-                        </Link>{" "}
-                        {/*add USERTASK NUMBER FROM BACKEND! */}
-                      </div>
-                      <div className={styles.result}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <h2>7/10</h2>
-                        <h3>Оценено</h3>
-                        <p>6 minutes ago</p>
-                      </div>
-                    </div>
-                    {/* DIVIDING LINE */}
-                    <div className={styles.warnings}>
-                      <div className={styles.accuracy}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <p>Корректнось</p>
-                        <h2>75%</h2>
-                      </div>
-                      <div className={styles.errors}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <p>Ошибки</p>
-                        <h2>2</h2>
-                      </div>
-                      <div className={styles.vulnerabilities}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <p>Уязвимости</p>
-                        <h2>0</h2>
-                      </div>
-                      <div className={styles.defects}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <p>Дефекты</p>
-                        <h2>26</h2>
-                      </div>
-                    </div>
+          {profileData ? (
+            <>
+              <section className={styles.person}>
+                <div
+                  className={styles.avatar}
+                  style={{ backgroundImage: `url(${profileData.avatarUrl})` }}
+                ></div>
+                <h1>{`${profileData.surname} ${profileData.name} ${profileData.patro}`}</h1>
+                <div className={styles.achievements}>
+                  <div className={styles.rating}>
+                    <h2 className={getScoreColor(profileData.averageMark)}>
+                      {(profileData.averageMark === -1) ? ("—") : (profileData.averageMark.toFixed(1))}
+                    </h2>
+                    <p>Средняя оценка</p>
                   </div>
-                  <div className={styles.mark}>
-                    <div className={styles.data}>
-                      <div className={styles.taskNumber}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <h2>Задание 103</h2>
-                        <Link to="/userresult">
-                          Подробнее <i class="fa-solid fa-angle-right"></i>
-                        </Link>{" "}
-                        {/*add USERTASK NUMBER FROM BACKEND! */}
-                      </div>
-                      <div className={styles.result}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <h2>—/10</h2>
-                        <h3>Не оценено</h3>
-                        <p>24 minutes ago</p>
-                      </div>
-                    </div>
-                    {/* DIVIDING LINE */}
-                    <div className={styles.warnings}>
-                      <div className={styles.accuracy}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <p>Корректнось</p>
-                        <h2>—</h2>
-                      </div>
-                      <div className={styles.errors}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <p>Ошибки</p>
-                        <h2>—</h2>
-                      </div>
-                      <div className={styles.vulnerabilities}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <p>Уязвимости</p>
-                        <h2>—</h2>
-                      </div>
-                      <div className={styles.defects}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <p>Дефекты</p>
-                        <h2>—</h2>
-                      </div>
-                    </div>
+                  <div className={styles.appointed}>
+                    <h2>{profileData.totalTasks}</h2>
+                    <p>Заданий назначено</p>
                   </div>
-                  <div className={styles.mark}>
-                    <div className={styles.data}>
-                      <div className={styles.taskNumber}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <h2>Задание 121</h2>
-                        <Link to="/usertask" className={styles.taskNumberLink}>
-                          Подробнее <i class="fa-solid fa-angle-right"></i>
-                        </Link>{" "}
-                        {/*add USERTASK NUMBER FROM BACKEND! */}
-                      </div>
-                      <div className={styles.result}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <h2>—/10</h2>
-                        <h3>Не сдано</h3>
-                        <p>—</p>
-                      </div>
-                    </div>
-                    {/* DIVIDING LINE */}
-                    <div className={styles.warnings}>
-                      <div className={styles.accuracy}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <p>Корректнось</p>
-                        <h2>—</h2>
-                      </div>
-                      <div className={styles.errors}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <p>Ошибки</p>
-                        <h2>—</h2>
-                      </div>
-                      <div className={styles.vulnerabilities}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <p>Уязвимости</p>
-                        <h2>—</h2>
-                      </div>
-                      <div className={styles.defects}>
-                        {/*MUST ADD FETCHED DATA*/}
-                        <p>Дефекты</p>
-                        <h2>—</h2>
-                      </div>
-                    </div>
+                  <div className={styles.testing}>
+                    <h2>{profileData.checkingTasksCount}</h2>
+                    <p>Заданий на проверке</p>
                   </div>
-                </>
-              ) : (
-                <div className={styles.edit}>
-                  <h2>Фото профиля</h2>
-                  <FileUpload onSubmit={handleProfileImageSubmit} />
-                  <EditInput />
                 </div>
-              )}
-            </div>
-          </section>
+              </section>
+              <section className={styles.info}>
+                <div className={styles.tabs}>
+                  <button
+                    className={`${styles.tab} ${
+                      activeTab === "profile" ? styles.active : ""
+                    }`}
+                    onClick={() => handleTabClick("profile")}
+                  >
+                    Профиль
+                  </button>
+                  <button
+                    className={`${styles.tab} ${
+                      activeTab === "edit" ? styles.active : ""
+                    }`}
+                    onClick={() => handleTabClick("edit")}
+                  >
+                    Редактирование
+                  </button>
+                </div>
+                <div className={styles.content}>
+                  {activeTab === "profile" ? (
+                    profileData.tasks.map((task, index) => (
+                      <div key={index} className={styles.mark}>
+                        <div className={styles.data}>
+                          <div className={styles.taskNumber}>
+                            <h2>Задание {task.taskNumber}</h2>
+                            <Link
+                              to={`${
+                                (task.status === "assigned")
+                                  ? `/usertask/${userId}/${task.taskNumber}`
+                                  : `/userresult/${userId}/${task.taskNumber}`
+                              }`}
+                            >
+                              Подробнее <i className="fa-solid fa-angle-right"></i>
+                            </Link>
+                          </div>
+                          <div className={styles.result}>
+                            <h2 className={getScoreColor(task.mark)}>
+                              {task.mark === -1 ? "—" : task.mark}/10
+                            </h2>
+                            <h3>
+                              {task.status === "assigned"
+                                ? "Не сдано"
+                                : task.status === "checking"
+                                ? "Не оценено"
+                                : "Оценено"}
+                            </h3>
+                            <p>{formatTimeAgo(task.updatedAt)}</p>
+                          </div>
+                        </div>
+                        <div className={styles.warnings}>
+                          <div className={styles.accuracy}>
+                            <p>Корректность</p>
+                            <h2>{task.status === "assigned" ? "—" : `${task.total}%`}</h2>
+                          </div>
+                          <div className={styles.errors}>
+                            <p>Ошибки</p>
+                            <h2>{task.status === "assigned" ? "—" : task.issuesCount}</h2>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className={styles.edit}>
+                      <h2>Фото профиля</h2>
+                      {/* Компонент для загрузки файла */}
+                      <FileUpload />
+                      <EditInput />
+                    </div>
+                  )}
+                </div>
+              </section>
+            </>
+          ) : (
+            <p>Загрузка данных...</p>
+          )}
         </main>
         <Footer />
       </div>
-      
     </>
   );
 };
 
-export default UserProfile;
 
-//add color for each mark ex: 7/10 - yellow, 10/10 - green
+export default UserProfile;

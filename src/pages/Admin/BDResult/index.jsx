@@ -174,7 +174,7 @@ const BDResult = () => {
                 <div className={styles.userText}>
                   <span>{`${data.name} ${data.surname} ${data.patro}`}</span>
                   <p>Выдано: {new Date(data.createdAt).toLocaleString()}</p>
-                  <p>Отправлено: {new Date(data.updatedAt).toLocaleString()}</p>
+                  <p>Отправлено: {new Date(data.doneAt).toLocaleString()}</p>
                 </div>
                 <div className={styles.taskTextBlock}>
                   <span><i className="fa-solid fa-bookmark"></i>Задание №{taskNumber}</span><br />
