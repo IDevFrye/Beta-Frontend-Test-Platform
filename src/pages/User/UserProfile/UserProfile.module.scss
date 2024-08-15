@@ -6,8 +6,9 @@
     main {
         margin-top: 50px;
         display: flex;
+        // height: 61vh;
         justify-content: space-between;
-        margin-bottom: 190px;
+        margin-bottom: 195px;
         .person {
             position: relative;
             &::before {
@@ -64,6 +65,7 @@
             }
         }
         .info {
+            min-width: 700px;
             max-width: 700px;
             margin: 0 auto;
             .tabs {

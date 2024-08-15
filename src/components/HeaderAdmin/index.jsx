@@ -22,7 +22,7 @@ const HeaderMain = () => {
 
   return (
     <header className={styles.header}>
-      <img src={logo} alt="BIA Logo" />
+      <img src={logo} alt="BIA Logo" draggable="false"/>
       <nav>
         <ul>
           <li className={isActive("/adminhome") ? styles.active : ""}>

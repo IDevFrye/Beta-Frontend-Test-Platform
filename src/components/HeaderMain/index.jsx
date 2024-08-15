@@ -4,6 +4,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./HeaderMain.module.scss";
 import { logout, selectIsAuth } from "../../redux/slices/auth";
+
 const HeaderMain = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const HeaderMain = () => {
   
   return (
     <header>
-      <img src={logo} alt="BIA Logo" />
+      <img src={logo} alt="BIA Logo" draggable="false"/>
       <nav>
         <ul>
           <li className={styles.cur}>

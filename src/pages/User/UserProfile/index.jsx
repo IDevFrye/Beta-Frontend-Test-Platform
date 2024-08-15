@@ -48,7 +48,7 @@ const UserProfile = () => {
   };
 
   const getScoreColor = (score) => {
-    if (score === -1 || score === "—") return `${styles.gray} ${styles.score}`;
+    if (score === -1 || score === "—" || score === "0") return `${styles.gray} ${styles.score}`;
     if (score >= 0 && score <= 4) return `${styles.red} ${styles.score}`;
     if (score >= 5 && score <= 7) return `${styles.yellow} ${styles.score}`;
     return `${styles.green} ${styles.score}`;
@@ -60,13 +60,6 @@ const UserProfile = () => {
     if (duration.asHours() < 24) return `${Math.floor(duration.asHours())} hours ago`;
     return `${Math.floor(duration.asDays())} days ago`;
   };
-  // const handleProfileImageSubmit = (file) => {
-  //   if (file) {
-  //     const newProfileImage = URL.createObjectURL(file);
-  //     setProfileImage(newProfileImage);
-  //     // Call your backend API endpoint to save the new profile image
-  //   }
-  // };
     return (
     <>
       <div className={styles.container}>
@@ -83,7 +76,7 @@ const UserProfile = () => {
                 <div className={styles.achievements}>
                   <div className={styles.rating}>
                     <h2 className={getScoreColor(profileData.averageMark)}>
-                      {(profileData.averageMark === -1) ? ("—") : (profileData.averageMark.toFixed(1))}
+                      {(profileData.averageMark === -1 || profileData.averageMark == "0") ? ("—") : (profileData.averageMark)}
                     </h2>
                     <p>Средняя оценка</p>
                   </div>

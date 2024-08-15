@@ -53,7 +53,7 @@ const Login = () => {
         <div className={styles.parts}>
           <main>
             <Link to="/">
-              <img src={logo} alt="BIA logo" />
+              <img src={logo} alt="BIA logo" draggable="false"/>
             </Link>
             <form onSubmit={handleSubmit(onSubmit)}>
               <label>Вход</label>
@@ -74,13 +74,13 @@ const Login = () => {
             </form>
           </main>
           <div className={styles.footauth}>
-            <a href="#" className={styles.policy}>Политика конфиденциальности</a>
+            <a href="https://bia-tech.ru/wp-content/uploads/2024/06/Согласие_на_обработку_персональных_данных.pdf" target="_blank" className={styles.policy}>Политика конфиденциальности</a>
             <span className={styles.copy}>Copyright 2024</span>
           </div>
         </div>
       </div>
       <div className={styles.intro}>
-        <img src={AuthLogo} alt="Authorization Logo" />
+        <img src={AuthLogo} alt="Authorization Logo" draggable="false"/>
         <h1>BIA Technologies</h1>
         <p>Платформа проверки тестовых заданий на языке 1С</p>
       </div>

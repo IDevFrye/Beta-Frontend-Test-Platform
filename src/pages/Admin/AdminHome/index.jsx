@@ -86,7 +86,7 @@ const AdminHome = () => {
             </div>
           </div>
         </div>
-        <img src={MainLogo} alt="Main User Page Logo" />
+        <img src={MainLogo} alt="Main User Page Logo" draggable="false"/>
       </main>
       <Footer />
     </div>

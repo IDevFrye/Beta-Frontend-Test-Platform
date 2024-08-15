@@ -74,7 +74,7 @@ const FileUpload = ({ onSubmit }) => {
       >
         <input {...getInputProps()} />
         {preview ? (
-          <img src={preview} alt="Preview" className={styles.preview} />
+          <img src={preview} alt="Preview" className={styles.preview} draggable="false"/>
         ) : (
           <>
             <div className={styles.iconContainer}>

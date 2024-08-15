@@ -22,7 +22,7 @@ const UserResult = () => {
         const data = response.data;
 
         setUserData(data);
-        setScore(data.mark);
+        setScore((data.mark == -1) ? ("—") : (data.mark));
 
         const allComments = [
           ...response.data.commentUser.map(comment => ({
@@ -105,7 +105,7 @@ const UserResult = () => {
     return code;
   };
 
-  const scoreBackgroundColor = score === "-" ? "rgb(196, 196, 196)" : score >= 8 ? "rgb(120, 222, 126)" : score >= 5 ? "rgb(255, 225, 132)" : score >= 0 ? "rgb(226, 51, 51)" : "rgb(196, 196, 196)";
+  const scoreBackgroundColor = (score === "-" || score === "-1") ? "rgb(196, 196, 196)" : score >= 8 ? "rgb(120, 222, 126)" : score >= 5 ? "rgb(255, 225, 132)" : score >= 0 ? "rgb(226, 51, 51)" : "rgb(196, 196, 196)";
 
   const groupedComments = comments.reduce((groups, comment) => {
     const date = comment.time.toLocaleDateString();

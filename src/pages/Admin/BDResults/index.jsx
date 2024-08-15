@@ -25,7 +25,7 @@ const BDResults = () => {
           candidate.tasks.map((task) => ({
             id: `${candidate.name}-${task.taskNumber || Date.now()}`, 
             avatar: candidate.avatarUrl || ava,
-            name: `${candidate.name} ${candidate.surname} ${candidate.patro}`,
+            name: `${candidate.surname} ${candidate.name} ${candidate.patro}`,
             date: formatDate(task.firstUpdate),
             taskNumber: task.taskNumber || "Unknown", 
             score: task.mark,
@@ -227,7 +227,7 @@ const BDResults = () => {
                     <option value="">Все</option>
                     <option value="assigned">Назначено</option>
                     <option value="checking">На проверке</option>
-                    <option value="checked">Проверено</option>
+                    <option value="graded">Проверено</option>
                   </select>
                 </label>
               </div>
@@ -276,6 +276,7 @@ const BDResults = () => {
     </div>
 ) : (
     <div className={styles.noResultsContainer}>
+        <div className={styles.noResults}>—</div>
         <div className={styles.noResults}>—</div>
         <div className={styles.noResults}>—</div>
         <div className={styles.noResults}>—</div>

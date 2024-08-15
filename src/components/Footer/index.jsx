@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer>
     <div className={styles.about}>
-      <img src={FooterLogo} alt="Footer BIA Logo" />
+      <img src={FooterLogo} alt="Footer BIA Logo" draggable="false"/>
       <nav>
         <ul>
           <li>

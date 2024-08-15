@@ -93,7 +93,7 @@ const UserTask = () => {
           <div className={styles.taskInfo}>
             <div className={styles.userText}>
               <span>{`${taskInfo.surname} ${taskInfo.name} ${taskInfo.patronymic}`}</span>
-              <p>Выдано: {new Date(taskInfo.updatedAt).toLocaleString()}</p>
+              <p>Выдано: {new Date(taskInfo.createdAt).toLocaleString()}</p>
               <p>Отправлено: —</p>
             </div>
             <div className={styles.taskTextBlock}>

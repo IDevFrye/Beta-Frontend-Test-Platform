@@ -23,16 +23,16 @@ const BDCandidates = () => {
   }, []);
 
   const openModal = (candidate) => {
-  setCurrentCandidate(candidate);
-  setModalOpen(true);
+    setCurrentCandidate(candidate);
+    setModalOpen(true);
 
-  axios.get("/admin-get-not-assigned-tasks", {
-    params: {
-      name: candidate.name,
-      surname: candidate.surname,
-      patro: candidate.patro
-    }
-  })
+    axios.get("/admin-get-not-assigned-tasks", {
+      params: {
+        name: candidate.name,
+        surname: candidate.surname,
+        patro: candidate.patro
+      }
+    })
     .then(response => {
       console.log("Задачи:", response.data);
       setTasks(response.data);
@@ -40,7 +40,7 @@ const BDCandidates = () => {
     .catch(error => {
       console.error("Не удалось получить задания:", error);
     });
-};
+  };
 
   const toggleTaskSelection = (taskId) => {
     setSelectedTasks((prevSelectedTasks) =>
@@ -71,7 +71,9 @@ const BDCandidates = () => {
     }
   };
 
-  const filteredTasks = tasks;
+  const filteredTasks = tasks.filter(task =>
+    task.taskText.toLowerCase().includes(filterText.toLowerCase())
+  );
 
   const getAverageMarkClass = (mark) => {
     if (mark === "N/A") return styles.gray;
@@ -103,7 +105,7 @@ const BDCandidates = () => {
                     className={styles.ava}
                     style={{ backgroundImage: `url(${candidate.avatarUrl})` }}
                   ></div>
-                  <span className={styles.name}>{`${candidate.name} ${candidate.surname} ${candidate.patro}`}</span>
+                  <span className={styles.name}>{`${candidate.surname} ${candidate.name} ${candidate.patro}`}</span>
                 </span>
                 <span className={styles.count}>{candidate.taskCount}</span>
                 <span className={`${styles.score} ${getAverageMarkClass(candidate.averageMark)}`}>
