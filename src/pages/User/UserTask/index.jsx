@@ -25,17 +25,17 @@ const UserTask = () => {
         const allComments = [
           ...response.data.commentUser.map(comment => ({
             user: `${response.data.surname} ${response.data.name}`,
-            time: new Date(comment.timestamp).toLocaleTimeString().slice(0, 5),
+            time: new Date(comment.timestamp),
             text: comment.message,
             type: 'user'
           })),
           ...response.data.commentAdmin.map(comment => ({
             user: "Admin",
-            time: new Date(comment.timestamp).toLocaleTimeString().slice(0, 5),
+            time: new Date(comment.timestamp),
             text: comment.message,
             type: 'admin'
           }))
-        ].sort((a, b) => new Date(a.time) - new Date(b.time));
+        ].sort((a, b) => a.time - b.time);
         console.log('Комментарии:', allComments);
         setComments(allComments);
       })
@@ -50,13 +50,22 @@ const UserTask = () => {
       .catch(error => console.error('Ошибка при проверке статуса задачи:', error));
   }, [taskNumber, user_id]);
 
+  const groupedComments = comments.reduce((groups, comment) => {
+    const date = comment.time.toLocaleDateString();
+    if (!groups[date]) {
+      groups[date] = [];
+    }
+    groups[date].push(comment);
+    return groups;
+  }, {});
+
   const handleAddComment = () => {
     if (newComment.trim()) {
       axios.post(`/user-post-new-comment/${user_id}/${taskNumber}`, { commentText: newComment })
-        .then(response => {
+        .then(() => {
           setComments([...comments, {
             user: `${taskInfo.surname} ${taskInfo.name}`,
-            time: new Date().toLocaleTimeString().slice(0, 5),
+            time: new Date(),
             text: newComment,
             type: 'user'
           }]);
@@ -102,6 +111,14 @@ const UserTask = () => {
                 <p><i className="fa-solid fa-bug"></i>Ошибки</p>
                 <span>—</span>
               </div>
+              <div className={styles.result}>
+                <p><i className="fa-solid fa-file-shield"></i>Уязвимости</p>
+                <span>—</span>
+              </div>
+              <div className={styles.result}>
+                <p><i className="fa-solid fa-gear"></i>Дефекты</p>
+                <span>—</span>
+              </div>
             </div>
           </div>
           <div className={styles.scoreSection}>
@@ -133,14 +150,19 @@ const UserTask = () => {
               <button onClick={handleAddComment}><i className="fa-solid fa-paper-plane"></i></button>
             </div>
             <div className={styles.comments}>
-              {comments.map((comment, index) => (
-                <div 
-                  className={`${styles.comment} ${comment.type === 'admin' ? styles.admin : styles.user}`} 
-                  key={index}
-                >
-                  <p className={styles.commentAuthor}>{comment.user}</p>
-                  <p className={styles.commentText}>{comment.text}</p>
-                  <p className={styles.commentTime}>{comment.time}</p>
+              {Object.keys(groupedComments).map(date => (
+                <div key={date}>
+                  <div className={styles.separator}>
+                    <hr className={styles.dateSeparator} />
+                    <div className={styles.dateLabel}>{date}</div>
+                  </div>
+                  {groupedComments[date].map((comment, index) => (
+                    <div className={`${styles.comment} ${comment.user === "Admin" ? styles.admin : styles.user}`} key={index}>
+                      <p className={styles.commentAuthor}>{comment.user}</p>
+                      <p className={styles.commentText}>{comment.text}</p>
+                      <p className={styles.commentTime}>{comment.time.toLocaleTimeString().slice(0, 5)}</p>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>

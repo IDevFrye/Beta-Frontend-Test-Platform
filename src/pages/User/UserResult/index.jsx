@@ -1,155 +1,169 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from "react-router-dom";
+import axios from '../../../axios';
 import DOMPurify from 'dompurify';
 import HeaderUser from '../../../components/HeaderUser';
 import Footer from '../../../components/Footer';
 import styles from './BDResult.module.scss';
 
 const UserResult = () => {
+  const [userData, setUserData] = useState(null);
   const [score, setScore] = useState("-");
-  const [isEditing, setIsEditing] = useState(false);
   const [newComment, setNewComment] = useState("");
-  const [comments, setComments] = useState([
-    { id: 1, user: "Admin", time: "17:47", text: "Очень понравилось Ваша работа, замечаний не имею. Оценка - 10/10" },
-    { id: 2, user: "Сергей", time: "18:12", text: "Спасибо за предоставленную возможность и обратную связь!" }
-  ]);
+  const [comments, setComments] = useState([]);
   const [highlightedCode, setHighlightedCode] = useState("");
 
-  const handleScoreChange = (e) => {
-    setScore(e.target.value);
-  };
+  const { user_id, taskNumber } = useParams();
 
-  const handleSaveScore = () => {
-    setIsEditing(false);
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/user-get-result-info/${user_id}/${taskNumber}`);
+        const data = response.data;
+
+        setUserData(data);
+        setScore(data.mark);
+
+        const allComments = [
+          ...response.data.commentUser.map(comment => ({
+            user: `${response.data.surname} ${response.data.name}`,
+            time: new Date(comment.timestamp),
+            text: comment.message,
+            type: 'user'
+          })),
+          ...response.data.commentAdmin.map(comment => ({
+            user: "Admin",
+            time: new Date(comment.timestamp),
+            text: comment.message,
+            type: 'admin'
+          }))
+        ].sort((a, b) => a.time - b.time);
+
+        setComments(allComments);
+
+        const sanitizedCode = DOMPurify.sanitize(highlightCode(data.codeText), { ADD_ATTR: ['style'] });
+        setHighlightedCode(sanitizedCode);
+
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchData();
+  }, [user_id, taskNumber]);
 
   const handleAddComment = () => {
-    const newCommentObj = { 
-      id: comments.length + 1, 
-      user: "Сергей", 
-      time: new Date().toLocaleTimeString().slice(0, 5), 
-      text: newComment 
-    };
-    setComments([...comments, newCommentObj]);
-    setNewComment("");
+    if (newComment.trim()) {
+      axios.post(`/user-post-new-comment/${user_id}/${taskNumber}`, { commentText: newComment })
+        .then(() => {
+          setComments([...comments, {
+            user: `${userData.surname} ${userData.name}`,
+            time: new Date(),
+            text: newComment,
+            type: 'user'
+          }]);
+          setNewComment("");
+        })
+        .catch(error => console.error("Ошибка при отправке комментария:", error));
+    }
+  };
+
+  const handleDownloadReport = async () => {
+    try {
+      const response = await axios.post(`/user-post-download-report/${user_id}/${taskNumber}`, {}, { responseType: 'blob' });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `task_report_${taskNumber}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error('Error downloading report:', error);
+    }
   };
 
   const highlightCode = (code) => {
-  // Замена знаков < и > на их HTML-эквиваленты
-  code = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-  const patterns = {
-    // Подсветка строк
-    
-    // Подсветка скобок, знаков равно, точки с запятой, минуса, и символов <>
-    '(\\(|\\)|=|;|\\-|&lt;|&gt;|&lt;&gt;|,)': '<span style="color: red;">$1</span>',
-    // Подсветка цифр
-    '(\\b[0-9]+\\b)': '<span style="color: black;">$1</span>',
-    // Подсветка ключевых слов
-    '(Функция|КонецФункции|Попытка|Исключение|КонецПопытки|Возврат|Если|Тогда|КонецЕсли|Новый|Экспорт|Ложь|Истина|Для|Каждого| Из |Цикл|КонецЦикла| Знач | По |Для|\\?)': '<span style="color: red;">$1</span>',
-    '(\\"\\")': '<span style="color: black;">$1</span>',
-    
-  };
-
-  for (const pattern in patterns) {
-    const regex = new RegExp(pattern, 'g');
-    code = code.replace(regex, patterns[pattern]);
-  }
-
-  // Найти оставшийся текст и обернуть его в синий цвет
-  code = code.replace(/(<span style="[^>]*>[^<]*<\/span>|[^<]+)/g, (match) => {
-    if (match.startsWith('<span')) {
-      return match; // Сохраняем уже подсвеченные части
-    } else {
-      return `<span style="color: blue;">${match}</span>`; // Подсвечиваем оставшийся текст
+    code = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const patterns = {
+      '(\\(|\\)|=|;|\\-|&lt;|&gt;|&lt;&gt;|,)': '<span style="color: red;">$1</span>',
+      '(\\b[0-9]+\\b)': '<span style="color: black;">$1</span>',
+      '(Функция|КонецФункции|Попытка|Исключение|КонецПопытки|Возврат|Если|Тогда|КонецЕсли|Новый|Экспорт|Ложь|Истина|Для|Каждого| Из |Цикл|КонецЦикла| Знач | По |Для|\\?)': '<span style="color: red;">$1</span>',
+      '(\\"\\")': '<span style="color: black;">$1</span>',
+    };
+    for (const pattern in patterns) {
+      const regex = new RegExp(pattern, 'g');
+      code = code.replace(regex, patterns[pattern]);
     }
-  });
-
-  // Возвращаем знаки < и > обратно
-  code = code.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-
-  return code;
-};
+    code = code.replace(/(<span style="[^>]*>[^<]*<\/span>|[^<]+)/g, (match) => {
+      if (match.startsWith('<span')) {
+        return match;
+      } else {
+        return `<span style="color: blue;">${match}</span>`;
+      }
+    });
+    code = code.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+    return code;
+  };
 
   const scoreBackgroundColor = score === "-" ? "rgb(196, 196, 196)" : score >= 8 ? "rgb(120, 222, 126)" : score >= 5 ? "rgb(255, 225, 132)" : score >= 0 ? "rgb(226, 51, 51)" : "rgb(196, 196, 196)";
 
-  const code = `Функция ТаблицаЗначенийВМассив(ТаблицаЗначений) Экспорт
-	
-	Результат = Новый Массив();
-	СтруктураСтрокой = "";
-	НужнаЗапятая = Ложь;
-	
-	Для Каждого Колонка Из ТаблицаЗначений.Колонки Цикл
-		
-		Если НужнаЗапятая Тогда
-			СтруктураСтрокой = СтруктураСтрокой + ",";
-		КонецЕсли;
-		
-		СтруктураСтрокой = СтруктураСтрокой + Колонка.Имя;
-		НужнаЗапятая = Истина;
-		
-	КонецЦикла;
-	
-	Для Каждого Строка Из ТаблицаЗначений Цикл
-		НоваяСтрока = Новый Структура(СтруктураСтрокой);
-		ЗаполнитьЗначенияСвойств(НоваяСтрока, Строка);
-		Результат.Добавить(НоваяСтрока);
-		
-	КонецЦикла;
-	
-	Возврат Результат;
-
-КонецФункции`;
-
-  useEffect(() => {
-    const sanitizedCode = DOMPurify.sanitize(highlightCode(code), { ADD_ATTR: ['style'] });
-    setHighlightedCode(sanitizedCode);
-    setScore(6);
-  }, []);
+  const groupedComments = comments.reduce((groups, comment) => {
+    const date = comment.time.toLocaleDateString();
+    if (!groups[date]) {
+      groups[date] = [];
+    }
+    groups[date].push(comment);
+    return groups;
+  }, {});
 
   return (
     <div className={styles.bdResultPage}>
       <HeaderUser />
       <div className={styles.container}>
         <div className={styles.leftSection}>
-          <hr></hr>
+          <hr />
           <h1>Решение</h1>
-          <div className={styles.taskInfo}>
-            <div className={styles.userText}>
-              <span>Сергеев Антон Игоревич</span>
-              <p>Выдано: 19.05.2024/14:00</p>
-              <p>Отправлено: 22.05.2024/12:10</p>
-            </div>
-            <div className={styles.taskTextBlock}>
-              <span><i class="fa-solid fa-bookmark"></i>Задание №100</span><br></br>
-              <span className={styles.taskText}>Преобразовать таблицу значений в массив строки</span><br></br>
-            </div>
-          </div>
-          <div className={styles.autoCheckResults}>
-            <div className={styles.resultMain}>
-              <p><i className="fa-solid fa-circle-check"></i>Корректность</p>
-              <span>100%</span>
-            </div>
-            <div className={styles.resultSec}>
-              <div className={styles.result}>
-                <p><i className="fa-solid fa-bug"></i>Ошибки</p>
-                <span>0</span>
+          {userData && (
+            <div className={styles.taskInfo}>
+              <div className={styles.userText}>
+                <span>{userData.surname} {userData.name} {userData.patro}</span>
+                <p>Выдано: {new Date(userData.createdAt).toLocaleString()}</p>
+                <p>Отправлено: {new Date(userData.doneAt).toLocaleString()}</p>
               </div>
-              <div className={styles.result}>
-                <p><i className="fa-solid fa-shield-halved"></i>Уязвимости</p>
-                <span>0</span>
-              </div>
-              <div className={styles.result}>
-                <p><i className="fa-solid fa-gear"></i>Дефекты</p>
-                <span>14</span>
+              <div className={styles.taskTextBlock}>
+                <span><i className="fa-solid fa-bookmark"></i>Задание №{taskNumber}</span><br />
+                <span className={styles.taskText}>{userData.taskText}</span><br />
               </div>
             </div>
-          </div>
-          <div className={styles.scoreSection} >
+          )}
+          {userData && (
+            <div className={styles.autoCheckResults}>
+              <div className={styles.resultMain}>
+                <p><i className="fa-solid fa-circle-check"></i>Корректность</p>
+                <span>{userData.taskPropriety}%</span>
+              </div>
+              <div className={styles.resultSec}>
+                <div className={styles.result}>
+                  <p><i className="fa-solid fa-bug"></i>Ошибки</p>
+                  <span>{userData.taskErrors}</span>
+                </div>
+                <div className={styles.result}>
+                  <p><i className="fa-solid fa-file-shield"></i>Уязвимости</p>
+                  <span>{userData.taskVulnaribilities}</span>
+                </div>
+                <div className={styles.result}>
+                  <p><i className="fa-solid fa-gear"></i>Дефекты</p>
+                  <span>{userData.taskDefects}</span>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className={styles.scoreSection}>
             <div className={styles.scoreSectionText} style={{ backgroundColor: scoreBackgroundColor }}>
-                <p>{score}/10</p>
+              <p>{score}/10</p>
             </div>
           </div>
-          <a href="/download/report" className={styles.downloadLink}>Скачать отчет анализа решения</a>
+          <button onClick={handleDownloadReport} className={styles.downloadLink}>Скачать отчет анализа решения</button>
         </div>
         <div className={styles.rightSection}>
           <div className={styles.codeDisplay}>
@@ -166,11 +180,19 @@ const UserResult = () => {
               <button onClick={handleAddComment}><i className="fa-solid fa-paper-plane"></i></button>
             </div>
             <div className={styles.comments}>
-              {comments.map(comment => (
-                <div className={`${styles.comment} ${comment.user === "Admin" ? styles.admin : styles.user}`} key={comment.id}>
-                  <p className={styles.commentAuthor}>{comment.user === "Admin" ? "Admin" : comment.user}</p>
-                  <p className={styles.commentText}>{comment.text}</p>
-                  <p className={styles.commentTime}>{comment.time}</p>
+              {Object.keys(groupedComments).map(date => (
+                <div key={date}>
+                  <div className={styles.separator}>
+                    <hr className={styles.dateSeparator} />
+                    <div className={styles.dateLabel}>{date}</div>
+                  </div>
+                  {groupedComments[date].map((comment, index) => (
+                    <div className={`${styles.comment} ${comment.user === "Admin" ? styles.admin : styles.user}`} key={index}>
+                      <p className={styles.commentAuthor}>{comment.user}</p>
+                      <p className={styles.commentText}>{comment.text}</p>
+                      <p className={styles.commentTime}>{comment.time.toLocaleTimeString().slice(0, 5)}</p>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>

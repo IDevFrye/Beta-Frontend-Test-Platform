@@ -210,24 +210,26 @@
                 }
             }
         }
-        .downloadLink {
-            display: block;
-            margin-top: 8px;
-            color: rgb(185, 185, 185);
-            font-family: Montserrat;
-            font-size: 20px;
-            font-weight: 500;
-            line-height: 140%;
-            letter-spacing: 0px;
-            text-align: center;
-            text-decoration: none;
-        }
-
-        .downloadLink:hover {
-            color: rgb(104, 103, 103);
-            text-decoration: underline;
-            transition: .3s ease-out;
-        }
+                .downloadLink {
+                    display: block;
+                    margin-top: 8px;
+                    color: rgb(185, 185, 185);
+                    font-family: Montserrat;
+                    font-size: 18px;
+                    font-weight: 500;
+                    line-height: 140%;
+                    letter-spacing: 0px;
+                    text-align: center;
+                    text-decoration: none;
+                    border: none;
+                    background: none;
+                }
+        
+                .downloadLink:hover {
+                    color: rgb(104, 103, 103);
+                    text-decoration: underline;
+                    transition: .3s ease-out;
+                }
     }
 
     .rightSection {
@@ -356,4 +358,29 @@
             }
         }
     }
+}
+
+.dateSeparator {
+    border: 0;
+    height: 1px;
+    background-color: #ccc;
+    margin: 20px 0;
+    
+}
+.separator {
+    position: relative;
+}
+
+.dateLabel {
+    text-align: center;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 10px;
+    position:absolute;
+    top: -14px;
+    right: 360px;
+    // border: 1px solid rgb(223, 223, 223);
+    border-radius: 7px;
+    background: rgb(226, 226, 226);
+    padding: 5px 7px;
 }

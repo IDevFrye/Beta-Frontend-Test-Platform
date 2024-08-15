@@ -8,7 +8,6 @@ import styles from './BDResult.module.scss';
 
 const BDResult = () => {
   const { taskNumber } = useParams();
-  console.log(taskNumber);
   const [searchParams] = useSearchParams();
   const name = searchParams.get('name');
   const surname = searchParams.get('surname');
@@ -21,48 +20,42 @@ const BDResult = () => {
   const [highlightedCode, setHighlightedCode] = useState("");
 
   useEffect(() => {
-  if (name && surname && patro && taskNumber) {
-    axios.get(`/admin-get-solution/${taskNumber}`, {
-      params: { name, surname, patro }
-    })
-    .then(response => {
-      setData(response.data);
-      setScore(response.data.mark !== -1 ? response.data.mark : "-");
+    if (name && surname && patro && taskNumber) {
+      axios.get(`/admin-get-solution/${taskNumber}`, {
+        params: { name, surname, patro }
+      })
+      .then(response => {
+        setData(response.data);
+        setScore(response.data.mark !== -1 ? response.data.mark : "-");
 
-      // Обработка комментариев администратора и пользователя
-      const adminComments = response.data.commentAdmin.map((comment, index) => ({
-        id: `admin-${index + 1}`,
-        user: "Admin",
-        role: "admin",
-        time: new Date(comment.timestamp).toLocaleTimeString().slice(0, 5),
-        text: comment.message,
-        timestamp: new Date(comment.timestamp)
-      }));
+        const adminComments = response.data.commentAdmin.map((comment, index) => ({
+          id: `admin-${index + 1}`,
+          user: "Admin",
+          role: "admin",
+          time: new Date(comment.timestamp), // Сохраняем объект Date
+          text: comment.message
+        }));
 
-      const userComments = response.data.commentUser.map((comment, index) => ({
-        id: `user-${index + 1}`,
-        user: `${response.data.name} ${response.data.surname} ${response.data.patro}`,
-        role: "user",
-        time: new Date(comment.timestamp).toLocaleTimeString().slice(0, 5),
-        text: comment.message,
-        timestamp: new Date(comment.timestamp)
-      }));
+        const userComments = response.data.commentUser.map((comment, index) => ({
+          id: `user-${index + 1}`,
+          user: `${response.data.name} ${response.data.surname} ${response.data.patro}`,
+          role: "user",
+          time: new Date(comment.timestamp), // Сохраняем объект Date
+          text: comment.message
+        }));
 
-      // Объединение комментариев с сортировкой по времени (старые сверху, новые снизу)
-      const combinedComments = [...adminComments, ...userComments].sort(
-        (a, b) => a.timestamp - b.timestamp
-      );
+        const combinedComments = [...adminComments, ...userComments].sort(
+          (a, b) => a.time - b.time
+        );
 
-      setComments(combinedComments);
-      highlightCode(response.data.codeText);
-    })
-    .catch(error => {
-      console.error("Ошибка при получении данных:", error);
-    });
-  }
-}, [name, surname, patro, taskNumber]);
-
-
+        setComments(combinedComments);
+        highlightCode(response.data.codeText);
+      })
+      .catch(error => {
+        console.error("Ошибка при получении данных:", error);
+      });
+    }
+  }, [name, surname, patro, taskNumber]);
 
   const highlightCode = (code) => {
     if (!code) return;
@@ -97,9 +90,9 @@ const BDResult = () => {
   const handleScoreChange = (e) => {
     setScore(e.target.value);
   };
-  
+
   const scoreBackgroundColor = score === "-" ? "rgb(196, 196, 196)" : score >= 8 ? "rgb(120, 222, 126)" : score >= 5 ? "rgb(255, 225, 132)" : score >= 0 ? "rgb(226, 51, 51)" : "rgb(196, 196, 196)";
-  
+
   const handleSaveScore = () => {
     setIsEditing(false);
     axios.patch(`/admin-patch-mark-edit/${taskNumber}`, {
@@ -114,33 +107,30 @@ const BDResult = () => {
   };
 
   const handleAddComment = () => {
-  if (!newComment.trim()) return;
+    if (!newComment.trim()) return;
 
-  const comment = {
-    id: `admin-${comments.length + 1}`,
-    user: "Admin",
-    role: "admin",
-    time: new Date().toLocaleTimeString().slice(0, 5),
-    text: newComment,
-    timestamp: new Date()
+    const comment = {
+      id: `admin-${comments.length + 1}`,
+      user: "Admin",
+      role: "admin",
+      time: new Date(), // Сохраняем объект Date
+      text: newComment
+    };
+
+    const updatedComments = [...comments, comment].sort((a, b) => a.time - b.time);
+    setComments(updatedComments);
+    setNewComment("");
+
+    axios.post(`/admin-post-new-comment/${taskNumber}`, {
+      name, surname, patro, commentText: newComment
+    })
+    .then(response => {
+      console.log("Комментарий успешно добавлен", response.data);
+    })
+    .catch(error => {
+      console.error("Ошибка при добавлении комментария:", error);
+    });
   };
-
-  const updatedComments = [...comments, comment].sort((a, b) => a.timestamp - b.timestamp);
-  setComments(updatedComments);
-  setNewComment("");
-
-  axios.post(`/admin-post-new-comment/${taskNumber}`, {
-    name, surname, patro, commentText: newComment
-  })
-  .then(response => {
-    console.log("Комментарий успешно добавлен", response.data);
-  })
-  .catch(error => {
-    console.error("Ошибка при добавлении комментария:", error);
-  });
-};
-
-
 
   const downloadReport = () => {
     axios.post(`/admin-post-download-report/${taskNumber}`, {
@@ -161,6 +151,16 @@ const BDResult = () => {
       console.error("Ошибка при скачивании отчета:", error);
     });
   };
+
+  // Группировка комментариев по дате
+  const groupedComments = comments.reduce((groups, comment) => {
+    const date = comment.time.toLocaleDateString(); // Группируем по дате
+    if (!groups[date]) {
+      groups[date] = [];
+    }
+    groups[date].push(comment);
+    return groups;
+  }, {});
 
   return (
     <div className={styles.bdResultPage}>
@@ -184,16 +184,20 @@ const BDResult = () => {
               <div className={styles.autoCheckResults}>
                 <div className={styles.resultMain}>
                   <p><i className="fa-solid fa-circle-check"></i>Корректность</p>
-                  <span>100%</span>
+                  <span>{`${(data.taskPropriety == "NaN") ? (100) : (data.taskPropriety)}%`}</span>
                 </div>
                 <div className={styles.resultSec}>
                   <div className={styles.result}>
                     <p><i className="fa-solid fa-bug"></i>Ошибки</p>
-                    <span>{data.issuesCount}</span>
+                    <span>{data.taskErrors}</span>
                   </div>
                   <div className={styles.result}>
-                    <p><i className="fa-solid fa-gear"></i>Уязвимости</p>
-                    <span>{data.effortTotal}</span>
+                    <p><i className="fa-solid fa-file-shield"></i>Уязвимости</p>
+                    <span>{data.taskVulnaribilities}</span>
+                  </div>
+                  <div className={styles.result}>
+                    <p><i className="fa-solid fa-gear"></i>Дефекты</p>
+                    <span>{data.taskVulnaribilities}</span>
                   </div>
                 </div>
               </div>
@@ -243,14 +247,22 @@ const BDResult = () => {
               <button onClick={handleAddComment}><i className="fa-solid fa-paper-plane"></i></button>
             </div>
             <div className={styles.comments}>
-              {comments.map(comment => (
-                <div 
-                  className={`${styles.comment} ${comment.role === "admin" ? styles.admin : styles.user}`} 
-                  key={comment.id}
-                >
-                  <p className={styles.commentAuthor}>{comment.user}</p>
-                  <p className={styles.commentText}>{comment.text}</p>
-                  <p className={styles.commentTime}>{comment.time}</p>
+              {Object.keys(groupedComments).map(date => (
+                <div key={date}>
+                  <div className={styles.separator}>
+                    <hr className={styles.dateSeparator} />
+                    <div className={styles.dateLabel}>{date}</div>
+                  </div>
+                  {groupedComments[date].map(comment => (
+                    <div 
+                      className={`${styles.comment} ${comment.role === "admin" ? styles.admin : styles.user}`} 
+                      key={comment.id}
+                    >
+                      <p className={styles.commentAuthor}>{comment.user}</p>
+                      <p className={styles.commentText}>{comment.text}</p>
+                      <p className={styles.commentTime}>{comment.time.toLocaleTimeString().slice(0, 5)}</p>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
