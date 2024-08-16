@@ -90,3 +90,35 @@
         }
     }
 }
+
+.typingEffect {
+    font-family: Montserrat;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.cursor {
+    display: inline-block;
+    width: 0.1em;
+    height: 1em;
+    background-color: black;
+    margin-left: 2px;
+    vertical-align: bottom;
+}
+
+.blinkCursor {
+    animation: blink 0.7s step-end infinite;
+}
+
+@keyframes blink {
+
+    from,
+    to {
+        background-color: transparent;
+    }
+
+    50% {
+        background-color: black;
+    }
+}

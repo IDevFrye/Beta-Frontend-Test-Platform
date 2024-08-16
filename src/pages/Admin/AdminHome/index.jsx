@@ -4,7 +4,7 @@ import HeaderAdmin from "../../../components/HeaderAdmin";
 import Footer from "../../../components/Footer";
 import styles from "./AdminHome.module.scss";
 import MainLogo from "../../../assets/Main_Logo.png";
-import axios from "../../../axios"; // импорт axios
+import axios from "../../../axios";
 
 const useAnimatedNumber = (targetNumber, duration = 1000) => {
   const [currentNumber, setCurrentNumber] = useState(0);
@@ -19,7 +19,9 @@ const useAnimatedNumber = (targetNumber, duration = 1000) => {
       const percentage = Math.min(progress / duration, 1); // Ограничиваем от 0 до 1
       const easeOutPercentage = percentage * (2 - percentage); // ease-out эффект
 
-      setCurrentNumber(Math.floor(startNumber + (targetNumber - startNumber) * easeOutPercentage));
+      setCurrentNumber(
+        Math.floor(startNumber + (targetNumber - startNumber) * easeOutPercentage)
+      );
 
       if (percentage < 1) {
         requestAnimationFrame(step);
@@ -43,6 +45,12 @@ const AdminHome = () => {
   const animatedUnmarkedTasks = useAnimatedNumber(stats.countUnmarkedTasks);
   const animatedTasks = useAnimatedNumber(stats.countTasks);
 
+  const [typedText, setTypedText] = useState("");
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const [showCursor, setShowCursor] = useState(true);
+  const fullText = "BIA Technologies.";
+  const typingSpeed = 100;
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -56,13 +64,45 @@ const AdminHome = () => {
     fetchStats();
   }, []);
 
+  useEffect(() => {
+    let index = 0;
+    const typingInterval = setInterval(() => {
+      setTypedText(fullText.slice(0, index + 1));
+      index++;
+      if (index === fullText.length) {
+        clearInterval(typingInterval);
+        setIsTypingComplete(true);
+        setTimeout(() => {
+          setShowCursor(false);
+        }, 1000);
+      }
+    }, typingSpeed);
+
+    return () => clearInterval(typingInterval);
+  }, []);
+
   return (
     <div className={styles.container}>
       <HeaderAdmin />
       <main>
         <div className={styles.info}>
-          <h1>BIA Technologies.</h1>
-          <p>Платформа для проверки тестовых заданий<br></br>на языке 1С.</p>
+          <h1 className={styles.typingEffect}>
+            {typedText.startsWith("BIA") && (
+              <>
+                BIA
+                <br />
+              </>
+            )}
+            {typedText.slice(typedText.indexOf(" ") + 1)}
+            {showCursor && (
+              <span
+                className={`${styles.cursor} ${
+                  isTypingComplete ? styles.blinkCursor : ""
+                }`}
+              />
+            )}
+          </h1>
+          <p>Платформа для проверки тестовых заданий<br />на языке 1С.</p>
           <div className={styles.actions}>
             <Link to="/admin/bdresults" className={styles.buttonResults}>
               решения
@@ -86,7 +126,7 @@ const AdminHome = () => {
             </div>
           </div>
         </div>
-        <img src={MainLogo} alt="Main User Page Logo" draggable="false"/>
+        <img src={MainLogo} alt="Main User Page Logo" draggable="false" />
       </main>
       <Footer />
     </div>
