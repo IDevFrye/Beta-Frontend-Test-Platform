@@ -30,6 +30,7 @@ const BDResults = () => {
             taskNumber: task.taskNumber || "Unknown", 
             score: task.mark,
             status: task.status,
+            sonarStatus: task.sonarStatus,
             nam: candidate.name,
             surname: candidate.surname,
             patro: candidate.patro,
@@ -256,7 +257,7 @@ const BDResults = () => {
                 </span>
                 <span className={styles.date}>{result.date}</span>
                 <span className={result.status === "assigned" ? styles.status : (result.status === "checking" ? styles.checking : styles.checked)}>
-                  {result.status === "assigned" ? "Назначено" : (result.status === "checking" ? "На проверке" : "Проверено")}
+                  {result.status === "assigned" ? "Назначено" : (result.status === "checking" ? ((result.sonarStatus === "processing" ||  result.sonarStatus === "pending") ? "Обработка" : "На проверке") : "Проверено")}
                 </span>
                 <span className={(result.taskNumber === "Удалено") ? `${styles.deletedTaskNumber}` : `${styles.taskNumber}`}>
                     {result.taskNumber === "Unknown" ? "Удалено" : result.taskNumber}
@@ -266,7 +267,7 @@ const BDResults = () => {
                 </span>
                 
                 <Link 
-                    className={` ${result.taskNumber === "Удалено" || result.status === "assigned" ? styles.displayNoneB : styles.detailsButton}`}
+                    className={` ${result.taskNumber === "Удалено" || result.status === "assigned" || (result.status === "checking" && (result.sonarStatus === "processing" || result.sonarStatus === "pending")) ? styles.displayNoneB : styles.detailsButton}`}
                     to={`/admin/bdresult/${result.taskNumber}?name=${encodeURIComponent(result.nam)}&surname=${encodeURIComponent(result.surname)}&patro=${encodeURIComponent(result.patro)}`}
                   >
                     <i className="fa-solid fa-chevron-right"></i>

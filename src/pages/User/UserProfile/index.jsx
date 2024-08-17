@@ -122,6 +122,7 @@ const UserProfile = () => {
                                   ? `/usertask/${userId}/${task.taskNumber}`
                                   : `/userresult/${userId}/${task.taskNumber}`
                               }`}
+                              className={(task.status === "checking" && (task.sonarStatus === "processing" ||  task.sonarStatus === "pending")) ? styles.dispNone : styles.norm}
                             >
                               Подробнее <i className="fa-solid fa-angle-right"></i>
                             </Link>
@@ -134,7 +135,7 @@ const UserProfile = () => {
                               {task.status === "assigned"
                                 ? "Не сдано"
                                 : task.status === "checking"
-                                ? "Не оценено"
+                                ? ((task.sonarStatus === "processing" ||  task.sonarStatus === "pending")? "Обработка" :"Не оценено")
                                 : "Оценено"}
                             </h3>
                             <p>{formatTimeAgo(task.updatedAt)}</p>
@@ -143,11 +144,19 @@ const UserProfile = () => {
                         <div className={styles.warnings}>
                           <div className={styles.accuracy}>
                             <p>Корректность</p>
-                            <h2>{task.status === "assigned" ? "—" : `${task.total}%`}</h2>
+                            <h2>{task.status === "assigned" ? "—" : `${task.taskPropriety}%`}</h2>
+                          </div>
+                          <div className={styles.accuracy}>
+                            <p>Ошибки</p>
+                            <h2>{task.status === "assigned" ? "—" : `${task.taskErrors}`}</h2>
+                          </div>
+                          <div className={styles.accuracy}>
+                            <p>Уязвимости</p>
+                            <h2>{task.status === "assigned" ? "—" : `${task.taskVulnaribilities}`}</h2>
                           </div>
                           <div className={styles.errors}>
-                            <p>Ошибки</p>
-                            <h2>{task.status === "assigned" ? "—" : task.issuesCount}</h2>
+                            <p>Дефекты</p>
+                            <h2>{task.status === "assigned" ? "—" : task.taskDefects}</h2>
                           </div>
                         </div>
                       </div>
