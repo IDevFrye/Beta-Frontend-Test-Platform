@@ -1,0 +1,356 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Нотификация</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600&display=swap"
+        em-class="em-font-Montserrat-SemiBold">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400&display=swap"
+        em-class="em-font-Montserrat-Regular">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,800&display=swap"
+        em-class="em-font-Montserrat-ExtraBold">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700&display=swap"
+        em-class="em-font-Montserrat-Bold">
+    <style type="text/css">
+        html {
+            -webkit-text-size-adjust: none;
+            -ms-text-size-adjust: none;
+        }
+    </style>
+    <style em="styles">
+        .em-font-Montserrat-Bold {
+            font-family: Montserrat, sans-serif !important;
+            font-weight: 700 !important;
+        }
+
+        .em-font-Montserrat-ExtraBold {
+            font-weight: 800 !important;
+        }
+
+        .em-font-Montserrat-ExtraBold,
+        .em-font-Montserrat-Medium,
+        .em-font-Montserrat-Regular {
+            font-family: Montserrat, sans-serif !important;
+        }
+
+        .em-font-Montserrat-Regular {
+            font-weight: 400 !important;
+        }
+
+        .em-font-Montserrat-SemiBold {
+            font-family: Montserrat, sans-serif !important;
+            font-weight: 600 !important;
+        }
+
+        @media only screen and (max-device-width:660px),
+        only screen and (max-width:660px) {
+            .em-narrow-table {
+                width: 100% !important;
+                max-width: 660px !important;
+                min-width: 280px !important;
+            }
+
+            .em-mob-line_height-25px {
+                line-height: 25px !important;
+            }
+
+            .em-mob-wrap {
+                display: block !important;
+            }
+
+            .em-mob-width-100perc {
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 100% !important;
+            }
+
+            .em-mob-padding_top-20 {
+                padding-top: 20px !important;
+            }
+
+            .em-mob-padding_bottom-20 {
+                padding-bottom: 20px !important;
+            }
+
+            .em-mob-padding_bottom-14 {
+                padding-bottom: 14px !important;
+            }
+
+            .em-mob-font_size-17px {
+                font-size: 17px !important;
+            }
+
+            .em-mob-font_size-14px {
+                font-size: 14px !important;
+            }
+
+            .em-mob-padding_left-20 {
+                padding-left: 20px !important;
+            }
+
+            .em-mob-padding_right-0 {
+                padding-right: 0 !important;
+            }
+
+            .em-mob-padding_left-0 {
+                padding-left: 0 !important;
+            }
+
+            .em-mob-vertical_align-middle {
+                vertical-align: middle !important;
+            }
+
+            .em-mob-height-auto {
+                height: auto !important;
+            }
+
+            .em-mob-height-48px {
+                height: 48px !important;
+            }
+
+            .em-show-td-desktop {
+                display: none !important;
+            }
+
+            .em-mob-padding_bottom-44 {
+                padding-bottom: 44px !important;
+            }
+
+            .em-mob-padding_top-45 {
+                padding-top: 45px !important;
+            }
+
+            .em-mob-font_size-12px {
+                font-size: 12px !important;
+            }
+
+            .em-mob-padding_right-20 {
+                padding-right: 20px !important;
+            }
+
+            .em-mob-width-342px {
+                width: 342px !important;
+                max-width: 342px !important;
+                min-width: 342px !important;
+            }
+
+            .em-mob-width-345px {
+                width: 345px !important;
+                max-width: 345px !important;
+                min-width: 345px !important;
+            }
+
+            .em-mob-text_align-center {
+                text-align: center !important;
+            }
+
+            .em-mob-width-336px {
+                width: 336px !important;
+                max-width: 336px !important;
+                min-width: 336px !important;
+            }
+        }
+    </style>
+</head>
+
+<body style="margin: 0; padding: 0;">
+    <span class="preheader"
+        style="display: none !important; visibility: hidden; opacity: 0; color: #F8F8F8; height: 0; width: 0; font-size: 1px;">&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;</span>
+    <!--[if !mso]><!-->
+    <div style="font-size:0px;color:transparent;opacity:0;">
+        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+    </div>
+    <!--<![endif]-->
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-size: 1px; line-height: 28px;">
+        <tr em="group">
+            <td align="center"
+                background="https://img.us5-usndr.com/en/v5/user-files?userId=6945886&resource=himg&disposition=inline&name=6dafp9o6qug5bpt439aew759pxrzbjyn1jferau1grnh6yiif831jzhg4jyqekerunfr6zz38n8pj8o8bf96n9ja8c8ufwsthpjej7nqmpf8ofpq8hokt68gtwaetamyzzsjgftcyy1hp74z41pd4eb4qte"
+                style="background-size: cover; padding: 40px 0px 48px; background-color: #e22d2d;"
+                class="em-mob-padding_top-20 em-mob-padding_bottom-20 em-mob-padding_left-20 em-mob-padding_right-20"
+                bgcolor="#E22D2D">
+                <!--[if (gte mso 9)|(IE)]>
+				<table cellpadding="0" cellspacing="0" border="0" width="660"><tr><td>
+				<![endif]-->
+                <table cellpadding="0" cellspacing="0" width="100%" border="0"
+                    style="max-width: 660px; min-width: 660px; width: 660px;" class="em-narrow-table">
+                    <tr em="block" class="em-structure">
+                        <td align="left" valign="middle"
+                            class="em-mob-height-auto em-mob-padding_top-20 em-mob-padding_right-20 em-mob-padding_bottom-20 em-mob-padding_left-20"
+                            style="background-position: 0% center; padding: 40px 28px 40px 40px; background-repeat: no-repeat; background-size: cover; border-top-left-radius: 16px; border-top-right-radius: 16px;"
+                            background="https://img.us5-usndr.com/en/v5/user-files?userId=6945886&resource=himg&disposition=inline&name=6jjz6n57fnfurzt439aew759pxrzbjyn1jferau1grnh6yiif831jzhg4jyqekeruzu1sqd4k9r6ffn533o778eh3ejruhqq6fob1ko3af8w7f5efqwyqgqp1t1chpo4e836rdemxf9tad9cr8jrwnjnjic">
+                            <table border="0" cellspacing="0" cellpadding="0" class="em-mob-width-100perc">
+                                <tr>
+                                    <td width="592" class="em-mob-wrap em-mob-width-100perc">
+
+
+
+
+                                        <table cellpadding="0" cellspacing="0" border="0" width="46%" em="atom"
+                                            class="em-mob-width-345px">
+                                            <tr>
+                                                <td style="padding-right: 0px; padding-left: 0px;"
+                                                    class="em-mob-vertical_align-middle">
+                                                    <div style="font-family: Helvetica, Arial, sans-serif; font-size: 24px; line-height: 32px; color: #333333;"
+                                                        class="em-font-Montserrat-Bold em-mob-text_align-center"><img
+                                                            src="https://img.us5-usndr.com/en/v5/user-files?userId=6945886&resource=himg&disposition=inline&name=6xgecqto1xyjbit439aew759pxrzbjyn1jferau1grnh6yiif831jzhg4jyqekeruqx4i8uxkdn5gqm3b3wrs1ux9b6p9zwifrnzdnr73xg1oxfxfpnkd5p3wg5d48jufkykgr3trtkqmi4z41pd4eb4qte"
+                                                            width="30" border="0" alt=""
+                                                            style="display: inline-block; vertical-align: text-bottom; width: 100%; max-width: 30px;">&nbsp;<strong>Technologies&nbsp;</strong>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom"
+                                            class="em-mob-width-336px">
+                                            <tr>
+                                                <td style="padding: 1px 0px 0px;">
+                                                    <div style="font-family: Helvetica, Arial, sans-serif; font-size: 10px; line-height: 17px; color: #898787"
+                                                        class="em-font-Montserrat-Regular em-mob-text_align-center">
+                                                        Платформа проверки тестовых заданий&nbsp;</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom">
+                                            <tr>
+                                                <td style="padding: 1px 0px 0px;" class="em-show-td-desktop">
+                                                    <div
+                                                        style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 20px; line-height: 17px; color: #333333;">
+                                                        &nbsp;</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom"
+                                            class="em-mob-width-342px">
+                                            <tr>
+                                                <td style="padding: 17px 0px 5px;"
+                                                    class="em-mob-text_align-center em-mob-padding_bottom-44 em-mob-padding_top-45">
+                                                    <div style="font-family: Helvetica, Arial, sans-serif; font-size: 38px; line-height: 42px; color: #E22D2D"
+                                                        class="em-font-Montserrat-ExtraBold">Уведомление&nbsp;</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <table cellpadding="0" cellspacing="0" border="0" em="atom" width="55%"
+                                            class="em-mob-width-342px">
+                                            <tr>
+                                                <td style="padding-bottom: 5px; padding-top: 10px;"
+                                                    class="em-mob-text_align-center em-mob-padding_bottom-14">
+                                                    <div style="font-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #000000;"
+                                                        class="em-mob-line_height-25px em-font-Montserrat-SemiBold em-mob-font_size-17px">
+                                                        Приветствуем, <span style="color: #eb0f0f;">Admin</span>!<br>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <table cellpadding="0" cellspacing="0" border="0" em="atom" width="55%"
+                                            class="em-mob-width-345px">
+                                            <tr>
+                                                <td style="padding-bottom: 26px;" class="em-mob-text_align-center">
+                                                    <div style="font-family: Helvetica, Arial, sans-serif; font-size: 10px; line-height: 20px; color: #000000"
+                                                        class="em-mob-line_height-25px em-font-Montserrat-Regular em-mob-font_size-12px em-mob-text_align-center">
+                                                        Задание 101 от Костина А.К., отправленное 25.04.2024 18:01 (МСК
+                                                        +3), было проверено и готово к экспертной оценке.
+                                                        В личном кабинете Вы также может ознакомиться с отчетом анализа
+                                                        решения и кодом кандидата для проставления экспертного
+                                                        заключения.<br></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <table cellpadding="0" cellspacing="0" border="0" em="atom" width="60%"
+                                            class="em-mob-width-100perc">
+                                            <tr>
+                                                <td style="padding-bottom: 26px;">
+                                                    <div style="font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 20px; color: #000000"
+                                                        class="em-mob-line_height-25px em-font-Montserrat-SemiBold em-mob-text_align-center em-mob-font_size-14px">
+                                                        С уважением,<br>команда BIA Technologies<br></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+
+
+
+
+
+                    <tr em="block" class="em-structure">
+                        <td align="center"
+                            style="padding-top: 25px; padding-right: 30px; padding-left: 30px; background-color: #000000; background-repeat: repeat; border-bottom-right-radius: 16px; border-bottom-left-radius: 16px;"
+                            class="em-mob-padding_top-20 em-mob-padding_right-20 em-mob-padding_bottom-20 em-mob-padding_left-20"
+                            bgcolor="#000000">
+                            <table border="0" cellspacing="0" cellpadding="0" class="em-mob-width-100perc">
+                                <tr>
+
+
+                                    <td width="600" valign="top" class="em-mob-wrap em-mob-width-100perc">
+                                        <table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom">
+                                            <tr>
+                                                <td align="center"
+                                                    class="em-mob-padding_right-0 em-mob-padding_left-0 em-mob-vertical_align-middle em-mob-height-48px">
+                                                    <table border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td width="40" align="center">
+                                                                <a href="https://vk.com/biatech" target="_blank"><img
+                                                                        src="https://img.us5-usndr.com/en/v5/user-files?userId=6945886&resource=himg&disposition=inline&name=6ffjc833ioishzt439aew759pxrzbjyn1jferau1grnh6yiif831jzhg4jyqekerurummqpbce78fazby3sfgkzrgj5jntw3djdw9owdd3k71duscd58hhzz4u18gijpcomethfxgbxiizsy6nux6yrzoiw"
+                                                                        width="23" border="0" alt=""
+                                                                        style="display: block; max-width: 23px;"></a>
+                                                            </td>
+                                                            <td width="40" align="center">
+                                                                <a href="https://t.me/biatechnologies"
+                                                                    target="_blank"><img
+                                                                        src="https://img.us5-usndr.com/en/v5/user-files?userId=6945886&resource=himg&disposition=inline&name=68jnh1ghd1xsmmt439aew759pxrzbjyn1jferau1grnh6yiif831jzhg4jyqekeruiygkm11tzqa6uj4ymy7arfoyuot8utez7crka5pc7mct8buw8khbhwaakx35swsz334ch8pk3csn5z7chwe3wx7ekh"
+                                                                        width="22" border="0" alt=""
+                                                                        style="display: block; max-width: 22px; width: 100%;"></a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table border="0" cellspacing="0" cellpadding="0" class="em-mob-width-100perc">
+                                <tr>
+                                    <td width="600" valign="middle" class="em-mob-wrap em-mob-width-100perc"
+                                        align="center" style="border-width: 1px; border-color: #e5e5e5;">
+                                        <table cellpadding="0" cellspacing="0" border="0" width="70%" em="atom"
+                                            class="em-mob-width-100perc">
+                                            <tr>
+                                                <td
+                                                    style="padding-top: 20px; padding-bottom: 16px; border-top-width: 1px; border-top-color: #eeeeee;">
+                                                    <div style="font-family: Helvetica, Arial, sans-serif; font-size: 9px; line-height: 21px; color: #807e7e;"
+                                                        align="center"
+                                                        class="em-font-Montserrat-Regular em-mob-text_align-center em-mob-font_size-12px">
+                                                        <span style="color: #d5d4d4;">Это автоматически созданное
+                                                            письмо. Не нужно отвечать на него</span>.<br><br><a
+                                                            href="mailto:VCP@mail.ru?subject=[ОЭ][Email]"
+                                                            target="_blank"
+                                                            style="color: #1C52DC; text-decoration:  underline;"><span
+                                                                style="color: #ffffff; text-decoration: underline;">Служба
+                                                                поддержки</span></a></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!--[if (gte mso 9)|(IE)]>
+				</td></tr></table>
+				<![endif]-->
+            </td>
+        </tr>
+    </table>
+</body>
+<div class="XTranslate"></div>
+
+</html>
