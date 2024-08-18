@@ -74,7 +74,7 @@ const UserResult = () => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `task_report_${taskNumber}.pdf`);
+      link.setAttribute('download', `[${taskNumber}] Отчет анализа решения.pdf`);
       document.body.appendChild(link);
       link.click();
     } catch (error) {
@@ -116,6 +116,13 @@ const UserResult = () => {
     return groups;
   }, {});
 
+  const getPropColor = (prop) => {
+    if (prop === -1 || prop === "—") return `${styles.gray}`;
+    if (prop >= 0 && prop <= 40) return `${styles.red}`;
+    if (prop >= 41 && prop <= 75) return `${styles.yellow}`;
+    return `${styles.green}`;
+  };
+
   return (
     <div className={styles.bdResultPage}>
       <HeaderUser />
@@ -140,7 +147,7 @@ const UserResult = () => {
             <div className={styles.autoCheckResults}>
               <div className={styles.resultMain}>
                 <p><i className="fa-solid fa-circle-check"></i>Корректность</p>
-                <span>{userData.taskPropriety}%</span>
+                <span className={getPropColor(userData.taskPropriety)}>{userData.taskPropriety}%</span>
               </div>
               <div className={styles.resultSec}>
                 <div className={styles.result}>

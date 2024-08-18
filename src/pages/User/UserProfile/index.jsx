@@ -49,9 +49,16 @@ const UserProfile = () => {
 
   const getScoreColor = (score) => {
     if (score === -1 || score === "—" || score === "0") return `${styles.gray} ${styles.score}`;
-    if (score >= 0 && score <= 4) return `${styles.red} ${styles.score}`;
+    if (score >= 0 && score < 5) return `${styles.red} ${styles.score}`;
     if (score >= 5 && score <= 7) return `${styles.yellow} ${styles.score}`;
     return `${styles.green} ${styles.score}`;
+  };
+
+  const getPropColor = (prop, task, sonar) => {
+    if (prop === -1 || (prop === 0 && task === "assigned") || (prop == 0 && task === "checking" && (sonar === "processing" || sonar === "pending"))) return `${styles.gray}`;
+    if (prop >= 0 && prop <= 40) return `${styles.red}`;
+    if (prop >= 41 && prop <= 75) return `${styles.yellow}`;
+    return `${styles.green}`;
   };
 
   const formatTimeAgo = (updatedAt) => {
@@ -144,7 +151,7 @@ const UserProfile = () => {
                         <div className={styles.warnings}>
                           <div className={styles.accuracy}>
                             <p>Корректность</p>
-                            <h2>{task.status === "assigned" ? "—" : `${task.taskPropriety}%`}</h2>
+                            <h2 className={getPropColor(task.taskPropriety, task.status, task.sonarStatus)}>{task.status === "assigned" ? "—" : `${task.taskPropriety}%`}</h2>
                           </div>
                           <div className={styles.accuracy}>
                             <p>Ошибки</p>

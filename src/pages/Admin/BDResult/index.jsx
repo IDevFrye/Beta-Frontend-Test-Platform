@@ -142,7 +142,7 @@ const BDResult = () => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `task_report_${taskNumber}.pdf`);
+      link.setAttribute('download', `Отчет анализа решения ${taskNumber}.pdf`);
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -161,6 +161,13 @@ const BDResult = () => {
     groups[date].push(comment);
     return groups;
   }, {});
+
+  const getPropColor = (prop) => {
+    if (prop === -1 || prop === "—") return `${styles.gray}`;
+    if (prop >= 0 && prop <= 40) return `${styles.red}`;
+    if (prop >= 41 && prop <= 75) return `${styles.yellow}`;
+    return `${styles.green}`;
+  };
 
   return (
     <div className={styles.bdResultPage}>
@@ -184,7 +191,7 @@ const BDResult = () => {
               <div className={styles.autoCheckResults}>
                 <div className={styles.resultMain}>
                   <p><i className="fa-solid fa-circle-check"></i>Корректность</p>
-                  <span>{`${(data.taskPropriety == "NaN") ? (100) : (data.taskPropriety)}%`}</span>
+                  <span className={getPropColor(data.taskPropriety)}>{`${(data.taskPropriety == "NaN") ? (100) : (data.taskPropriety)}%`}</span>
                 </div>
                 <div className={styles.resultSec}>
                   <div className={styles.result}>
@@ -197,7 +204,7 @@ const BDResult = () => {
                   </div>
                   <div className={styles.result}>
                     <p><i className="fa-solid fa-gear"></i>Дефекты</p>
-                    <span>{data.taskVulnaribilities}</span>
+                    <span>{data.taskDefects}</span>
                   </div>
                 </div>
               </div>

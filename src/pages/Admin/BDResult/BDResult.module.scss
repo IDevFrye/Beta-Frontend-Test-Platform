@@ -115,7 +115,6 @@
                         align-self: center;
                     }
                     span {
-                        color: rgb(16, 195, 82);
                         font-family: Montserrat;
                         font-size: 20px;
                         font-weight: 500;
@@ -433,4 +432,20 @@
     border-radius: 7px;
     background: rgb(226, 226, 226);
     padding: 5px 7px;
+}
+
+.red {
+    color: rgb(226, 51, 51) !important;
+}
+
+.yellow {
+    color: rgb(255, 225, 133) !important;
+}
+
+.green {
+    color: rgb(16, 195, 82) !important;
+}
+
+.gray {
+    color: rgb(196, 196, 196) !important;
 }

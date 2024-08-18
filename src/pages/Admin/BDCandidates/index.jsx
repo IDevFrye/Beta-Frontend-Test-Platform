@@ -79,7 +79,7 @@ const BDCandidates = () => {
     if (mark === "N/A") return styles.gray;
     const average = parseFloat(mark);
     if (average >= 8) return styles.green;
-    if (average >= 5) return styles.yellow;
+    if (average >= 4) return styles.yellow;
     if (average >= 0) return styles.red;
     return styles.gray;
   };
