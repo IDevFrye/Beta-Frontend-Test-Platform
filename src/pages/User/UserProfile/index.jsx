@@ -55,7 +55,7 @@ const UserProfile = () => {
   };
 
   const getPropColor = (prop, task, sonar) => {
-    if (prop === -1 || (prop === 0 && task === "assigned") || (prop == 0 && task === "checking" && (sonar === "processing" || sonar === "pending"))) return `${styles.gray}`;
+    if (prop === -1 || (prop === 0 && task === "assigned") || (prop == 0 && task === "checking" && (sonar === "processing" || sonar === "pending" || task.sonarStatus == "error"))) return `${styles.gray}`;
     if (prop >= 0 && prop <= 40) return `${styles.red}`;
     if (prop >= 41 && prop <= 75) return `${styles.yellow}`;
     return `${styles.green}`;
@@ -129,7 +129,7 @@ const UserProfile = () => {
                                   ? `/usertask/${userId}/${task.taskNumber}`
                                   : `/userresult/${userId}/${task.taskNumber}`
                               }`}
-                              className={(task.status === "checking" && (task.sonarStatus === "processing" ||  task.sonarStatus === "pending")) ? styles.dispNone : styles.norm}
+                              className={(task.status === "checking" && (task.sonarStatus === "processing" ||  task.sonarStatus === "pending" || task.sonarStatus === "error")) ? styles.dispNone : styles.norm}
                             >
                               Подробнее <i className="fa-solid fa-angle-right"></i>
                             </Link>
@@ -142,7 +142,7 @@ const UserProfile = () => {
                               {task.status === "assigned"
                                 ? "Не сдано"
                                 : task.status === "checking"
-                                ? ((task.sonarStatus === "processing" ||  task.sonarStatus === "pending")? "Обработка" :"Не оценено")
+                                ? ((task.sonarStatus === "processing" ||  task.sonarStatus === "pending" || task.sonarStatus === "error")? "Обработка" :"Не оценено")
                                 : "Оценено"}
                             </h3>
                             <p>{formatTimeAgo(task.updatedAt)}</p>
@@ -151,7 +151,7 @@ const UserProfile = () => {
                         <div className={styles.warnings}>
                           <div className={styles.accuracy}>
                             <p>Корректность</p>
-                            <h2 className={getPropColor(task.taskPropriety, task.status, task.sonarStatus)}>{task.status === "assigned" ? "—" : `${task.taskPropriety}%`}</h2>
+                            <h2 className={getPropColor(task.taskPropriety, task.status, task.sonarStatus)}>{task.status === "assigned" || task.sonarStatus === "error" || task.sonarStatus === "pending" || task.sonarStatus === "processing" ? "—" : `${task.taskPropriety}%`}</h2>
                           </div>
                           <div className={styles.accuracy}>
                             <p>Ошибки</p>
