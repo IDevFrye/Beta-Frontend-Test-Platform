@@ -142,7 +142,7 @@ const BDResult = () => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `Отчет анализа решения ${taskNumber}.pdf`);
+      link.setAttribute('download', `[${taskNumber}] Отчет анализа решения.pdf`);
       document.body.appendChild(link);
       link.click();
       link.remove();

@@ -57,6 +57,8 @@ const BSLConsole = ({ userId, taskNumber }) => {
             title="Eternal Content"
             width="750px"
             height="470px"
+            sandbox="allow-scripts allow-same-origin"
+            allow="clipboard-read; clipboard-write; encrypted-media"
           ></iframe>
           <div className={styles.actions}>
             <button className={styles.sendSolution} onClick={handleClickSubmit}>Отправить решение</button>
