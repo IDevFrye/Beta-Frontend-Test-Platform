@@ -148,7 +148,7 @@ const BDResults = () => {
               <i className="fa-solid fa-xmark"></i>
             </button>
             <button className={`${styles.filterButton} ${isFilterOpen ? styles.active : ""}`} onClick={toggleFilter}>
-              <i className="fa-solid fa-sliders"></i> Настройка
+              <i className="fa-solid fa-sliders"></i> Фильтр
             </button>
           </div>
           {isFilterOpen && (

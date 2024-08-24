@@ -18,6 +18,9 @@ const BDResult = () => {
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState([]);
   const [highlightedCode, setHighlightedCode] = useState("");
+  const [showAutoScore, setShowAutoScore] = useState(false);
+  const [autoScore, setAutoScore] = useState(null);
+
 
   useEffect(() => {
     if (name && surname && patro && taskNumber) {
@@ -27,6 +30,14 @@ const BDResult = () => {
       .then(response => {
         setData(response.data);
         setScore(response.data.mark !== -1 ? response.data.mark : "-");
+
+
+        if (response.data.taskPropriety >= 0 && response.data.mark === -1) {
+              let calculatedAutoScore = Math.min(Math.floor(response.data.taskPropriety / 10), 10) + 1;
+              if (response.data.taskPropriety === 0) calculatedAutoScore = 0;
+              setAutoScore(calculatedAutoScore);
+              setShowAutoScore(true);
+        }
 
         const adminComments = response.data.commentAdmin.map((comment, index) => ({
           id: `admin-${index + 1}`,
@@ -89,6 +100,25 @@ const BDResult = () => {
 
   const handleScoreChange = (e) => {
     setScore(e.target.value);
+  };
+
+  const handleAutoScoreAccept = () => {
+    setScore(autoScore);
+    setShowAutoScore(false);
+    handleSaveScore();
+    axios.patch(`/admin-patch-mark-edit/${taskNumber}`, {
+      name, surname, patro, mark: autoScore
+    })
+    .then(response => {
+      console.log("Оценка успешно сохранена", response.data);
+    })
+    .catch(error => {
+      console.error("Ошибка при сохранении оценки:", error);
+    });
+  };
+
+  const handleAutoScoreReject = () => {
+    setShowAutoScore(false);
   };
 
   const scoreBackgroundColor = score === "-" ? "rgb(196, 196, 196)" : score >= 8 ? "rgb(120, 222, 126)" : score >= 5 ? "rgb(255, 225, 132)" : score >= 0 ? "rgb(226, 51, 51)" : "rgb(196, 196, 196)";
@@ -193,6 +223,14 @@ const BDResult = () => {
                   <p><i className="fa-solid fa-circle-check"></i>Корректность</p>
                   <span className={getPropColor(data.taskPropriety)}>{`${(data.taskPropriety == "NaN") ? (100) : (data.taskPropriety)}%`}</span>
                 </div>
+                {showAutoScore && (
+                  <div className={styles.autoScoreProposal}>
+                      <i class="fa-solid fa-circle-info"></i>
+                      <p>Автоматическая оценка: {autoScore}. Применить?</p>
+                      <button className={styles.autoScoreProposal1} onClick={handleAutoScoreAccept}>Да</button>
+                      <button className={styles.autoScoreProposal2} onClick={handleAutoScoreReject}>Нет</button>
+                  </div>
+                )}
                 <div className={styles.resultSec}>
                   <div className={styles.result}>
                     <p><i className="fa-solid fa-bug"></i>Ошибки</p>
