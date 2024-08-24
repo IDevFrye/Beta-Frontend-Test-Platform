@@ -30,7 +30,9 @@
     "start": "set HTTPS=true&&set SSL_CRT_FILE=./src/cert/localhost.pem&&set SSL_KEY_FILE=./src/cert/localhost-key.pem&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -51,6 +53,7 @@
     ]
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "gh-pages": "^6.1.1"
   }
 }
