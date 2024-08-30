@@ -86,7 +86,7 @@ const Register = () => {
               <button disabled={!isValid} type="submit">
                 Подтвердить
               </button>
-              <Link to="/login">Войти</Link>
+              <Link to="/login">Уже есть аккаунт?</Link>
             </form>
           </main>
           <div className={styles.footauth}>

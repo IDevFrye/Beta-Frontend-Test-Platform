@@ -26,7 +26,7 @@ const BDResults = () => {
             id: `${candidate.name}-${task.taskNumber || Date.now()}`, 
             avatar: candidate.avatarUrl || ava,
             name: `${candidate.surname} ${candidate.name} ${candidate.patro}`,
-            date: formatDate(task.firstUpdate),
+            date: (task.firstUpdate) ? formatDate(task.firstUpdate): "—",
             taskNumber: task.taskNumber || "Unknown", 
             score: task.mark,
             status: task.status,

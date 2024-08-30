@@ -46,7 +46,7 @@ const HeaderUser = () => {
       });
 
       const subject = `[ОЭ ${date}][${userId}] Запрос поддержки от ${userInfo.surname} ${userInfo.name} ${userInfo.patro}`;
-      const body = `Добрый день!\n\nОписание проблемы: (опишите, что случилось)\nПриоритет: от 1 до 4 (1 - срочный, 4 - некритичный)\nЖелаемая дата окончания сопровождения: (проставьте желаемую дату разрешения вопроса)\n\n___\nС уважением,\nпользователь платформы проверки тестовых заданий\n${userInfo.surname} ${userInfo.name} ${userInfo.patro}`;
+      const body = `Добрый день!\n\nОписание проблемы: (опишите, что случилось)\nПриоритет: от 1 до 4 (1 - срочный, 4 - некритичный)\nЖелаемая дата реакции: (проставьте желаемую дату разрешения Вашего запроса)\n\n___\nС уважением,\nпользователь платформы проверки тестовых заданий\n${userInfo.surname} ${userInfo.name} ${userInfo.patro}`;
 
       const mailtoLink = `mailto:vcp-tech-sup@mail.ru?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       setEmailLink(mailtoLink);

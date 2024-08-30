@@ -79,19 +79,16 @@
                     }
                     a {
                         font-size: 18px;
-                        text-align: center;
-                        color: #000;
-                        width: 306px;
-                        font-weight: 600;
-                        padding: 7px 27px;
-                        text-decoration: none;
-                        border-radius: 9.64px;
-                        box-shadow: 5px 10px 50px 0px rgba(0, 0, 0, 0.1);
-                        background: rgb(255, 255, 255);
+                            text-align: center;
+                            color: #707070;
+                            width: 306px;
+                            font-weight: 600;
+                            padding: 7px 27px;
+                            text-decoration: none;
                     }
                     a:hover {
-                        color: #f5f5f5;
-                        background: rgb(0, 0, 0);
+                        color: #000000;
+
                         transition: .2s ease-out;
                     }
                 }
