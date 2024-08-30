@@ -55,7 +55,7 @@ const BDTasks = () => {
 
   const deleteTask = async (task) => {
     try {
-      await axios.delete(`/admin-delete-task/${task.taskNumber}`);
+      await axios.post(`/admin-delete-task/${task.taskNumber}`);
       setTasks(tasks.filter(t => t.taskNumber !== task.taskNumber));
     } catch (error) {
       console.error("Ошибка при удалении задачи:", error);

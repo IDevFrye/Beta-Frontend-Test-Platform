@@ -140,10 +140,10 @@ const UserProfile = () => {
                             </h2>
                             <h3>
                               {task.status === "assigned"
-                                ? "Не сдано"
+                                ? "Назначено"
                                 : task.status === "checking"
-                                ? ((task.sonarStatus === "processing" ||  task.sonarStatus === "pending" || task.sonarStatus === "error")? "Обработка" :"Не оценено")
-                                : "Оценено"}
+                                ? ((task.sonarStatus === "processing" ||  task.sonarStatus === "pending" || task.sonarStatus === "error")? "Обработка" :"На проверке")
+                                : "Проверено"}
                             </h3>
                             <p>{formatTimeAgo(task.updatedAt)}</p>
                           </div>
